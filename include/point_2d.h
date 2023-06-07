@@ -32,6 +32,15 @@ namespace geom {
             bool operator==(const Point2D &point) const;
 
             /**
+            @brief Overload do operador <
+            Um ponto A é considerado menor que B quando Ay < By.
+            Em caso de empate, A será menor se Ax < Bx.
+            @param point Ponto que será usado na comparação
+            @return True se o ponto for menor, false caso contrário
+            */
+            bool operator<(const Point2D &point) const;
+
+            /**
             @brief Define um novo valor para a coordenada X
             @param x Novo valor da coordenada X
             */

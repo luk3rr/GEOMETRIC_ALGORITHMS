@@ -21,3 +21,22 @@ TEST_CASE("Overload operador de igualdade") {
         CHECK(!(A == B));
     }
 }
+
+
+TEST_CASE("Overload operador menor") {
+    geom::Point2D A = geom::Point2D(1, 5);
+    geom::Point2D B = geom::Point2D(1, 3);
+    geom::Point2D C = geom::Point2D(1, 5);
+    geom::Point2D D = geom::Point2D(2, -1);
+    geom::Point2D E = geom::Point2D(-1, -1);
+
+    SUBCASE("Pontos iguais") {
+        CHECK(!(A < C));
+    }
+
+    SUBCASE("Pontos diferentes") {
+        CHECK(!(A < B));
+        CHECK(D < B);
+        CHECK(E < D);
+    }
+}

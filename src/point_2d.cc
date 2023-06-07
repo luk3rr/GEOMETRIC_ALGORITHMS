@@ -21,6 +21,18 @@ namespace geom {
         return (this->m_x == point.m_x and this->m_y == point.m_y);
     }
 
+    bool Point2D::operator<(const Point2D &point) const {
+        if (this->m_y < point.m_y)
+            return true;
+        if (this->m_y == point.m_y) {
+            if (this->m_x < point.m_x) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     void Point2D::SetX(int x) {
         this->m_x = x;
     }
