@@ -36,4 +36,13 @@ namespace geom {
     Point2D Line2D::GetB() {
         return this->m_b;
     }
+
+    void Line2D::Draw(sf::RenderWindow &window, sf::Color color) {
+        sf::Vertex line[] = {
+            sf::Vertex(this->GetA().GetPosition(), color),
+            sf::Vertex(this->GetB().GetPosition(), color)
+        };
+
+        window.draw(line, 2, sf::Lines);
+    }
 }

@@ -7,6 +7,8 @@
 #ifndef LINE_2D_H_
 #define LINE_2D_H_
 
+#include <SFML/Graphics.hpp>
+
 #include "point_2d.h"
 
 namespace geom {
@@ -63,6 +65,13 @@ namespace geom {
             @return O ponto B
             */
             Point2D GetB();
+
+            /**
+            @brief Renderiza a linha na tela
+            @param window Tela na qual a linha será renderizado
+            @param color Cor que será utilizada na renderização da linha
+            */
+            void Draw(sf::RenderWindow &window, sf::Color color);
     };
 }
 

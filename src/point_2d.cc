@@ -33,6 +33,18 @@ namespace geom {
         return false;
     }
 
+    bool Point2D::operator<=(const Point2D &point) const {
+        if (*this < point or *this == point)
+            return true;
+
+        return false;
+    }
+
+    std::ostream &operator<<(std::ostream &os, const Point2D &point) {
+        os << "(" << point.m_x << ", " << point.m_y << ")";
+        return os;
+    }
+
     void Point2D::SetX(int x) {
         this->m_x = x;
     }
@@ -47,5 +59,16 @@ namespace geom {
 
     int Point2D::GetY() {
         return this->m_y;
+    }
+
+    sf::Vector2f Point2D::GetPosition() {
+        return this->m_circle.getPosition();
+    }
+
+    void Point2D::Draw(sf::RenderWindow &window, sf::Color color) {
+        this->m_circle = sf::CircleShape(1, 100);
+        this->m_circle.setPosition(window.getSize().x / 2.0f + this->m_x, window.getSize().y / 2.0f - this->m_y);
+        this->m_circle.setFillColor(color);
+        window.draw(this->m_circle);
     }
 }

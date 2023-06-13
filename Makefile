@@ -13,7 +13,7 @@ TEST_NAME = test
 # CONFIGURAÇÕES DO COMPILADOR
 CC = g++
 LIBS = -lm
-CFLAGS = --std=c++20 -O0 -Wall
+CFLAGS = --std=c++20 -O0 -Wall -lsfml-graphics -lsfml-window -lsfml-system
 
 # ARQUIVOS
 MAIN = $(OBJ_DIR)/main.o
@@ -21,6 +21,13 @@ MAIN = $(OBJ_DIR)/main.o
 PROGRAM_OBJS =	$(OBJ_DIR)/line_2d.o \
 				$(OBJ_DIR)/point_2d.o \
 				$(OBJ_DIR)/polygon.o \
+				$(OBJ_DIR)/convex_hull.o \
+				$(OBJ_DIR)/animation_controller.o \
+				$(OBJ_DIR)/geometry_utils.o \
+				$(OBJ_DIR)/analyzer.o \
+				$(OBJ_DIR)/utils.o \
+				$(OBJ_DIR)/vector.o \
+				$(OBJ_DIR)/vector_excpt.o \
 				$(OBJ_DIR)/node_doubly_linked.o \
 				$(OBJ_DIR)/list_doubly_linked.o \
 				$(OBJ_DIR)/list_excpt.o
@@ -28,6 +35,9 @@ PROGRAM_OBJS =	$(OBJ_DIR)/line_2d.o \
 TEST_OBJS = $(OBJ_DIR)/line_2d_test.o \
 			$(OBJ_DIR)/point_2d_test.o \
 			$(OBJ_DIR)/polygon_test.o \
+			$(OBJ_DIR)/geometry_utils_test.o \
+			$(OBJ_DIR)/convex_hull_test.o \
+			$(OBJ_DIR)/vector_test.o \
 			$(OBJ_DIR)/list_doubly_linked_test.o \
 			$(OBJ_DIR)/main_doctest.o
 

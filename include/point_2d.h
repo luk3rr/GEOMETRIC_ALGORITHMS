@@ -7,10 +7,15 @@
 #ifndef POINT_2D_H_
 #define POINT_2D_H_
 
+#include <SFML/Graphics.hpp>
+#include <SFML/Graphics/Color.hpp>
+#include <ostream>
+
 namespace geom {
     class Point2D {
         private:
             int m_x, m_y;
+            sf::CircleShape m_circle;
 
         public:
             /**
@@ -41,6 +46,20 @@ namespace geom {
             bool operator<(const Point2D &point) const;
 
             /**
+            @brief Overload do operador <=
+            @param point Ponto que será usado na comparação
+            @return True se o ponto for menor ou igual, false caso contrário
+            */
+            bool operator<=(const Point2D &point) const;
+
+            /**
+            @brief Overload do operador <<
+            @param os Stream de saída
+            @point point Ponto que será impresso
+            */
+            friend std::ostream &operator<<(std::ostream &os, const Point2D &point);
+
+            /**
             @brief Define um novo valor para a coordenada X
             @param x Novo valor da coordenada X
             */
@@ -63,6 +82,19 @@ namespace geom {
             @return Valor da coordenada Y
             */
             int GetY();
+
+            /**
+            @brief Pega a posição vetorial do ponto
+            @return Posição vetorial do ponto
+            */
+            sf::Vector2f GetPosition();
+
+            /**
+            @brief Renderiza o ponto na tela
+            @param window Tela na qual o ponto será renderizado
+            @param color Cor que será utilizada na renderização do ponto
+            */
+            void Draw(sf::RenderWindow &window, sf::Color color);
     };
 }
 
