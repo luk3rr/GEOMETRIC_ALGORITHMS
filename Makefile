@@ -27,29 +27,8 @@ CFLAGS = --std=c++20 -O0 -Wall -lsfml-graphics -lsfml-window -lsfml-system
 
 # ARQUIVOS
 MAIN = $(OBJ_DIR)/main.o
-
-PROGRAM_OBJS =	$(OBJ_DIR)/line_2d.o \
-				$(OBJ_DIR)/point_2d.o \
-				$(OBJ_DIR)/polygon.o \
-				$(OBJ_DIR)/convex_hull.o \
-				$(OBJ_DIR)/animation_controller.o \
-				$(OBJ_DIR)/geometry_utils.o \
-				$(OBJ_DIR)/analyzer.o \
-				$(OBJ_DIR)/utils.o \
-				$(OBJ_DIR)/vector.o \
-				$(OBJ_DIR)/vector_excpt.o \
-				$(OBJ_DIR)/node_doubly_linked.o \
-				$(OBJ_DIR)/list_doubly_linked.o \
-				$(OBJ_DIR)/list_excpt.o
-
-TEST_OBJS = $(OBJ_DIR)/line_2d_test.o \
-			$(OBJ_DIR)/point_2d_test.o \
-			$(OBJ_DIR)/polygon_test.o \
-			$(OBJ_DIR)/geometry_utils_test.o \
-			$(OBJ_DIR)/convex_hull_test.o \
-			$(OBJ_DIR)/vector_test.o \
-			$(OBJ_DIR)/list_doubly_linked_test.o \
-			$(OBJ_DIR)/main_doctest.o
+PROGRAM_OBJS := $(shell find $(SRC) -type f -name "*.cc" ! -name "main.cc" ! -name "*test.cc" -exec echo '$(OBJ_DIR)/{}' \; | sed 's/src\///;s/\/\.\//\//;s/\.cc/.o/')
+TEST_OBJS := $(shell find $(TST_DIR) -type f -name "*.cc" -exec echo '$(OBJ_DIR)/{}' \; | sed 's/src\/tests\///;s/\/\.\//\//;s/\.cc/.o/')
 
 # CASES
 build: $(OBJ_DIR)/$(PROGRAM_NAME)
