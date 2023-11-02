@@ -15,7 +15,8 @@
 namespace geom
 {
     /**
-     * @brief Define a point class with coordinates of type typeT in n-dimensional space.
+     * @brief Define a point class with coordinates of type typeT in n-dimensional
+     *space.
      *
      * This class represents a point in an n-dimensional space, where n is specified
      * by the template parameter nDim. The type of the point's coordinates is specified
@@ -42,6 +43,8 @@ namespace geom
              */
             Point(Vector<typeT> coordinates);
 
+            virtual ~Point() = default;
+
             /**
              * @brief Operator == overload
              * @param point Point to be used in comparison
@@ -55,7 +58,7 @@ namespace geom
              * @param os Output stream
              * @param point Point to be printed
              */
-            friend std::ostream& operator<<(std::ostream& os,
+            friend std::ostream& operator<<(std::ostream&             os,
                                             const Point<typeT, nDim>& point)
             {
                 os << "(";
@@ -75,7 +78,7 @@ namespace geom
             /**
              * @brief Set a new set of coordinates for the point
              */
-            void SetCoordinates(Vector<typeT>& coordinates);
+            void SetCoordinates(const Vector<typeT>& coordinates);
 
             /**
              * @return The set of coordinates for the point
@@ -84,12 +87,8 @@ namespace geom
     };
 
     template<typename typeT, std::size_t nDim>
-    Point<typeT, nDim>::Point() : m_coordinates(nDim)
+    Point<typeT, nDim>::Point() : m_coordinates(nDim, 0)
     {
-        for (std::size_t i = 0; i < nDim; i++)
-        {
-            this->m_coordinates.PushBack(0);
-        }
     }
 
     template<typename typeT, std::size_t nDim>
@@ -118,7 +117,7 @@ namespace geom
     }
 
     template<typename typeT, std::size_t nDim>
-    void Point<typeT, nDim>::SetCoordinates(Vector<typeT>& coordinates)
+    void Point<typeT, nDim>::SetCoordinates(const Vector<typeT>& coordinates)
     {
         this->m_coordinates = coordinates;
     }

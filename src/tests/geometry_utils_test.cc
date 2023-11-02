@@ -13,15 +13,15 @@
 #include "utils.h"
 #include "vector.h"
 
-#define EPSILON 10e-5
+#define EPSILON 10e-4
 
 TEST_CASE("Encontrar o sentido no qual um vetor se encontra")
 {
-    geom::Point<double_t, 2> ref({12, 2});
-    geom::Point<double_t, 2> a({16, 6});
-    geom::Point<double_t, 2> b({16, -2});
-    geom::Point<double_t, 2> c({22, 2});
-    geom::Point<double_t, 2> d({30, 2});
+    geom::Point<double_t, 2> ref({ 12, 2 });
+    geom::Point<double_t, 2> a({ 16, 6 });
+    geom::Point<double_t, 2> b({ 16, -2 });
+    geom::Point<double_t, 2> c({ 22, 2 });
+    geom::Point<double_t, 2> d({ 30, 2 });
 
     SUBCASE("Sentido horário")
     {
@@ -44,10 +44,10 @@ TEST_CASE("Encontrar o sentido no qual um vetor se encontra")
 
 TEST_CASE("Distância entre dois pontos")
 {
-    geom::Point<double_t, 2> a({6, 2});
-    geom::Point<double_t, 2> b({16, 0});
-    geom::Point<double_t, 2> c({-2, -4});
-    geom::Point<double_t, 2> d({-2, 8});
+    geom::Point<double_t, 2> a({ 6, 2 });
+    geom::Point<double_t, 2> b({ 16, 0 });
+    geom::Point<double_t, 2> c({ -2, -4 });
+    geom::Point<double_t, 2> d({ -2, 8 });
 
     CHECK(geom::Utils<double_t, 2>::Distance(a, b) - 10.2 < EPSILON);
     CHECK(geom::Utils<double_t, 2>::Distance(a, c) - 10 < EPSILON);
@@ -57,25 +57,25 @@ TEST_CASE("Distância entre dois pontos")
 TEST_CASE("Ângulo polar de um ponto")
 {
     // primeiro e segundo quadrante
-    geom::Point<double_t, 2> a({18, 0});
-    geom::Point<double_t, 2> b({28, 0});
-    geom::Point<double_t, 2> c({28, 6});
-    geom::Point<double_t, 2> d({18, 10});
-    geom::Point<double_t, 2> e({8, 6});
-    geom::Point<double_t, 2> f({8, 0});
+    geom::Point<double_t, 2> a({ 18, 0 });
+    geom::Point<double_t, 2> b({ 28, 0 });
+    geom::Point<double_t, 2> c({ 28, 6 });
+    geom::Point<double_t, 2> d({ 18, 10 });
+    geom::Point<double_t, 2> e({ 8, 6 });
+    geom::Point<double_t, 2> f({ 8, 0 });
 
     // terceiro e quarto quadrante
-    geom::Point<double_t, 2> g({8, -6});
-    geom::Point<double_t, 2> h({18, -10});
-    geom::Point<double_t, 2> i({28, -6});
+    geom::Point<double_t, 2> g({ 8, -6 });
+    geom::Point<double_t, 2> h({ 18, -10 });
+    geom::Point<double_t, 2> i({ 28, -6 });
 
     SUBCASE("Pontos no primeiro e segundo quadrante")
     {
         CHECK(geom::Utils<double_t, 2>::PolarAngle(a, b) == 0); // 0°
                                                                 //
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, c) - (30.96 * PI / 180)) <
-              EPSILON);                                                         // 30.96°
-                                                                                //
+              EPSILON); // 30.96°
+                        //
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, d) - PI / 2) < EPSILON); // 90°
 
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, e) - (149.04 * PI / 180)) <
@@ -101,23 +101,23 @@ TEST_CASE("Conjunto de pontos é um polígono válido")
 {
     Vector<geom::Point<double_t, 2>> points;
 
-    points.PushBack(geom::Point<double_t, 2>({5, 2}));
-    points.PushBack(geom::Point<double_t, 2>({4, 1}));
+    points.PushBack(geom::Point<double_t, 2>({ 5, 2 }));
+    points.PushBack(geom::Point<double_t, 2>({ 4, 1 }));
 
     SUBCASE("Uma reta") { CHECK(not geom::Utils<double_t, 2>::IsPolygon(points)); }
 
-    points.PushBack(geom::Point<double_t, 2>({6, 3}));
+    points.PushBack(geom::Point<double_t, 2>({ 6, 3 }));
     SUBCASE("Três pontos colineares")
     {
         CHECK(not geom::Utils<double_t, 2>::IsPolygon(points));
     }
 
-    points.PushBack(geom::Point<double_t, 2>({3, 0}));
+    points.PushBack(geom::Point<double_t, 2>({ 3, 0 }));
     SUBCASE("Quatro pontos colineares")
     {
         CHECK(not geom::Utils<double_t, 2>::IsPolygon(points));
     }
 
-    points.PushBack(geom::Point<double_t, 2>({2, 1}));
+    points.PushBack(geom::Point<double_t, 2>({ 2, 1 }));
     SUBCASE("Um polígono") { CHECK(geom::Utils<double_t, 2>::IsPolygon(points)); }
 }

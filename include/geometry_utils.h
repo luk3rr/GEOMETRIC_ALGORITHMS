@@ -23,9 +23,9 @@ namespace geom
 {
     enum PointOrientation
     {
-        CLOCKWISE = 1,
+        CLOCKWISE     = 1,
         ANTICLOCKWISE = -1,
-        COLLINEAR = 0
+        COLLINEAR     = 0
     };
 
     /**
@@ -65,7 +65,9 @@ namespace geom
              *        of the points
              * @param points Vector where the generated points will be stored
              */
-            static void CreateRandomPoints(std::size_t amount, typeT min, typeT max,
+            static void CreateRandomPoints(std::size_t                 amount,
+                                           typeT                       min,
+                                           typeT                       max,
                                            Vector<Point<typeT, nDim>>& points);
 
             /**
@@ -95,16 +97,19 @@ namespace geom
         for (std::size_t i = 0; i < nDim; i++)
         {
             typeT diff = b.GetCoordinates().At(i) - a.GetCoordinates().At(i);
-            distanceSquared += static_cast<double_t>(diff) * static_cast<double_t>(diff);
+            distanceSquared +=
+                static_cast<double_t>(diff) * static_cast<double_t>(diff);
         }
 
         return std::sqrt(distanceSquared);
     }
 
     template<typename typeT, std::size_t nDim>
-    double_t Utils<typeT, nDim>::PolarAngle(Point<typeT, nDim> ref, Point<typeT, nDim> a)
+    double_t Utils<typeT, nDim>::PolarAngle(Point<typeT, nDim> ref,
+                                            Point<typeT, nDim> a)
     {
-        // NOTE: Perhaps the calculation of the polar angle below may be invalid for nDim
+        // NOTE: Perhaps the calculation of the polar angle below may be invalid for
+        // nDim
         // >= 3
         if (nDim != 2)
             throw std::runtime_error(
@@ -114,9 +119,9 @@ namespace geom
             return 0;
 
         // Considering 2-dimensional, where 0 == x and 1 == y (index in the vector)
-        uint8_t xCoordinate = 0;
-        uint8_t yCoordinate = 1;
-        double_t angle = std::atan2(
+        uint8_t  xCoordinate = 0;
+        uint8_t  yCoordinate = 1;
+        double_t angle       = std::atan2(
             a.GetCoordinates().At(yCoordinate) - ref.GetCoordinates().At(yCoordinate),
             a.GetCoordinates().At(xCoordinate) - ref.GetCoordinates().At(xCoordinate));
 
@@ -127,7 +132,9 @@ namespace geom
     }
 
     template<typename typeT, std::size_t nDim>
-    void Utils<typeT, nDim>::CreateRandomPoints(std::size_t amount, typeT min, typeT max,
+    void Utils<typeT, nDim>::CreateRandomPoints(std::size_t                 amount,
+                                                typeT                       min,
+                                                typeT                       max,
                                                 Vector<Point<typeT, nDim>>& points)
     {
         std::srand(time(nullptr));
@@ -154,19 +161,21 @@ namespace geom
     {
         if (nDim != 2)
         {
-            throw std::runtime_error("Clockwise function only supports nDim equal to 2");
+            throw std::runtime_error(
+                "Clockwise function only supports nDim equal to 2");
         }
 
         // Considering 2-dimensional, where 0 == x and 1 == y (index in the vector)
-        uint8_t xCoordinate = 0;
-        uint8_t yCoordinate = 1;
-        double_t determinant =
-            (a.GetCoordinates().At(xCoordinate) - ref.GetCoordinates().At(xCoordinate)) *
-                (b.GetCoordinates().At(yCoordinate) -
-                 ref.GetCoordinates().At(yCoordinate)) -
-            (a.GetCoordinates().At(yCoordinate) - ref.GetCoordinates().At(yCoordinate)) *
-                (b.GetCoordinates().At(xCoordinate) -
-                 ref.GetCoordinates().At(xCoordinate));
+        uint8_t  xCoordinate = 0;
+        uint8_t  yCoordinate = 1;
+        double_t determinant = (a.GetCoordinates().At(xCoordinate) -
+                                ref.GetCoordinates().At(xCoordinate)) *
+                                   (b.GetCoordinates().At(yCoordinate) -
+                                    ref.GetCoordinates().At(yCoordinate)) -
+                               (a.GetCoordinates().At(yCoordinate) -
+                                ref.GetCoordinates().At(yCoordinate)) *
+                                   (b.GetCoordinates().At(xCoordinate) -
+                                    ref.GetCoordinates().At(xCoordinate));
 
         if (determinant > 0)
             return PointOrientation::ANTICLOCKWISE;
@@ -186,8 +195,9 @@ namespace geom
 
         for (std::size_t i = 0; i < points.Size() - 2; i++)
         {
-            if (Utils<typeT, nDim>::Clockwise(points[i], points[i + 1], points[i + 2]) !=
-                COLLINEAR)
+            if (Utils<typeT, nDim>::Clockwise(points[i],
+                                              points[i + 1],
+                                              points[i + 2]) != COLLINEAR)
                 return true;
         }
 

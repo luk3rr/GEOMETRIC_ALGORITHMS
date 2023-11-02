@@ -5,6 +5,7 @@
  */
 
 #include <cmath>
+#include <cstddef>
 
 #include "convex_hull.h"
 #include "doctest.h"
@@ -17,20 +18,20 @@ TEST_CASE("Fecho convexo: Graham Scan")
     Vector<geom::Point<int, 2>> checker;
     Vector<geom::Point<int, 2>> convex;
 
-    geom::Point<int, 2> a({6, 2});
-    geom::Point<int, 2> b({16, 0});
-    geom::Point<int, 2> c({24, 6});
-    geom::Point<int, 2> d({16, 10});
-    geom::Point<int, 2> e({24, 12});
-    geom::Point<int, 2> f({12, 8});
-    geom::Point<int, 2> g({10, 0});
-    geom::Point<int, 2> h({17, 6});
-    geom::Point<int, 2> i({8, 1});
-    geom::Point<int, 2> j({10, 10});
-    geom::Point<int, 2> k({10, 8});
-    geom::Point<int, 2> l({10, 6});
-    geom::Point<int, 2> m({10, 4});
-    geom::Point<int, 2> n({14, 0});
+    geom::Point<int, 2> a({ 6, 2 });
+    geom::Point<int, 2> b({ 16, 0 });
+    geom::Point<int, 2> c({ 24, 6 });
+    geom::Point<int, 2> d({ 16, 10 });
+    geom::Point<int, 2> e({ 24, 12 });
+    geom::Point<int, 2> f({ 12, 8 });
+    geom::Point<int, 2> g({ 10, 0 });
+    geom::Point<int, 2> h({ 17, 6 });
+    geom::Point<int, 2> i({ 8, 1 });
+    geom::Point<int, 2> j({ 10, 10 });
+    geom::Point<int, 2> k({ 10, 8 });
+    geom::Point<int, 2> l({ 10, 6 });
+    geom::Point<int, 2> m({ 10, 4 });
+    geom::Point<int, 2> n({ 14, 0 });
 
     points.PushBack(a);
     points.PushBack(b);
@@ -66,7 +67,8 @@ TEST_CASE("Fecho convexo: Graham Scan")
     if (not pass)
     {
         std::cout << " CHECKER " << std::endl;
-        for (unsigned int i = 0; i < unsigned(utils::Max(convex.Size(), checker.Size()));
+        for (unsigned int i = 0;
+             i < unsigned(utils::Max(convex.Size(), checker.Size()));
              i++)
         {
             if (i < convex.Size())
@@ -89,20 +91,20 @@ TEST_CASE("Fecho convexo: Jarvis March")
     Vector<geom::Point<int, 2>> checker;
     Vector<geom::Point<int, 2>> convex;
 
-    geom::Point<int, 2> a({6, 2});
-    geom::Point<int, 2> b({16, 0});
-    geom::Point<int, 2> c({24, 6});
-    geom::Point<int, 2> d({16, 10});
-    geom::Point<int, 2> e({24, 12});
-    geom::Point<int, 2> f({12, 8});
-    geom::Point<int, 2> g({10, 0});
-    geom::Point<int, 2> h({17, 6});
-    geom::Point<int, 2> i({8, 1});
-    geom::Point<int, 2> j({10, 10});
-    geom::Point<int, 2> k({10, 8});
-    geom::Point<int, 2> l({10, 6});
-    geom::Point<int, 2> m({10, 4});
-    geom::Point<int, 2> n({14, 0});
+    geom::Point<int, 2> a({ 6, 2 });
+    geom::Point<int, 2> b({ 16, 0 });
+    geom::Point<int, 2> c({ 24, 6 });
+    geom::Point<int, 2> d({ 16, 10 });
+    geom::Point<int, 2> e({ 24, 12 });
+    geom::Point<int, 2> f({ 12, 8 });
+    geom::Point<int, 2> g({ 10, 0 });
+    geom::Point<int, 2> h({ 17, 6 });
+    geom::Point<int, 2> i({ 8, 1 });
+    geom::Point<int, 2> j({ 10, 10 });
+    geom::Point<int, 2> k({ 10, 8 });
+    geom::Point<int, 2> l({ 10, 6 });
+    geom::Point<int, 2> m({ 10, 4 });
+    geom::Point<int, 2> n({ 14, 0 });
 
     points.PushBack(a);
     points.PushBack(b);
@@ -137,7 +139,8 @@ TEST_CASE("Fecho convexo: Jarvis March")
     {
         std::cout << " JARVIS "
                   << " CHECKER " << std::endl;
-        for (unsigned int i = 0; i < unsigned(utils::Max(convex.Size(), checker.Size()));
+        for (unsigned int i = 0;
+             i < unsigned(utils::Max(convex.Size(), checker.Size()));
              i++)
         {
             if (i < convex.Size())
@@ -157,13 +160,13 @@ TEST_CASE("Encontrar o ponto mais 'baixo'")
 {
     Vector<geom::Point<int, 2>> points;
 
-    geom::Point<int, 2> a({6, 2});
-    geom::Point<int, 2> b({16, 0});
-    geom::Point<int, 2> c({24, 6});
-    geom::Point<int, 2> d({16, 10});
-    geom::Point<int, 2> e({24, 12});
-    geom::Point<int, 2> f({12, 8});
-    geom::Point<int, 2> g({10, 0});
+    geom::Point<int, 2> a({ 6, 2 });
+    geom::Point<int, 2> b({ 16, 0 });
+    geom::Point<int, 2> c({ 24, 6 });
+    geom::Point<int, 2> d({ 16, 10 });
+    geom::Point<int, 2> e({ 24, 12 });
+    geom::Point<int, 2> f({ 12, 8 });
+    geom::Point<int, 2> g({ 10, 0 });
 
     points.PushBack(a);
     points.PushBack(b);

@@ -118,8 +118,9 @@ namespace geom
         {
             while (convex.Size() > 2)
             {
-                clockwise = Utils<typeT, nDim>::Clockwise(
-                    convex[convex.Size() - 2], convex[convex.Size() - 1], points[i]);
+                clockwise = Utils<typeT, nDim>::Clockwise(convex[convex.Size() - 2],
+                                                          convex[convex.Size() - 1],
+                                                          points[i]);
 
                 if (clockwise != PointOrientation::ANTICLOCKWISE)
                 {
@@ -140,7 +141,9 @@ namespace geom
         convex.Clear();
 
         std::size_t lowestPointIndex = FindLowestPoint(points);
+
         Point<typeT, nDim> lowestPoint = points[lowestPointIndex];
+
         int8_t clockwise;
 
         std::size_t currentPointIndex = lowestPointIndex;
@@ -154,8 +157,9 @@ namespace geom
 
             for (std::size_t i = 0; i < points.Size(); i++)
             {
-                clockwise = Utils<typeT, nDim>::Clockwise(
-                    points[currentPointIndex], points[i], points[nextPointIndex]);
+                clockwise = Utils<typeT, nDim>::Clockwise(points[currentPointIndex],
+                                                          points[i],
+                                                          points[nextPointIndex]);
 
                 if (clockwise == PointOrientation::ANTICLOCKWISE)
                 {

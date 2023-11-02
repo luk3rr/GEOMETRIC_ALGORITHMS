@@ -6,6 +6,4 @@
 
 #include <cstdlib>
 
-#include "convex_hull.h"
-
 int main() { return EXIT_SUCCESS; }
