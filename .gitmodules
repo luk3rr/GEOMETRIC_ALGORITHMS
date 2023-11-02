@@ -1,0 +1,3 @@
+[submodule "modules/sorting_algorithms"]
+	path = modules/sorting_algorithms
+	url = git@github.com:luk3rr/SORTING_ALGORITHMS.git

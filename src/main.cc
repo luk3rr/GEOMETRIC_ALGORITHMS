@@ -1,7 +1,11 @@
 /*
-* Filename: main.cc
-* Created on: October  8, 2023
-* Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
-*/
+ * Filename: main.cc
+ * Created on: October  8, 2023
+ * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
+ */
 
-int main() { return 0; }
+#include <cstdlib>
+
+#include "convex_hull.h"
+
+int main() { return EXIT_SUCCESS; }

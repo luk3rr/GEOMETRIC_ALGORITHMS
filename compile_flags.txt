@@ -3,4 +3,8 @@
 include
 -I
 include/lib
+-I
+modules/sorting_algorithms/include
+-I
+modules/sorting_algorithms/modules/data_structures/include
 --std=c++20

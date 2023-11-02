@@ -1,3 +1,4 @@
 bin/program
 bin/test
 *.o
+.vscode/
