@@ -90,10 +90,12 @@ namespace graph
     Graph<typeG, typeT, nDim, directed>::Graph(std::size_t numVertices,
                                                std::size_t numEdges)
     {
-        // Resizes the adjacency list and matrix according to the number of vertices
-        // in the graph
+        // Resize the vector of vertices to allocate space for 'numVertices' elements,
+        // allowing access using the [] operator.
         this->m_vertices.Resize(numVertices);
-        this->m_edges.Resize(numEdges);
+
+        // Reserve space in the vector of edges to optimize for 'numEdges' elements
+        this->m_edges.Reserve(numEdges);
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>
@@ -130,6 +132,9 @@ namespace graph
             // Add the same edge to the neighbor list of neighborID, if graph is
             // undirected
             this->m_vertices[neighborID].GetAdjacencyList().PushBack(edge);
+
+        // Store the edge to deallocate the memory later
+        this->m_edges.PushBack(edge);
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>

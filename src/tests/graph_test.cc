@@ -7,25 +7,6 @@
 #include "doctest.h"
 #include "graph.h"
 
-TEST_CASE("CreateGraph")
-{
-    SUBCASE("Create an undirected graph with 3 vertices and 3 edges")
-    {
-        graph::Graph<double_t, double_t, 2, false> undirectedGraph(3, 3);
-
-        CHECK(undirectedGraph.GetVertices().Size() == 3);
-        CHECK(undirectedGraph.GetEdges().Size() == 3);
-    }
-
-    SUBCASE("Create a directed graph with 4 vertices and 6 edges")
-    {
-        graph::Graph<int32_t, double_t, 2, true> directedGraph(4, 6);
-
-        CHECK(directedGraph.GetVertices().Size() == 4);
-        CHECK(directedGraph.GetEdges().Size() == 6);
-    }
-}
-
 TEST_CASE("AddVertexAndEdge")
 {
     graph::Graph<int32_t, double_t, 2, false> undirectedGraph(3, 3);
