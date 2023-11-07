@@ -55,8 +55,8 @@ TEST_CASE("Test graph::Edge vertices extraction")
     Pair<graph::Vertex<int32_t, double_t, 2>*, graph::Vertex<int32_t, double_t, 2>*>
         vertices = edgeAB.GetVertices();
 
-    CHECK(vertices.GetKey() == &vertexA);
-    CHECK(vertices.GetValue() == &vertexB);
+    CHECK(vertices.GetFirst() == &vertexA);
+    CHECK(vertices.GetSecond() == &vertexB);
 }
 
 TEST_CASE("Test graph::Edge copy constructor and assignment operator")

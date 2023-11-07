@@ -4,7 +4,7 @@ include
 -I
 include/lib
 -I
-modules/sorting_algorithms/include
+submodules/sorting_algorithms/include
 -I
-modules/sorting_algorithms/modules/data_structures/include
+submodules/data_structures/include
 --std=c++20

@@ -100,7 +100,7 @@ namespace graph
                                                        std::size_t sourceID)
 
     {
-        heap::PriorityQueue<Vertex<typeG, typeT, nDim>*, ComparePtrVertex> minPQueue;
+        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*, ComparePtrVertex> minPQueue;
 
         // Defines the infinity value for the typeG type
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
@@ -139,9 +139,9 @@ namespace graph
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
-                uv->GetVertices().GetKey()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetValue()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetKey()->GetID()];
+                uv->GetVertices().GetFirst()->GetID() == u->GetID()
+                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
+                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
                 if (Relax(u, v, uAdjList.At(i)))
                 {
@@ -157,7 +157,7 @@ namespace graph
     void Utils<typeG, typeT, nDim, directed>::Prim(Graph<typeG, typeT, nDim>& graph,
                                                    std::size_t                sourceID)
     {
-        heap::PriorityQueue<Vertex<typeG, typeT, nDim>*, ComparePtrVertex> minPQueue;
+        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*, ComparePtrVertex> minPQueue;
 
         // Defines the infinity value for the typeG type
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
@@ -199,9 +199,9 @@ namespace graph
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
-                uv->GetVertices().GetKey()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetValue()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetKey()->GetID()];
+                uv->GetVertices().GetFirst()->GetID() == u->GetID()
+                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
+                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
                 // Check if the neighbor vertex 'v' is not in the Minimum Spanning Tree
                 // (MST) and if the cost of the edge 'uv' is less than the current cost
