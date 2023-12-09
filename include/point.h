@@ -87,12 +87,13 @@ namespace geom
     };
 
     template<typename typeT, std::size_t nDim>
-    Point<typeT, nDim>::Point() : m_coordinates(nDim, 0)
-    {
-    }
+    Point<typeT, nDim>::Point()
+        : m_coordinates(nDim, 0)
+    { }
 
     template<typename typeT, std::size_t nDim>
-    Point<typeT, nDim>::Point(Vector<typeT> coordinates) : m_coordinates(nDim)
+    Point<typeT, nDim>::Point(Vector<typeT> coordinates)
+        : m_coordinates(nDim)
     {
         this->m_coordinates = coordinates;
     }

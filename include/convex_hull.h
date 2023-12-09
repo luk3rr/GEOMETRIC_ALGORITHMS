@@ -10,7 +10,14 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "bubble_sort.h"
+#include "bucket_sort.h"
+#include "heap_sort.h"
+#include "insertion_sort.h"
+#include "merge_sort.h"
 #include "quick_sort.h"
+#include "selection_sort.h"
+#include "shell_sort.h"
 #include "vector.h"
 
 #include "geometry_utils.h"
@@ -19,6 +26,18 @@
 
 namespace geom
 {
+    enum SelectSortAlgorithm
+    {
+        BUBBLE_SORT,
+        BUCKET_SORT,
+        HEAP_SORT,
+        INSERTION_SORT,
+        MERGE_SORT,
+        QUICK_SORT,
+        SELECTION_SORT,
+        SHELL_SORT
+    };
+
     /**
      * @brief A class for computing the Convex Hull of a set of points in n-dimensional
      * space.
@@ -40,9 +59,13 @@ namespace geom
              *        points
              * @param points Set of points for which the convex hull will be found
              * @param convex Ordered set of points that form the convex hull
+             * @param sort The sorting algorithm to use for the Graham Scan (default is
+             * Heap Sort)
              */
-            static void GrahamScan(Vector<Point<typeT, nDim>>& points,
-                                   Vector<Point<typeT, nDim>>& convex);
+            static void
+            GrahamScan(Vector<Point<typeT, nDim>>& points,
+                       Vector<Point<typeT, nDim>>& convex,
+                       SelectSortAlgorithm sort = SelectSortAlgorithm::HEAP_SORT);
 
             /**
              * @brief Uses the Jarvis March algorithm to find the convex hull of a set
@@ -87,8 +110,7 @@ namespace geom
 
                     ComparePointsByPolarAngle(Point<typeT, nDim>& refPoint)
                         : m_refPoint(refPoint)
-                    {
-                    }
+                    { }
 
                     bool operator()(const Point<typeT, nDim>& p1,
                                     const Point<typeT, nDim>& p2) const
@@ -100,12 +122,53 @@ namespace geom
 
     template<typename typeT, std::size_t nDim>
     void ConvexHull<typeT, nDim>::GrahamScan(Vector<Point<typeT, nDim>>& points,
-                                             Vector<Point<typeT, nDim>>& convex)
+                                             Vector<Point<typeT, nDim>>& convex,
+                                             SelectSortAlgorithm         sort)
     {
         std::size_t lowestPointIndex = FindLowestPoint(points);
 
-        // Uses the quick sort algorithm to ordering points based on polar angle
-        sort::Quick(points, (ComparePointsByPolarAngle(points[lowestPointIndex])));
+        switch (sort)
+        {
+            case SelectSortAlgorithm::BUBBLE_SORT:
+                sort::Bubble(points,
+                             (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::INSERTION_SORT:
+                sort::Insertion(points,
+                                (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::MERGE_SORT:
+                sort::Merge(points,
+                            (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::QUICK_SORT:
+                sort::Quick(points,
+                            (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::SELECTION_SORT:
+                sort::Selection(points,
+                                (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::SHELL_SORT:
+                sort::Shell(points,
+                            (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+
+            case SelectSortAlgorithm::BUCKET_SORT:
+            case SelectSortAlgorithm::HEAP_SORT:
+                std::cout
+                    << "WARNING: The selected sorting algorithm is not suitable for "
+                       "Graham Scan. Using Quick Sort instead"
+                    << std::endl;
+                sort::Quick(points,
+                            (ComparePointsByPolarAngle(points[lowestPointIndex])));
+                break;
+        }
 
         convex.Clear();
 
