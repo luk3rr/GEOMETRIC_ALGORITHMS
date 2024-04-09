@@ -24,7 +24,7 @@ namespace graph
      *
      * This class extends the `geom::Point` class to include additional properties
      * specific to vertices in a graph, such as an ID, current cost, edge connecting
-     * to the parent vertex, and an adjacency list
+     * to the successor and predecessor vertex, and an adjacency list
      *
      * @tparam typeV The type for the cost of reaching this vertex
      * @tparam typeT The data type to store vertex attributes
@@ -40,8 +40,9 @@ namespace graph
             // to store the total cost of reaching this vertex through a set of edges
             typeV m_currentCost;
 
-            // Edge connecting to the parent vertex
-            Edge<typeV, typeT, nDim>* m_edge2parent;
+            // Edge connecting to the successor and predecessor vertex
+            Edge<typeV, typeT, nDim>* m_successor;
+            Edge<typeV, typeT, nDim>* m_predecessor;
 
             // Adjacency list
             Vector<Edge<typeV, typeT, nDim>*> m_adjList;
@@ -84,11 +85,18 @@ namespace graph
             void SetCurrentCost(typeV cost);
 
             /**
-             * @brief Set the edge connecting to the parent vertex
+             * @brief Set the edge connecting to the successor vertex
              * @param edge A pointer to the edge connecting this vertex to its
-             * parent
+             * successor
              */
-            void SetEdge2Parent(Edge<typeV, typeT, nDim>* edge);
+            void SetEdge2Successor(Edge<typeV, typeT, nDim>* edge);
+
+            /**
+             * @brief Set the edge connecting to the predecessor vertex
+             * @param edge A pointer to the edge connecting this vertex to its
+             * predecessor
+             */
+            void SetEdge2Predecessor(Edge<typeV, typeT, nDim>* edge);
 
             /**
              * @brief Set the coordinates of the vertex
@@ -112,9 +120,17 @@ namespace graph
             typeV GetCurrentCost() const;
 
             /**
-             * @return A pointer to the edge connecting this vertex to its parent
+             * @return A pointer to the edge connecting this vertex to its successor
+             * vertex
              */
-            Edge<typeV, typeT, nDim>* GetEdge2Parent();
+            Edge<typeV, typeT, nDim>* GetEdge2Successor();
+
+
+            /**
+             * @return A pointer to the edge connecting this vertex to its predecessor
+             * vertex
+             */
+            Edge<typeV, typeT, nDim>* GetEdge2Predecessor();
 
             /**
              * @return The coordinates of the vertex
@@ -128,19 +144,23 @@ namespace graph
     };
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    Vertex<typeV, typeT, nDim>::Vertex() : geom::Point<typeT, nDim>()
+    Vertex<typeV, typeT, nDim>::Vertex()
+        : geom::Point<typeT, nDim>()
     {
         this->m_id          = 0;
         this->m_currentCost = 0;
-        this->m_edge2parent = nullptr;
+        this->m_successor   = nullptr;
+        this->m_predecessor = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    Vertex<typeV, typeT, nDim>::Vertex(std::size_t id) : geom::Point<typeT, nDim>()
+    Vertex<typeV, typeT, nDim>::Vertex(std::size_t id)
+        : geom::Point<typeT, nDim>()
     {
         this->m_id          = id;
         this->m_currentCost = 0;
-        this->m_edge2parent = nullptr;
+        this->m_successor   = nullptr;
+        this->m_predecessor = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
@@ -149,13 +169,13 @@ namespace graph
     {
         this->m_id          = id;
         this->m_currentCost = 0;
-        this->m_edge2parent = nullptr;
+        this->m_successor   = nullptr;
+        this->m_predecessor = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
     Vertex<typeV, typeT, nDim>::~Vertex()
-    {
-    }
+    { }
 
     template<typename typeV, typename typeT, std::size_t nDim>
     bool Vertex<typeV, typeT, nDim>::operator==(
@@ -205,9 +225,15 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    void Vertex<typeV, typeT, nDim>::SetEdge2Parent(Edge<typeV, typeT, nDim>* edge)
+    void Vertex<typeV, typeT, nDim>::SetEdge2Successor(Edge<typeV, typeT, nDim>* edge)
     {
-        this->m_edge2parent = edge;
+        this->m_successor = edge;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetEdge2Predecessor(Edge<typeV, typeT, nDim>* edge)
+    {
+        this->m_predecessor = edge;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
@@ -229,9 +255,15 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim>::GetEdge2Parent()
+    Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim>::GetEdge2Successor()
     {
-        return m_edge2parent;
+        return m_successor;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim>::GetEdge2Predecessor()
+    {
+        return m_predecessor;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>

@@ -88,7 +88,7 @@ namespace graph
         if (v->GetCurrentCost() > (u->GetCurrentCost() + uv->GetCost()))
         {
             v->SetCurrentCost(u->GetCurrentCost() + uv->GetCost());
-            v->SetEdge2Parent(uv);
+            v->SetEdge2Predecessor(uv);
             return true;
         }
 
@@ -111,7 +111,7 @@ namespace graph
             if (i != sourceID)
                 graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
 
-            graph.GetVertices().At(i).SetEdge2Parent(nullptr);
+            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
 
         graph.GetVertices().At(sourceID).SetCurrentCost(0);
@@ -168,7 +168,7 @@ namespace graph
             if (i != sourceID)
                 graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
 
-            graph.GetVertices().At(i).SetEdge2Parent(nullptr);
+            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
 
         // Auxiliar variables to make code most legible
@@ -210,7 +210,7 @@ namespace graph
                 {
                     // Update the cost of 'v' and enqueue it to reposition it in the
                     // queue based on the new cost
-                    v->SetEdge2Parent(uv);
+                    v->SetEdge2Predecessor(uv);
                     v->SetCurrentCost(uv->GetCost());
                     minPQueue.Enqueue(v);
                 }

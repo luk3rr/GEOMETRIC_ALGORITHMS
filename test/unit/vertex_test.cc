@@ -14,7 +14,7 @@ TEST_CASE("CreateVertex")
         graph::Vertex<int32_t, double_t, 2> vertex;
         CHECK(vertex.GetID() == 0);
         CHECK(vertex.GetCurrentCost() == 0);
-        CHECK(vertex.GetEdge2Parent() == nullptr);
+        CHECK(vertex.GetEdge2Predecessor() == nullptr);
         CHECK(vertex.GetAdjacencyList().Size() == 0);
     }
 
@@ -23,7 +23,7 @@ TEST_CASE("CreateVertex")
         graph::Vertex<int32_t, double_t, 2> vertex(1);
         CHECK(vertex.GetID() == 1);
         CHECK(vertex.GetCurrentCost() == 0);
-        CHECK(vertex.GetEdge2Parent() == nullptr);
+        CHECK(vertex.GetEdge2Predecessor() == nullptr);
         CHECK(vertex.GetAdjacencyList().Size() == 0);
     }
 }
@@ -34,20 +34,20 @@ TEST_CASE("SetVertexAttributes")
     graph::Vertex<int32_t, double_t, 2> vertex1;
     graph::Vertex<int32_t, double_t, 2> vertex2;
 
-    SUBCASE("Set ID, CurrentCost, and Edge2Parent")
+    SUBCASE("Set ID, CurrentCost, and Edge2Predecessor")
     {
         vertex.SetID(2);
         vertex.SetCurrentCost(10);
 
-        // Você precisará de objetos Edge apropriados para testar SetEdge2Parent.
+        // Você precisará de objetos Edge apropriados para testar SetEdge2Predecessor.
         // Certifique-se de que esses objetos estão criados e configurados corretamente.
         graph::Edge<int32_t, double_t, 2> edge(&vertex1, &vertex2);
 
-        vertex.SetEdge2Parent(&edge);
+        vertex.SetEdge2Predecessor(&edge);
 
         CHECK(vertex.GetID() == 2);
         CHECK(vertex.GetCurrentCost() == 10);
-        CHECK(vertex.GetEdge2Parent() == &edge);
+        CHECK(vertex.GetEdge2Predecessor() == &edge);
     }
 }
 

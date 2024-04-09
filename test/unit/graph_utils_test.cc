@@ -91,13 +91,13 @@ TEST_CASE("Prim's algorithm test")
     graph::Utils<uint32_t, uint32_t, 2, false>::Prim(graph, 0);
 
     // Check if the Minimum Spanning Tree has been computed correctly
-    CHECK(graph.GetVertices().At(0).GetEdge2Parent() == nullptr);
-    CHECK(graph.GetVertices().At(1).GetEdge2Parent()->GetCost() == 4);
-    CHECK(graph.GetVertices().At(2).GetEdge2Parent()->GetCost() == 8);
-    CHECK(graph.GetVertices().At(3).GetEdge2Parent()->GetCost() == 7);
-    CHECK(graph.GetVertices().At(4).GetEdge2Parent()->GetCost() == 9);
-    CHECK(graph.GetVertices().At(5).GetEdge2Parent()->GetCost() == 4);
-    CHECK(graph.GetVertices().At(6).GetEdge2Parent()->GetCost() == 2);
-    CHECK(graph.GetVertices().At(7).GetEdge2Parent()->GetCost() == 1);
-    CHECK(graph.GetVertices().At(8).GetEdge2Parent()->GetCost() == 2);
+    CHECK(graph.GetVertices().At(0).GetEdge2Predecessor() == nullptr);
+    CHECK(graph.GetVertices().At(1).GetEdge2Predecessor()->GetCost() == 4);
+    CHECK(graph.GetVertices().At(2).GetEdge2Predecessor()->GetCost() == 8);
+    CHECK(graph.GetVertices().At(3).GetEdge2Predecessor()->GetCost() == 7);
+    CHECK(graph.GetVertices().At(4).GetEdge2Predecessor()->GetCost() == 9);
+    CHECK(graph.GetVertices().At(5).GetEdge2Predecessor()->GetCost() == 4);
+    CHECK(graph.GetVertices().At(6).GetEdge2Predecessor()->GetCost() == 2);
+    CHECK(graph.GetVertices().At(7).GetEdge2Predecessor()->GetCost() == 1);
+    CHECK(graph.GetVertices().At(8).GetEdge2Predecessor()->GetCost() == 2);
 }
