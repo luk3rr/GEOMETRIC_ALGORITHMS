@@ -7,13 +7,9 @@
 #ifndef GRAPH_H_
 #define GRAPH_H_
 
-#include <cmath>
 #include <cstddef>
-#include <cstdint>
 #include <cstdio>
-#include <memory>
 
-#include "priority_queue_bheap.h"
 #include "vector.h"
 
 #include "edge.h"

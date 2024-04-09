@@ -4,13 +4,12 @@
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
+#include "doctest.h"
+
 #include <cmath>
-#include <iostream>
 
 #include "convex_hull.h"
-#include "doctest.h"
 #include "point.h"
-#include "utils.h"
 #include "vector.h"
 
 #define EPSILON 10e-4

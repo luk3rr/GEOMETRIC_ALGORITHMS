@@ -5,6 +5,9 @@
  */
 
 #include "doctest.h"
+
+#include <cmath>
+
 #include "edge.h"
 #include "pair.h"
 #include "vertex.h"

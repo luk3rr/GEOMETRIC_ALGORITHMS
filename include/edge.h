@@ -7,11 +7,7 @@
 #ifndef EDGE_H_
 #define EDGE_H_
 
-#include <cmath>
 #include <cstddef>
-#include <cstdint>
-#include <iostream>
-#include <memory>
 
 #include "pair.h"
 

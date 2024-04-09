@@ -7,10 +7,8 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
-#include <cmath>
 #include <cstddef>
 #include <cstdint>
-#include <memory>
 
 #include "vector.h"
 

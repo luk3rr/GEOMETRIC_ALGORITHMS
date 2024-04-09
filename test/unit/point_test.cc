@@ -4,9 +4,10 @@
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
+#include "doctest.h"
+
 #include <cmath>
 
-#include "doctest.h"
 #include "point.h"
 
 TEST_CASE("Overload operador de igualdade")
@@ -24,7 +25,7 @@ TEST_CASE("Overload operador de igualdade")
     SUBCASE("Pontos diferentes") { CHECK(not(A == B)); }
 }
 
-// TODO: Definir se o operador de overload será implementado ou se uma comparador
+// TODO: Definir se o operador de overload será implementado ou comparador
 // customizado
 //       será utilizado (template)
 // TEST_CASE("Overload operador menor")

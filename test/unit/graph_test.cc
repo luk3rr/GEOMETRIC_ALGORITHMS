@@ -5,6 +5,9 @@
  */
 
 #include "doctest.h"
+
+#include <cmath>
+
 #include "graph.h"
 
 TEST_CASE("AddVertexAndEdge")

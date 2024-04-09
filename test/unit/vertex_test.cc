@@ -5,6 +5,9 @@
  */
 
 #include "doctest.h"
+
+#include <cmath>
+
 #include "vertex.h"
 
 TEST_CASE("CreateVertex")

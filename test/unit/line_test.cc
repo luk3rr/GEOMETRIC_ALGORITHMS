@@ -4,9 +4,10 @@
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
+#include "doctest.h"
+
 #include <cmath>
 
-#include "doctest.h"
 #include "line.h"
 #include "point.h"
 

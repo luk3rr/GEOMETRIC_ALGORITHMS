@@ -4,11 +4,9 @@
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
-#include <cmath>
-#include <cstddef>
+#include "doctest.h"
 
 #include "convex_hull.h"
-#include "doctest.h"
 #include "point.h"
 #include "vector.h"
 
