@@ -70,6 +70,13 @@ namespace graph
             void AddEdge(std::size_t vertexID, std::size_t neighborID, typeG edgeCost);
 
             /**
+             * @brief Adds a edge
+             * @param vertexID ID of the vertex that will receive a neighbor
+             * @param neighborID ID of the neighbor
+             **/
+            void AddEdge(std::size_t vertexID, std::size_t neighborID);
+
+            /**
              * @brief Retrieves a reference to the vector of vertices
              * @return A reference to the vector containing all vertices in the graph
              **/
@@ -131,6 +138,12 @@ namespace graph
 
         // Store the edge to deallocate the memory later
         this->m_edges.PushBack(edge);
+    }
+
+    template<typename typeG, typename typeT, std::size_t nDim, bool directed>
+    void Graph<typeG, typeT, nDim, directed>::AddEdge(std::size_t vertexID, std::size_t neighborID)
+    {
+        this->AddEdge(vertexID, neighborID, 0);
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>

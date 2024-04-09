@@ -42,6 +42,8 @@ namespace graph
             Edge<typeV, typeT, nDim>* m_successor;
             Edge<typeV, typeT, nDim>* m_predecessor;
 
+            uint8_t m_label; // Vertex label
+
             // Adjacency list
             Vector<Edge<typeV, typeT, nDim>*> m_adjList;
 
@@ -103,6 +105,12 @@ namespace graph
             void SetCoordinates(Vector<typeT> coordinates);
 
             /**
+             * @brief Set the label of the vertex
+             * @param label New value for the vertex label
+             */
+            void SetLabel(uint8_t label);
+
+            /**
              * @return Value of the vertex degree
              */
             uint32_t GetDegree();
@@ -123,7 +131,6 @@ namespace graph
              */
             Edge<typeV, typeT, nDim>* GetEdge2Successor();
 
-
             /**
              * @return A pointer to the edge connecting this vertex to its predecessor
              * vertex
@@ -134,6 +141,11 @@ namespace graph
              * @return The coordinates of the vertex
              */
             Vector<typeT>& GetCoordinates();
+
+            /**
+             * @return The label of the vertex
+             */
+            uint8_t GetLabel();
 
             /**
              * @return Address of the adjacency list of this vertex
@@ -147,6 +159,7 @@ namespace graph
     {
         this->m_id          = 0;
         this->m_currentCost = 0;
+        this->m_label       = 0;
         this->m_successor   = nullptr;
         this->m_predecessor = nullptr;
     }
@@ -157,6 +170,7 @@ namespace graph
     {
         this->m_id          = id;
         this->m_currentCost = 0;
+        this->m_label       = 0;
         this->m_successor   = nullptr;
         this->m_predecessor = nullptr;
     }
@@ -167,6 +181,7 @@ namespace graph
     {
         this->m_id          = id;
         this->m_currentCost = 0;
+        this->m_label       = 0;
         this->m_successor   = nullptr;
         this->m_predecessor = nullptr;
     }
@@ -235,6 +250,18 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetCoordinates(Vector<typeT> coordinates)
+    {
+        this->SetCoordinates(coordinates);
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetLabel(uint8_t label)
+    {
+        this->m_label = label;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
     uint32_t Vertex<typeV, typeT, nDim>::GetDegree()
     {
         return this->m_adjList.Size();
@@ -262,6 +289,18 @@ namespace graph
     Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim>::GetEdge2Predecessor()
     {
         return m_predecessor;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    Vector<typeT>& Vertex<typeV, typeT, nDim>::GetCoordinates()
+    {
+        return this->GetCoordinates();
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    uint8_t Vertex<typeV, typeT, nDim>::GetLabel()
+    {
+        return this->m_label;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
