@@ -42,7 +42,7 @@ namespace graph
             Edge<typeV, typeT, nDim>* m_successor;
             Edge<typeV, typeT, nDim>* m_predecessor;
 
-            uint8_t  m_label;         // Vertex label
+            uint32_t  m_label;         // Vertex label
             uint32_t m_arrivalTime;   // Arrival time of the vertex
             uint32_t m_departureTime; // Departure time of the vertex
 
@@ -110,7 +110,7 @@ namespace graph
              * @brief Set the label of the vertex
              * @param label New value for the vertex label
              */
-            void SetLabel(uint8_t label);
+            void SetLabel(uint32_t label);
 
             /**
              * @brief Set the arrival time of the vertex
@@ -159,7 +159,7 @@ namespace graph
             /**
              * @return The label of the vertex
              */
-            uint8_t GetLabel() const;
+            uint32_t GetLabel() const;
 
             /**
              * @return The arrival time of the vertex
@@ -286,7 +286,7 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    void Vertex<typeV, typeT, nDim>::SetLabel(uint8_t label)
+    void Vertex<typeV, typeT, nDim>::SetLabel(uint32_t label)
     {
         this->m_label = label;
     }
@@ -340,7 +340,7 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    uint8_t Vertex<typeV, typeT, nDim>::GetLabel() const
+    uint32_t Vertex<typeV, typeT, nDim>::GetLabel() const
     {
         return this->m_label;
     }
