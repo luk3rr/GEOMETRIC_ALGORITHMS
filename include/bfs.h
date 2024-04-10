@@ -27,6 +27,9 @@ namespace graph
      * a given source node
      * @param graph The graph to be traversed
      * @param sourceID The ID of the source node
+     *
+     * Complexity: O(V + E), when V is the number of vertices and E is the number of
+     * edges in the graph
      */
     template<typename typeG, typename typeT, std::size_t nDim>
     inline void BFS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID)

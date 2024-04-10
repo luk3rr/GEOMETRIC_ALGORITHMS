@@ -1,15 +1,15 @@
 /*
- * Filename: main.cc
- * Created on: October  8, 2023
+ * Filename: dfs_test.cc
+ * Created on: April  9, 2024
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
-#include <cstdlib>
+#include "doctest.h"
 
 #include "dfs.h"
 
-int main() { 
-    
+TEST_CASE("DFS algorithm test")
+{
     // Create a graph with some vertices and edges
     graph::Graph<uint32_t, uint32_t, 2, false> graph(9, 14);
 
@@ -43,5 +43,24 @@ int main() {
 
     graph::DFS(graph, 0);
 
-    return EXIT_SUCCESS;
+    // Check if the vertices have been visited correctly
+    CHECK(graph.GetVertices().At(0).GetArrivalTime() == 0);
+    CHECK(graph.GetVertices().At(1).GetArrivalTime() == 1);
+    CHECK(graph.GetVertices().At(2).GetArrivalTime() == 5);
+    CHECK(graph.GetVertices().At(3).GetArrivalTime() == 6);
+    CHECK(graph.GetVertices().At(4).GetArrivalTime() == 7);
+    CHECK(graph.GetVertices().At(5).GetArrivalTime() == 4);
+    CHECK(graph.GetVertices().At(6).GetArrivalTime() == 3);
+    CHECK(graph.GetVertices().At(7).GetArrivalTime() == 2);
+    CHECK(graph.GetVertices().At(8).GetArrivalTime() == 10);
+
+    CHECK(graph.GetVertices().At(8).GetDepartureTime() == 11);
+    CHECK(graph.GetVertices().At(7).GetDepartureTime() == 15);
+    CHECK(graph.GetVertices().At(6).GetDepartureTime() == 14);
+    CHECK(graph.GetVertices().At(5).GetDepartureTime() == 13);
+    CHECK(graph.GetVertices().At(4).GetDepartureTime() == 8);
+    CHECK(graph.GetVertices().At(3).GetDepartureTime() == 9);
+    CHECK(graph.GetVertices().At(2).GetDepartureTime() == 12);
+    CHECK(graph.GetVertices().At(1).GetDepartureTime() == 16);
+    CHECK(graph.GetVertices().At(0).GetDepartureTime() == 17);
 }

@@ -42,7 +42,9 @@ namespace graph
             Edge<typeV, typeT, nDim>* m_successor;
             Edge<typeV, typeT, nDim>* m_predecessor;
 
-            uint8_t m_label; // Vertex label
+            uint8_t  m_label;         // Vertex label
+            uint32_t m_arrivalTime;   // Arrival time of the vertex
+            uint32_t m_departureTime; // Departure time of the vertex
 
             // Adjacency list
             Vector<Edge<typeV, typeT, nDim>*> m_adjList;
@@ -111,6 +113,18 @@ namespace graph
             void SetLabel(uint8_t label);
 
             /**
+             * @brief Set the arrival time of the vertex
+             * @param arrivalTime New value for the arrival time
+             */
+            void SetArrivalTime(uint32_t arrivalTime);
+
+            /**
+             * @brief Set the departure time of the vertex
+             * @param departureTime New value for the departure time
+             */
+            void SetDepartureTime(uint32_t departureTime);
+
+            /**
              * @return Value of the vertex degree
              */
             uint32_t GetDegree();
@@ -145,7 +159,17 @@ namespace graph
             /**
              * @return The label of the vertex
              */
-            uint8_t GetLabel();
+            uint8_t GetLabel() const;
+
+            /**
+             * @return The arrival time of the vertex
+             */
+            uint32_t GetArrivalTime() const;
+
+            /**
+             * @return The departure time of the vertex
+             */
+            uint32_t GetDepartureTime() const;
 
             /**
              * @return Address of the adjacency list of this vertex
@@ -157,33 +181,39 @@ namespace graph
     Vertex<typeV, typeT, nDim>::Vertex()
         : geom::Point<typeT, nDim>()
     {
-        this->m_id          = 0;
-        this->m_currentCost = 0;
-        this->m_label       = 0;
-        this->m_successor   = nullptr;
-        this->m_predecessor = nullptr;
+        this->m_id            = 0;
+        this->m_currentCost   = 0;
+        this->m_label         = 0;
+        this->m_arrivalTime   = 0;
+        this->m_departureTime = 0;
+        this->m_successor     = nullptr;
+        this->m_predecessor   = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
     Vertex<typeV, typeT, nDim>::Vertex(std::size_t id)
         : geom::Point<typeT, nDim>()
     {
-        this->m_id          = id;
-        this->m_currentCost = 0;
-        this->m_label       = 0;
-        this->m_successor   = nullptr;
-        this->m_predecessor = nullptr;
+        this->m_id            = id;
+        this->m_currentCost   = 0;
+        this->m_label         = 0;
+        this->m_arrivalTime   = 0;
+        this->m_departureTime = 0;
+        this->m_successor     = nullptr;
+        this->m_predecessor   = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
     Vertex<typeV, typeT, nDim>::Vertex(Vector<typeT> coordinates, std::size_t id)
         : geom::Point<typeT, nDim>(coordinates)
     {
-        this->m_id          = id;
-        this->m_currentCost = 0;
-        this->m_label       = 0;
-        this->m_successor   = nullptr;
-        this->m_predecessor = nullptr;
+        this->m_id            = id;
+        this->m_currentCost   = 0;
+        this->m_label         = 0;
+        this->m_arrivalTime   = 0;
+        this->m_departureTime = 0;
+        this->m_successor     = nullptr;
+        this->m_predecessor   = nullptr;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
@@ -262,6 +292,18 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetArrivalTime(uint32_t arrivalTime)
+    {
+        this->m_arrivalTime = arrivalTime;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetDepartureTime(uint32_t departureTime)
+    {
+        this->m_departureTime = departureTime;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
     uint32_t Vertex<typeV, typeT, nDim>::GetDegree()
     {
         return this->m_adjList.Size();
@@ -298,9 +340,21 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    uint8_t Vertex<typeV, typeT, nDim>::GetLabel()
+    uint8_t Vertex<typeV, typeT, nDim>::GetLabel() const
     {
         return this->m_label;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, nDim>::GetArrivalTime() const
+    {
+        return this->m_arrivalTime;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, nDim>::GetDepartureTime() const
+    {
+        return this->m_departureTime;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
