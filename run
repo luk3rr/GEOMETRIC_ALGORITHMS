@@ -34,6 +34,7 @@ import shutil
 BUILD_DIR = "build"
 BIN_DIR = "bin"
 RELEASE_DIR = "Release"
+DEBUG_DIR = "Debug"
 PROGRAM_NAME = "program"
 UNIT_TEST_NAME = "unit_test"
 VALGRIND_COMMAND = "valgrind --leak-check=full"
@@ -46,10 +47,12 @@ def run_valgrind_tests():
 
         This function uses Valgrind to check for memory leaks in the program and unit tests.
     """
-    cmake_build()
+    cmake_build(debug=True)
 
-    valgrind_program = f"{VALGRIND_COMMAND} {BIN_DIR}/{PROGRAM_NAME} > /dev/null"
-    valgrind_tests = f"{VALGRIND_COMMAND} {BIN_DIR}/{UNIT_TEST_NAME}"
+    valgrind_program = (
+        f"{VALGRIND_COMMAND} {BIN_DIR}/{DEBUG_DIR}/{PROGRAM_NAME} > /dev/null"
+    )
+    valgrind_tests = f"{VALGRIND_COMMAND} {BIN_DIR}/{DEBUG_DIR}/{UNIT_TEST_NAME}"
 
     print("Running Valgrind on program:")
     subprocess.run(valgrind_program, shell=True, check=True)
@@ -84,6 +87,7 @@ def cmake_build(debug=False):
     subprocess.run(build_command, shell=True, check=True)
 
     os.chdir(current_dir)
+
 
 def cmake_exec(program_args=None):
     """
