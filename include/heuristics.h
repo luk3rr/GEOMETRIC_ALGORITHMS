@@ -9,6 +9,7 @@
 
 #include <cmath>
 #include <cstddef>
+#include <cstdlib>
 
 #include "vertex.h"
 
@@ -16,6 +17,17 @@ namespace heuristics
 {
     namespace distance
     {
+        /**
+         * @brief Heuristic functions to estimate the cost to reach the target node
+         */
+        enum class Heuristic
+        {
+            MANHATTAN,
+            EUCLIDEAN,
+            MINKOWSKI,
+            HAMMING,
+        };
+
         /**
          * @brief Euclidean distance between two vertices
          * @param source Pointer to the source vertex
@@ -26,12 +38,15 @@ namespace heuristics
                            graph::Vertex<typeG, typeT, nDim>* target)
         {
             double_t sum = 0;
+
             for (std::size_t i = 0; i < nDim; i++)
             {
-                sum += std::pow(source->GetCoordinates().At(i) -
-                                    target->GetCoordinates().At(i),
-                                2);
+                sum += std::pow(
+                    std::abs(static_cast<double_t>(source->GetCoordinates().At(i)) -
+                             static_cast<double_t>(target->GetCoordinates().At(i))),
+                    2);
             }
+
             return std::sqrt(sum);
         }
 
@@ -47,8 +62,8 @@ namespace heuristics
             double_t sum = 0;
             for (std::size_t i = 0; i < nDim; i++)
             {
-                sum += std::abs(source->GetCoordinates().At(i) -
-                                target->GetCoordinates().At(i));
+                sum += std::abs(static_cast<double_t>(source->GetCoordinates().At(i)) -
+                                static_cast<double_t>(target->GetCoordinates().At(i)));
             }
             return sum;
         }
@@ -62,14 +77,15 @@ namespace heuristics
         template<typename typeG, typename typeT, std::size_t nDim>
         inline double_t Minkowski(graph::Vertex<typeG, typeT, nDim>* source,
                                   graph::Vertex<typeG, typeT, nDim>* target,
-                                  double_t                           p)
+                                  double_t                           p = 3)
         {
             double_t sum = 0;
             for (std::size_t i = 0; i < nDim; i++)
             {
-                sum += std::pow(std::abs(source->GetCoordinates().At(i) -
-                                         target->GetCoordinates().At(i)),
-                                p);
+                sum += std::pow(
+                    std::abs(static_cast<double_t>(source->GetCoordinates().At(i)) -
+                             static_cast<double_t>(target->GetCoordinates().At(i))),
+                    p);
             }
 
             return std::pow(sum, 1 / p);
@@ -85,10 +101,16 @@ namespace heuristics
                                 graph::Vertex<typeG, typeT, nDim>* target)
         {
             double_t sum = 0;
+
+            constexpr double_t EPSILON = 1e-6;
+
             for (std::size_t i = 0; i < nDim; i++)
             {
-                sum += source->GetCoordinates().At(i) != target->GetCoordinates().At(i);
+                sum += std::abs(static_cast<double_t>(source->GetCoordinates().At(i)) -
+                                static_cast<double_t>(target->GetCoordinates().At(i))) >
+                       EPSILON;
             }
+
             return sum;
         }
 

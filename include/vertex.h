@@ -7,6 +7,7 @@
 #ifndef VERTEX_H_
 #define VERTEX_H_
 
+#include <cmath>
 #include <cstddef>
 #include <cstdint>
 
@@ -37,12 +38,13 @@ namespace graph
             // Current cost of the vertex. Optimization algorithms can use this variable
             // to store the total cost of reaching this vertex through a set of edges
             typeV m_currentCost;
+            double_t m_heuristicCost;
 
             // Edge connecting to the successor and predecessor vertex
             Edge<typeV, typeT, nDim>* m_successor;
             Edge<typeV, typeT, nDim>* m_predecessor;
 
-            uint32_t  m_label;         // Vertex label
+            uint32_t m_label;         // Vertex label
             uint32_t m_arrivalTime;   // Arrival time of the vertex
             uint32_t m_departureTime; // Departure time of the vertex
 
@@ -85,6 +87,12 @@ namespace graph
              * @param cost New value for the vertex cost
              */
             void SetCurrentCost(typeV cost);
+
+            /**
+             * @brief Set a new value for the vertex heuristic cost
+             * @param cost New value for the vertex heuristic cost
+             */
+            void SetHeuristicCost(double_t cost);
 
             /**
              * @brief Set the edge connecting to the successor vertex
@@ -134,6 +142,11 @@ namespace graph
             typeV GetCurrentCost() const;
 
             /**
+             * @return Value of the vertex heuristic cost
+             */
+            double_t GetHeuristicCost() const;
+
+            /**
              * @return A pointer to the edge connecting this vertex to its successor
              * vertex
              */
@@ -172,6 +185,7 @@ namespace graph
     {
         this->m_id            = 0;
         this->m_currentCost   = 0;
+        this->m_heuristicCost = 0;
         this->m_label         = 0;
         this->m_arrivalTime   = 0;
         this->m_departureTime = 0;
@@ -185,6 +199,7 @@ namespace graph
     {
         this->m_id            = id;
         this->m_currentCost   = 0;
+        this->m_heuristicCost = 0;
         this->m_label         = 0;
         this->m_arrivalTime   = 0;
         this->m_departureTime = 0;
@@ -198,6 +213,7 @@ namespace graph
     {
         this->m_id            = id;
         this->m_currentCost   = 0;
+        this->m_heuristicCost = 0;
         this->m_label         = 0;
         this->m_arrivalTime   = 0;
         this->m_departureTime = 0;
@@ -257,6 +273,12 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
+    void Vertex<typeV, typeT, nDim>::SetHeuristicCost(double_t cost)
+    {
+        this->m_heuristicCost = cost;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
     void Vertex<typeV, typeT, nDim>::SetEdge2Successor(Edge<typeV, typeT, nDim>* edge)
     {
         this->m_successor = edge;
@@ -302,6 +324,12 @@ namespace graph
     typeV Vertex<typeV, typeT, nDim>::GetCurrentCost() const
     {
         return this->m_currentCost;
+    }
+
+    template<typename typeV, typename typeT, std::size_t nDim>
+    double_t Vertex<typeV, typeT, nDim>::GetHeuristicCost() const
+    {
+        return this->m_heuristicCost;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>

@@ -1,11 +1,11 @@
 /*
- * Filename: ucs.h
+ * Filename: a_star.h
  * Created on: April 11, 2024
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
-#ifndef UCS_H_
-#define UCS_H_
+#ifndef A_STAR_H_
+#define A_STAR_H_
 
 #include <cstddef>
 #include <cstdint>
@@ -14,6 +14,7 @@
 #include "edge.h"
 #include "graph.h"
 #include "graph_utils.h"
+#include "heuristics.h"
 #include "priority_queue_bheap.h"
 
 namespace graph
@@ -22,15 +23,19 @@ namespace graph
     constexpr uint32_t VISITED   = 1;
 
     /**
-     * @brief Runs the Uniform Cost Search algorithm to find the shortest path between
-     * two nodes in a graph
-     * @param graph The graph to be searched
+     * @brief A* algorithm to find the shortest path between two nodes in a graph
+     * @param graph The graph to search
      * @param sourceID The ID of the source node
      * @param targetID The ID of the target node
+     * @param heuristic The heuristic function to estimate the cost to reach the
+     * target node
      */
     template<typename typeG, typename typeT, std::size_t nDim>
-    inline void
-    UCS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID, std::size_t targetID)
+    inline void AStar(Graph<typeG, typeT, nDim>&      graph,
+                      std::size_t                     sourceID,
+                      std::size_t                     targetID,
+                      heuristics::distance::Heuristic heuristic =
+                          heuristics::distance::Heuristic::EUCLIDEAN)
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
                              ComparePtrVertex<typeG, typeT, nDim>>
@@ -44,20 +49,25 @@ namespace graph
         {
             graph.GetVertices().At(i).SetLabel(UNVISITED);
             graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
+            graph.GetVertices().At(i).SetHeuristicCost(0);
             graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
 
-        graph.GetVertices().At(sourceID).SetCurrentCost(0);
-
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
-
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = nullptr;
+        Vertex<typeG, typeT, nDim>* u = &graph.GetVertices().At(sourceID);
         Vertex<typeG, typeT, nDim>* v = nullptr;
+        Vertex<typeG, typeT, nDim>* t = &graph.GetVertices().At(targetID);
 
         Edge<typeG, typeT, nDim>* uv;
 
         Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+
+        graph.GetVertices().At(sourceID).SetCurrentCost(
+            CalculateHeuristic(heuristic, u, t));
+        graph.GetVertices().At(sourceID).SetHeuristicCost(
+            CalculateHeuristic(heuristic, u, t));
+
+        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
 
         while (not minPQueue.IsEmpty())
         {
@@ -66,7 +76,10 @@ namespace graph
             u->SetLabel(VISITED);
 
             if (u->GetID() == targetID)
+            {
+                // PrintPath(graph, u);
                 break;
+            }
 
             uAdjList = u->GetAdjacencyList();
 
@@ -80,13 +93,18 @@ namespace graph
                     ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
                     : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
-                if (v->GetLabel() == UNVISITED and Relax(u, v, uAdjList.At(i)))
+                if (v->GetLabel() == UNVISITED)
                 {
-                    minPQueue.Enqueue(v);
+                    v->SetHeuristicCost(CalculateHeuristic(heuristic, v, t));
+
+                    if (Relax(u, v, uAdjList.At(i)))
+                    {
+                        minPQueue.Enqueue(v);
+                    }
                 }
             }
         }
     }
 } // namespace graph
 
-#endif // UCS_H_
+#endif // A_STAR_H_
