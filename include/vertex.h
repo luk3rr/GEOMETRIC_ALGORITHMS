@@ -37,7 +37,7 @@ namespace graph
 
             // Current cost of the vertex. Optimization algorithms can use this variable
             // to store the total cost of reaching this vertex through a set of edges
-            typeV m_currentCost;
+            typeV    m_currentCost;
             double_t m_heuristicCost;
 
             // Edge connecting to the successor and predecessor vertex

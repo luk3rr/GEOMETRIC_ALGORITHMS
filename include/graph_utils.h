@@ -12,8 +12,8 @@
 
 #include "edge.h"
 #include "graph.h"
-#include "vector.h"
 #include "heuristics.h"
+#include "vector.h"
 
 /**
  * @brief A utility namespace providing various auxiliary functions for graph
@@ -27,25 +27,41 @@
  */
 namespace graph
 {
-    template<typename typeG, typename typeT, std::size_t nDim>
-    struct ComparePtrVertex
+    /**
+     * @brief A utility namespace providing various auxiliary functions for
+     * comparison operations
+     */
+    namespace Compare
     {
-            bool operator()(const Vertex<typeG, typeT, nDim>* v1,
-                            const Vertex<typeG, typeT, nDim>* v2) const
-            {
-                return v1->GetCurrentCost() <= v2->GetCurrentCost();
-            }
-    };
+        /**
+         * @brief A function object to compare two vertices based on their
+         * current cost
+         */
+        template<typename typeG, typename typeT, std::size_t nDim>
+        auto Vertex = [](const graph::Vertex<typeG, typeT, nDim>* v1,
+                         const graph::Vertex<typeG, typeT, nDim>* v2) -> bool {
+            return v1->GetCurrentCost() <= v2->GetCurrentCost();
+        };
 
-    template<typename typeG, typename typeT, std::size_t nDim>
-    struct ComparePtrEdge
-    {
-            bool operator()(const Edge<typeG, typeT, nDim>* e1,
-                            const Edge<typeG, typeT, nDim>* e2) const
-            {
-                return e1->GetCost() <= e2->GetCost();
-            }
-    };
+        /**
+         * @brief A function object to compare two vertices based on only their
+         * heuristic cost
+         */
+        template<typename typeG, typename typeT, std::size_t nDim>
+        auto VertexHeuristic = [](const graph::Vertex<typeG, typeT, nDim>* v1,
+                                  const graph::Vertex<typeG, typeT, nDim>* v2) -> bool {
+            return v1->GetHeuristicCost() <= v2->GetHeuristicCost();
+        };
+
+        /**
+         * @brief A function object to compare two edges based on their cost
+         */
+        template<typename typeG, typename typeT, std::size_t nDim>
+        auto Edge = [](const graph::Edge<typeG, typeT, nDim>* e1,
+                       const graph::Edge<typeG, typeT, nDim>* e2) -> bool {
+            return e1->GetCost() <= e2->GetCost();
+        };
+    } // namespace Compare
 
     /**
      * @brief Relax the edge (u, v)
@@ -72,9 +88,15 @@ namespace graph
         return false;
     }
 
-
     namespace
     {
+        /**
+         * @brief Calculate the heuristic cost between two vertices
+         * @param heuristic The heuristic function to be used
+         * @param u Pointer to the first vertex
+         * @param v Pointer to the second vertex
+         * @return The heuristic cost between the two vertices
+         */
         template<typename typeG, typename typeT, std::size_t nDim>
         inline double_t CalculateHeuristic(heuristics::distance::Heuristic heuristic,
                                            Vertex<typeG, typeT, nDim>*     u,
@@ -102,7 +124,6 @@ namespace graph
             }
         }
     } // namespace
-
 
     template<typename typeG, typename typeT, std::size_t nDim>
     inline void PrintPath(Graph<typeG, typeT, nDim>&  graph,

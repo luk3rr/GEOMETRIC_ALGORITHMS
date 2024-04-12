@@ -1,17 +1,16 @@
 /*
- * Filename: a_star.h
- * Created on: April 11, 2024
+ * Filename: greedy_bfs.h
+ * Created on: April 12, 2024
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
-#ifndef A_STAR_H_
-#define A_STAR_H_
+#ifndef GREEDY_BFS_H_
+#define GREEDY_BFS_H_
 
 #include <cstddef>
 #include <cstdint>
-#include <limits>
+#include <stdexcept>
 
-#include "edge.h"
 #include "graph.h"
 #include "graph_utils.h"
 #include "heuristics.h"
@@ -23,47 +22,54 @@ namespace graph
     constexpr uint32_t VISITED   = 1;
 
     /**
-     * @brief A* algorithm to find the shortest path between two nodes in a graph
-     * @param graph The graph to search
-     * @param sourceID The ID of the source node
-     * @param targetID The ID of the target node
-     * @param heuristic The heuristic function to estimate the cost to reach the
-     * target node
+     * @brief Greedy Best-First Search algorithm to find the shortest path between
+     * two vertices in a graph
+     * @param graph Graph to be searched
+     * @param sourceID ID of the source vertex
+     * @param targetID ID of the target vertex
+     * @param heuristic Heuristic to be used in the algorithm
      */
     template<typename typeG, typename typeT, std::size_t nDim>
-    inline void AStar(Graph<typeG, typeT, nDim>&      graph,
-                      std::size_t                     sourceID,
-                      std::size_t                     targetID,
-                      heuristics::distance::Heuristic heuristic =
-                          heuristics::distance::Heuristic::EUCLIDEAN)
+    inline bool GreedyBFS(Graph<typeG, typeT, nDim>&      graph,
+                          std::size_t                     sourceID,
+                          std::size_t                     targetID,
+                          heuristics::distance::Heuristic heuristic =
+                              heuristics::distance::Heuristic::EUCLIDEAN)
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(Compare::Vertex<typeG, typeT, nDim>)>
+                             decltype(Compare::VertexHeuristic<typeG, typeT, nDim>)>
             minPQueue;
-
-        // Defines the infinity value for the typeG type
-        typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
         // Set all vertices as not visited
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
             graph.GetVertices().At(i).SetLabel(UNVISITED);
-            graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
             graph.GetVertices().At(i).SetHeuristicCost(0);
             graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = &graph.GetVertices().At(sourceID);
+        Vertex<typeG, typeT, nDim>* u = nullptr;
         Vertex<typeG, typeT, nDim>* v = nullptr;
-        Vertex<typeG, typeT, nDim>* t = &graph.GetVertices().At(targetID);
+        Vertex<typeG, typeT, nDim>* t = nullptr;
+
+        // Check if source and target vertices are valid
+        try
+        {
+            u = &graph.GetVertices().At(sourceID);
+            v = nullptr;
+            t = &graph.GetVertices().At(targetID);
+        }
+        catch (const std::out_of_range& e)
+        {
+            // sourceID or targetID are invalid, that is, they are not in the graph
+            return false;
+        }
 
         Edge<typeG, typeT, nDim>* uv;
 
         Vector<Edge<typeG, typeT, nDim>*> uAdjList;
 
-        graph.GetVertices().At(sourceID).SetCurrentCost(
-            CalculateHeuristic(heuristic, u, t));
         graph.GetVertices().At(sourceID).SetHeuristicCost(
             CalculateHeuristic(heuristic, u, t));
 
@@ -78,7 +84,7 @@ namespace graph
             if (u->GetID() == targetID)
             {
                 // PrintPath(graph, u);
-                break;
+                return true;
             }
 
             uAdjList = u->GetAdjacencyList();
@@ -96,15 +102,16 @@ namespace graph
                 if (v->GetLabel() == UNVISITED)
                 {
                     v->SetHeuristicCost(CalculateHeuristic(heuristic, v, t));
+                    v->SetEdge2Predecessor(uv);
 
-                    if (Relax(u, v, uAdjList.At(i)))
-                    {
-                        minPQueue.Enqueue(v);
-                    }
+                    minPQueue.Enqueue(v);
                 }
             }
         }
+
+        return false;
     }
+
 } // namespace graph
 
-#endif // A_STAR_H_
+#endif // GREEDY_BFS_H_

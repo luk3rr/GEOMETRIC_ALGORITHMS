@@ -30,7 +30,7 @@ namespace graph
 
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             ComparePtrVertex<typeG, typeT, nDim>>
+                             decltype(Compare::Vertex<typeG, typeT, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type

@@ -33,7 +33,7 @@ namespace graph
     UCS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID, std::size_t targetID)
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             ComparePtrVertex<typeG, typeT, nDim>>
+                             decltype(Compare::Vertex<typeG, typeT, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
