@@ -101,12 +101,6 @@ namespace graph
             void SetEdge2Predecessor(Edge<typeV, typeT, nDim>* edge);
 
             /**
-             * @brief Set the coordinates of the vertex
-             * @param coordinates A vector representing the coordinates of the vertex
-             */
-            void SetCoordinates(Vector<typeT> coordinates);
-
-            /**
              * @brief Set the label of the vertex
              * @param label New value for the vertex label
              */
@@ -150,11 +144,6 @@ namespace graph
              * vertex
              */
             Edge<typeV, typeT, nDim>* GetEdge2Predecessor();
-
-            /**
-             * @return The coordinates of the vertex
-             */
-            Vector<typeT>& GetCoordinates();
 
             /**
              * @return The label of the vertex
@@ -280,12 +269,6 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
-    void Vertex<typeV, typeT, nDim>::SetCoordinates(Vector<typeT> coordinates)
-    {
-        this->SetCoordinates(coordinates);
-    }
-
-    template<typename typeV, typename typeT, std::size_t nDim>
     void Vertex<typeV, typeT, nDim>::SetLabel(uint32_t label)
     {
         this->m_label = label;
@@ -331,12 +314,6 @@ namespace graph
     Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim>::GetEdge2Predecessor()
     {
         return m_predecessor;
-    }
-
-    template<typename typeV, typename typeT, std::size_t nDim>
-    Vector<typeT>& Vertex<typeV, typeT, nDim>::GetCoordinates()
-    {
-        return this->GetCoordinates();
     }
 
     template<typename typeV, typename typeT, std::size_t nDim>
