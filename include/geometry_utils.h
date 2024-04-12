@@ -15,7 +15,7 @@
 
 #include "point.h"
 
-// Gera um número no intervalo [min, max]
+// Generates a number in the interval [min, max]
 #define GEN_NUM std::rand() % (max - min + 1) + min
 #define PI std::numbers::pi
 

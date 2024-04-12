@@ -12,8 +12,6 @@
 #include "point.h"
 #include "vector.h"
 
-#define EPSILON 10e-4
-
 TEST_CASE("Encontrar o sentido no qual um vetor se encontra")
 {
     geom::Point<double_t, 2> ref({ 12, 2 });
@@ -48,9 +46,12 @@ TEST_CASE("Distância entre dois pontos")
     geom::Point<double_t, 2> c({ -2, -4 });
     geom::Point<double_t, 2> d({ -2, 8 });
 
-    CHECK(geom::Utils<double_t, 2>::Distance(a, b) - 10.2 < EPSILON);
-    CHECK(geom::Utils<double_t, 2>::Distance(a, c) - 10 < EPSILON);
-    CHECK(geom::Utils<double_t, 2>::Distance(a, d) - 10 < EPSILON);
+    CHECK(geom::Utils<double_t, 2>::Distance(a, b) - 10.2 <
+          std::numeric_limits<double_t>::epsilon());
+    CHECK(geom::Utils<double_t, 2>::Distance(a, c) - 10 <
+          std::numeric_limits<double_t>::epsilon());
+    CHECK(geom::Utils<double_t, 2>::Distance(a, d) - 10 <
+          std::numeric_limits<double_t>::epsilon());
 }
 
 TEST_CASE("Ângulo polar de um ponto")
@@ -72,27 +73,28 @@ TEST_CASE("Ângulo polar de um ponto")
     {
         CHECK(geom::Utils<double_t, 2>::PolarAngle(a, b) == 0); // 0°
                                                                 //
-        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, c) - (30.96 * PI / 180)) <
-              EPSILON); // 30.96°
-                        //
-        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, d) - PI / 2) < EPSILON); // 90°
+        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, c) - (30.966 * PI / 180)) <
+              std::numeric_limits<double_t>::epsilon()); // 30.96°
+                                                         //
+        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, d) - PI / 2) <
+              std::numeric_limits<double_t>::epsilon()); // 90°
 
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, e) - (149.04 * PI / 180)) <
-              EPSILON); // 149.04°
+              std::numeric_limits<double_t>::epsilon()); // 149.04°
 
         CHECK(geom::Utils<double_t, 2>::PolarAngle(a, f) == PI); // 180°
     }
 
     SUBCASE("Pontos no terceiro e quarto quadrante")
     {
-        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, g) - (210.96 * PI / 180)) <
-              EPSILON); // 210.96°
+        CHECK((geom::Utils<double_t, 2>::PolarAngle(a, g) - (210.966 * PI / 180)) <
+              std::numeric_limits<double_t>::epsilon()); // 210.96°
 
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, h) - (3 * PI / 2)) <
-              EPSILON); // 270°
+              std::numeric_limits<double_t>::epsilon()); // 270°
 
         CHECK((geom::Utils<double_t, 2>::PolarAngle(a, i) - (329.04 * PI / 180)) <
-              EPSILON); // 329.04°
+              std::numeric_limits<double_t>::epsilon()); // 329.04°
     }
 }
 
@@ -103,7 +105,10 @@ TEST_CASE("Conjunto de pontos é um polígono válido")
     points.PushBack(geom::Point<double_t, 2>({ 5, 2 }));
     points.PushBack(geom::Point<double_t, 2>({ 4, 1 }));
 
-    SUBCASE("Uma reta") { CHECK(not geom::Utils<double_t, 2>::IsPolygon(points)); }
+    SUBCASE("Uma reta")
+    {
+        CHECK(not geom::Utils<double_t, 2>::IsPolygon(points));
+    }
 
     points.PushBack(geom::Point<double_t, 2>({ 6, 3 }));
     SUBCASE("Três pontos colineares")
@@ -118,5 +123,8 @@ TEST_CASE("Conjunto de pontos é um polígono válido")
     }
 
     points.PushBack(geom::Point<double_t, 2>({ 2, 1 }));
-    SUBCASE("Um polígono") { CHECK(geom::Utils<double_t, 2>::IsPolygon(points)); }
+    SUBCASE("Um polígono")
+    {
+        CHECK(geom::Utils<double_t, 2>::IsPolygon(points));
+    }
 }

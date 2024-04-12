@@ -22,16 +22,21 @@
  * @tparam typeG The type for the cost of the graph's edges
  * @tparam typeT The data type to store vertex and edge attributes
  * @tparam nDim The dimensionality of the vertices
- * @tparam directed Flag indicating whether the graph is directed (true) or
- * undirected (false)
  */
 namespace graph
 {
+    enum VertexLabel : uint32_t
+    {
+        UNVISITED,
+        PROCESSING,
+        VISITED
+    };
+
     /**
      * @brief A utility namespace providing various auxiliary functions for
      * comparison operations
      */
-    namespace Compare
+    namespace compare
     {
         /**
          * @brief A function object to compare two vertices based on their
@@ -61,7 +66,7 @@ namespace graph
                        const graph::Edge<typeG, typeT, nDim>* e2) -> bool {
             return e1->GetCost() <= e2->GetCost();
         };
-    } // namespace Compare
+    } // namespace compare
 
     /**
      * @brief Relax the edge (u, v)

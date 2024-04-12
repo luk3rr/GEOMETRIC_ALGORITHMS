@@ -8,7 +8,6 @@
 #define A_STAR_H_
 
 #include <cstddef>
-#include <cstdint>
 #include <limits>
 
 #include "edge.h"
@@ -19,9 +18,6 @@
 
 namespace graph
 {
-    constexpr uint32_t UNVISITED = 0;
-    constexpr uint32_t VISITED   = 1;
-
     /**
      * @brief A* algorithm to find the shortest path between two nodes in a graph
      * @param graph The graph to search
@@ -38,7 +34,7 @@ namespace graph
                           heuristics::distance::Heuristic::EUCLIDEAN)
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(Compare::Vertex<typeG, typeT, nDim>)>
+                             decltype(compare::Vertex<typeG, typeT, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
@@ -47,7 +43,7 @@ namespace graph
         // Set all vertices as not visited
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
-            graph.GetVertices().At(i).SetLabel(UNVISITED);
+            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
             graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
             graph.GetVertices().At(i).SetHeuristicCost(0);
             graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
@@ -73,7 +69,7 @@ namespace graph
         {
             u = minPQueue.Dequeue();
 
-            u->SetLabel(VISITED);
+            u->SetLabel(VertexLabel::VISITED);
 
             if (u->GetID() == targetID)
             {
@@ -93,7 +89,7 @@ namespace graph
                     ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
                     : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
-                if (v->GetLabel() == UNVISITED)
+                if (v->GetLabel() == VertexLabel::UNVISITED)
                 {
                     v->SetHeuristicCost(CalculateHeuristic(heuristic, v, t));
 

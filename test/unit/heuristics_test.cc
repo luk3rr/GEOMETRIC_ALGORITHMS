@@ -9,8 +9,6 @@
 
 #include "heuristics.h"
 
-constexpr double_t EPSILON = 1e-6;
-
 TEST_CASE("Euclidian distance")
 {
     graph::Vertex<double_t, double_t, 2> source({ 0, 0 }, 0);
@@ -19,7 +17,8 @@ TEST_CASE("Euclidian distance")
     double_t expected_distance = 5.0;
 
     double_t calculated_distance = heuristics::distance::Euclidean(&source, &target);
-    CHECK(std::abs(calculated_distance - expected_distance) < EPSILON);
+    CHECK(std::abs(calculated_distance - expected_distance) <
+          std::numeric_limits<double_t>::epsilon());
 }
 
 TEST_CASE("Manhattan distance")
@@ -30,7 +29,8 @@ TEST_CASE("Manhattan distance")
     double_t expected_distance = 7.0;
 
     double_t calculated_distance = heuristics::distance::Manhattan(&source, &target);
-    CHECK(std::abs(calculated_distance - expected_distance) < EPSILON);
+    CHECK(std::abs(calculated_distance - expected_distance) <
+          std::numeric_limits<double_t>::epsilon());
 }
 
 TEST_CASE("Minkowski distance")
@@ -42,7 +42,8 @@ TEST_CASE("Minkowski distance")
     double_t expected_distance = 5.0;
 
     double_t calculated_distance = heuristics::distance::Minkowski(&source, &target, p);
-    CHECK(std::abs(calculated_distance - expected_distance) < EPSILON);
+    CHECK(std::abs(calculated_distance - expected_distance) <
+          std::numeric_limits<double_t>::epsilon());
 }
 
 TEST_CASE("Hamming distance")
@@ -53,5 +54,6 @@ TEST_CASE("Hamming distance")
     double_t expected_distance = 3.0;
 
     double_t calculated_distance = heuristics::distance::Hamming(&source, &target);
-    CHECK(std::abs(calculated_distance - expected_distance) < EPSILON);
+    CHECK(std::abs(calculated_distance - expected_distance) <
+          std::numeric_limits<double_t>::epsilon());
 }

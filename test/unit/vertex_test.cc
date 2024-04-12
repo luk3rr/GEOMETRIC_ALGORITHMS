@@ -42,8 +42,6 @@ TEST_CASE("SetVertexAttributes")
         vertex.SetID(2);
         vertex.SetCurrentCost(10);
 
-        // Você precisará de objetos Edge apropriados para testar SetEdge2Predecessor.
-        // Certifique-se de que esses objetos estão criados e configurados corretamente.
         graph::Edge<int32_t, double_t, 2> edge(&vertex1, &vertex2);
 
         vertex.SetEdge2Predecessor(&edge);

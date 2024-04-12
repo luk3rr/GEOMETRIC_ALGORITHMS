@@ -10,6 +10,7 @@
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
+#include <limits>
 
 #include "vertex.h"
 
@@ -102,13 +103,11 @@ namespace heuristics
         {
             double_t sum = 0;
 
-            constexpr double_t EPSILON = 1e-6;
-
             for (std::size_t i = 0; i < nDim; i++)
             {
                 sum += std::abs(static_cast<double_t>(source->GetCoordinates().At(i)) -
                                 static_cast<double_t>(target->GetCoordinates().At(i))) >
-                       EPSILON;
+                       std::numeric_limits<double_t>::epsilon();
             }
 
             return sum;

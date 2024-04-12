@@ -8,20 +8,16 @@
 #define BFS_H_
 
 #include <cstddef>
-#include <cstdint>
 #include <limits>
 
 #include "edge.h"
 #include "graph.h"
+#include "graph_utils.h"
 #include "queue_slkd.h"
 #include "vertex.h"
 
 namespace graph
 {
-    constexpr uint8_t WHITE = 0;
-    constexpr uint8_t GRAY  = 1;
-    constexpr uint8_t BLACK = 2;
-
     /**
      * @brief Perform a Breadth-First Search (BFS) traversal on a graph starting from
      * a given source node
@@ -39,19 +35,19 @@ namespace graph
         // Defines the infinity value for the typeG type
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
-        // Initialize all vertex costs to infinity and labels to white, except source
+        // Initialize all vertex costs to infinity and labels to UNVISITED, except source
         // vertex
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
             if (i != sourceID)
                 graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
 
-            graph.GetVertices().At(i).SetLabel(WHITE);
+            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
             graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
 
         graph.GetVertices().At(sourceID).SetCurrentCost(0);
-        graph.GetVertices().At(sourceID).SetLabel(GRAY);
+        graph.GetVertices().At(sourceID).SetLabel(VertexLabel::PROCESSING);
 
         queue.Enqueue(&graph.GetVertices().At(sourceID));
 
@@ -79,15 +75,15 @@ namespace graph
                     ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
                     : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
-                if (v->GetLabel() == WHITE)
+                if (v->GetLabel() == VertexLabel::UNVISITED)
                 {
-                    v->SetLabel(GRAY);
+                    v->SetLabel(VertexLabel::PROCESSING);
                     v->SetCurrentCost(u->GetCurrentCost() + 1);
                     queue.Enqueue(v);
                 }
             }
 
-            u->SetLabel(BLACK);
+            u->SetLabel(VertexLabel::VISITED);
         }
     }
 } // namespace graph

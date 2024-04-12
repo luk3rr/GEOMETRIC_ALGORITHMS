@@ -18,9 +18,6 @@
 
 namespace graph
 {
-    constexpr uint32_t UNVISITED = 0;
-    constexpr uint32_t VISITED   = 1;
-
     /**
      * @brief Runs the Uniform Cost Search algorithm to find the shortest path between
      * two nodes in a graph
@@ -33,7 +30,7 @@ namespace graph
     UCS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID, std::size_t targetID)
     {
         bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(Compare::Vertex<typeG, typeT, nDim>)>
+                             decltype(compare::Vertex<typeG, typeT, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
@@ -42,7 +39,7 @@ namespace graph
         // Set all vertices as not visited
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
-            graph.GetVertices().At(i).SetLabel(UNVISITED);
+            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
             graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
             graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
         }
@@ -63,7 +60,7 @@ namespace graph
         {
             u = minPQueue.Dequeue();
 
-            u->SetLabel(VISITED);
+            u->SetLabel(VertexLabel::VISITED);
 
             if (u->GetID() == targetID)
                 break;
@@ -80,7 +77,7 @@ namespace graph
                     ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
                     : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
-                if (v->GetLabel() == UNVISITED and Relax(u, v, uAdjList.At(i)))
+                if (v->GetLabel() == VertexLabel::UNVISITED and Relax(u, v, uAdjList.At(i)))
                 {
                     minPQueue.Enqueue(v);
                 }
