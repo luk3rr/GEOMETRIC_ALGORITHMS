@@ -46,6 +46,9 @@ namespace graph
             // Store all edges created by this graph
             Vector<Edge<typeG, typeT, nDim>*> m_edges;
 
+            // Number of vertices in the graph
+            std::size_t m_numVertices;
+
         public:
             /**
              * @param numVertices Number of vertices in the graph
@@ -87,6 +90,12 @@ namespace graph
              * @return A reference to the vector containing all edges in the graph
              **/
             Vector<Edge<typeG, typeT, nDim>*>& GetEdges();
+
+            /**
+             * @brief Retrieves the number of vertices in the graph
+             * @return The number of vertices in the graph
+             **/
+            std::size_t GetNumVertices() const;
     };
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>
@@ -99,6 +108,8 @@ namespace graph
 
         // Reserve space in the vector of edges to optimize for 'numEdges' elements
         this->m_edges.Reserve(numEdges);
+
+        this->m_numVertices = 0;
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>
@@ -120,6 +131,7 @@ namespace graph
         }
 
         this->m_vertices[newVertex.GetID()] = newVertex;
+        this->m_numVertices++;
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>
@@ -163,6 +175,12 @@ namespace graph
     Vector<Edge<typeG, typeT, nDim>*>& Graph<typeG, typeT, nDim, directed>::GetEdges()
     {
         return this->m_edges;
+    }
+
+    template<typename typeG, typename typeT, std::size_t nDim, bool directed>
+    std::size_t Graph<typeG, typeT, nDim, directed>::GetNumVertices() const
+    {
+        return this->m_numVertices;
     }
 
 } // namespace graph

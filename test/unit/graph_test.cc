@@ -25,6 +25,7 @@ TEST_CASE("AddVertexAndEdge")
         undirectedGraph.AddVertex(vertex3);
 
         CHECK(undirectedGraph.GetVertices().Size() == 3);
+        CHECK(undirectedGraph.GetNumVertices() == 3);
     }
 
     SUBCASE("Add edges to the graph")
@@ -66,5 +67,6 @@ TEST_CASE("AddVertexWithIncrementalID")
         undirectedGraph.AddVertex(vertex4);
 
         CHECK(undirectedGraph.GetVertices().Size() == 4);
+        CHECK(undirectedGraph.GetNumVertices() == 4);
     }
 }
