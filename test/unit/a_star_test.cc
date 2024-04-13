@@ -11,17 +11,17 @@
 TEST_CASE("A* Search algorithm test")
 {
     // Create a graph with some vertices and edges
-    graph::Graph<double_t, uint32_t, 2, false> graph(9, 14);
+    graph::Graph<double_t, uint32_t> graph(9, 14);
 
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 3, 4 }, 0));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 4, 5 }, 1));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 6, 5 }, 2));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 8, 5 }, 3));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 9, 4 }, 4));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 8, 3 }, 5));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 6, 3 }, 6));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 4, 3 }, 7));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t, 2>({ 5, 4 }, 8));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 3, 4 }, 0));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 4, 5 }, 1));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 6, 5 }, 2));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 8, 5 }, 3));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 9, 4 }, 4));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 8, 3 }, 5));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 6, 3 }, 6));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 4, 3 }, 7));
+    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 5, 4 }, 8));
 
     // {vertex_i_ID, vertex_j_ID, cost of the edge connecting the two}
     // This graph can be found in the book 'Introduction to Algorithms,' by Thomas

@@ -25,12 +25,17 @@ namespace graph
      * @param sourceID The source vertex id from which to calculate the shortest
      *        paths
      **/
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void Dijkstra(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID)
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline void Dijkstra(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                         std::size_t                                 sourceID)
 
     {
-        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(compare::Vertex<typeG, typeT, nDim>)>
+        bheap::PriorityQueue<Vertex<typeG, typeT, typeD, nDim>*,
+                             decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
@@ -50,12 +55,12 @@ namespace graph
         minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = nullptr;
-        Vertex<typeG, typeT, nDim>* v = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-        Edge<typeG, typeT, nDim>* uv;
+        Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
 
         while (not minPQueue.IsEmpty())
         {

@@ -25,12 +25,16 @@ namespace graph
          * @param label The current label of the search
          * @return True if the target vertex is reached, false otherwise
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline bool IDDFS(Graph<typeG, typeT, nDim>& graph,
-                          std::size_t                currentVertexID,
-                          std::size_t                targetVertexID,
-                          std::size_t                depth,
-                          std::size_t                label)
+        template<typename typeG,
+                 typename typeT,
+                 typename typeD,
+                 std::size_t nDim,
+                 bool        directed>
+        inline bool IDDFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                          std::size_t                                 currentVertexID,
+                          std::size_t                                 targetVertexID,
+                          std::size_t                                 depth,
+                          std::size_t                                 label)
         {
             if (currentVertexID == targetVertexID)
                 return true;
@@ -41,12 +45,12 @@ namespace graph
             graph.GetVertices().At(currentVertexID).SetLabel(label);
 
             // Auxiliar variables to make code most legible
-            Vertex<typeG, typeT, nDim>* u = nullptr;
-            Vertex<typeG, typeT, nDim>* v = nullptr;
+            Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+            Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-            Edge<typeG, typeT, nDim>* uv;
+            Edge<typeG, typeT, typeD, nDim>* uv;
 
-            Vector<Edge<typeG, typeT, nDim>*> uAdjList =
+            Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
                 graph.GetVertices().At(currentVertexID).GetAdjacencyList();
 
             u = &graph.GetVertices().At(currentVertexID);
@@ -84,11 +88,15 @@ namespace graph
      * Complexity: O(b^d), where b is the branching factor and d is the depth of the
      * shallowest solution
      */
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline bool IDDFS(Graph<typeG, typeT, nDim>& graph,
-                      std::size_t                startVertexID,
-                      std::size_t                targetVertexID,
-                      std::size_t                maxDepth)
+    template<typename typeG,
+             typename typeT,
+             std::size_t nDim,
+             bool        directed,
+             typename typeD>
+    inline bool IDDFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                      std::size_t                                 startVertexID,
+                      std::size_t                                 targetVertexID,
+                      std::size_t                                 maxDepth)
     {
         for (std::size_t i = 0; i < maxDepth; i++)
         {

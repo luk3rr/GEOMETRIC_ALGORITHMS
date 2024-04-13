@@ -34,9 +34,9 @@ namespace heuristics
          * @param source Pointer to the source vertex
          * @param target Pointer to the target vertex
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        double_t Euclidean(graph::Vertex<typeG, typeT, nDim>* source,
-                           graph::Vertex<typeG, typeT, nDim>* target)
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        double_t Euclidean(graph::Vertex<typeG, typeT, typeD, nDim>* source,
+                           graph::Vertex<typeG, typeT, typeD, nDim>* target)
         {
             double_t sum = 0;
 
@@ -56,9 +56,9 @@ namespace heuristics
          * @param source Pointer to the source vertex
          * @param target Pointer to the target vertex
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline double_t Manhattan(graph::Vertex<typeG, typeT, nDim>* source,
-                                  graph::Vertex<typeG, typeT, nDim>* target)
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        inline double_t Manhattan(graph::Vertex<typeG, typeT, typeD, nDim>* source,
+                                  graph::Vertex<typeG, typeT, typeD, nDim>* target)
         {
             double_t sum = 0;
             for (std::size_t i = 0; i < nDim; i++)
@@ -75,10 +75,10 @@ namespace heuristics
          * @param target Pointer to the target vertex
          * @param p Exponent of the Minkowski distance
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline double_t Minkowski(graph::Vertex<typeG, typeT, nDim>* source,
-                                  graph::Vertex<typeG, typeT, nDim>* target,
-                                  double_t                           p = 3)
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        inline double_t Minkowski(graph::Vertex<typeG, typeT, typeD, nDim>* source,
+                                  graph::Vertex<typeG, typeT, typeD, nDim>* target,
+                                  double_t                                  p = 3)
         {
             double_t sum = 0;
             for (std::size_t i = 0; i < nDim; i++)
@@ -97,9 +97,9 @@ namespace heuristics
          * @param source Pointer to the source vertex
          * @param target Pointer to the target vertex
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline double_t Hamming(graph::Vertex<typeG, typeT, nDim>* source,
-                                graph::Vertex<typeG, typeT, nDim>* target)
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        inline double_t Hamming(graph::Vertex<typeG, typeT, typeD, nDim>* source,
+                                graph::Vertex<typeG, typeT, typeD, nDim>* target)
         {
             double_t sum = 0;
 

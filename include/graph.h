@@ -39,17 +39,17 @@ namespace graph
      */
     template<typename typeG,
              typename typeT,
-             std::size_t nDim,
-             bool        directed = false,
-             typename typeD       = bool>
+             typename typeD       = bool,
+             std::size_t nDim     = 2,
+             bool        directed = false>
     class Graph
     {
         private:
             // Each vector position is the vertex ID
-            Vector<Vertex<typeG, typeT, nDim, typeD>> m_vertices;
+            Vector<Vertex<typeG, typeT, typeD, nDim>> m_vertices;
 
             // Store all edges created by this graph
-            Vector<Edge<typeG, typeT, nDim, typeD>*> m_edges;
+            Vector<Edge<typeG, typeT, typeD, nDim>*> m_edges;
 
             // Number of vertices in the graph
             std::size_t m_numVertices;
@@ -67,7 +67,7 @@ namespace graph
              * @brief Adds a vertex to the graph
              * @param vertex New vertex to be added to the graph
              **/
-            void AddVertex(Vertex<typeG, typeT, nDim, typeD> vertex);
+            void AddVertex(Vertex<typeG, typeT, typeD, nDim> vertex);
 
             /**
              * @brief Adds a edge
@@ -88,13 +88,13 @@ namespace graph
              * @brief Retrieves a reference to the vector of vertices
              * @return A reference to the vector containing all vertices in the graph
              **/
-            Vector<Vertex<typeG, typeT, nDim, typeD>>& GetVertices();
+            Vector<Vertex<typeG, typeT, typeD, nDim>>& GetVertices();
 
             /**
              * @brief Retrieves a reference to the vector of edges
              * @return A reference to the vector containing all edges in the graph
              **/
-            Vector<Edge<typeG, typeT, nDim, typeD>*>& GetEdges();
+            Vector<Edge<typeG, typeT, typeD, nDim>*>& GetEdges();
 
             /**
              * @brief Retrieves the number of vertices in the graph
@@ -105,10 +105,10 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    Graph<typeG, typeT, nDim, directed, typeD>::Graph(std::size_t numVertices,
+             bool        directed>
+    Graph<typeG, typeT, typeD, nDim, directed>::Graph(std::size_t numVertices,
                                                       std::size_t numEdges)
     {
         // Resize the vector of vertices to allocate space for 'numVertices' elements,
@@ -123,10 +123,10 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    Graph<typeG, typeT, nDim, directed, typeD>::~Graph()
+             bool        directed>
+    Graph<typeG, typeT, typeD, nDim, directed>::~Graph()
     {
         for (auto edge : this->m_edges)
         {
@@ -136,11 +136,11 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    void Graph<typeG, typeT, nDim, directed, typeD>::AddVertex(
-        Vertex<typeG, typeT, nDim, typeD> newVertex)
+             bool        directed>
+    void Graph<typeG, typeT, typeD, nDim, directed>::AddVertex(
+        Vertex<typeG, typeT, typeD, nDim> newVertex)
     {
         if (newVertex.GetID() >= this->m_vertices.Size())
         {
@@ -153,16 +153,16 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    void Graph<typeG, typeT, nDim, directed, typeD>::AddEdge(std::size_t vertexID,
+             bool        directed>
+    void Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
                                                              std::size_t neighborID,
                                                              typeG       edgeCost)
     {
         // Create a ptr for the edge
-        Edge<typeG, typeT, nDim, typeD>* edge =
-            new Edge<typeG, typeT, nDim, typeD>(&this->m_vertices[vertexID],
+        Edge<typeG, typeT, typeD, nDim>* edge =
+            new Edge<typeG, typeT, typeD, nDim>(&this->m_vertices[vertexID],
                                                 &this->m_vertices[neighborID],
                                                 edgeCost);
 
@@ -180,10 +180,10 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    void Graph<typeG, typeT, nDim, directed, typeD>::AddEdge(std::size_t vertexID,
+             bool        directed>
+    void Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
                                                              std::size_t neighborID)
     {
         this->AddEdge(vertexID, neighborID, 0);
@@ -191,32 +191,32 @@ namespace graph
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    Vector<Vertex<typeG, typeT, nDim, typeD>>&
-    Graph<typeG, typeT, nDim, directed, typeD>::GetVertices()
+             bool        directed>
+    Vector<Vertex<typeG, typeT, typeD, nDim>>&
+    Graph<typeG, typeT, typeD, nDim, directed>::GetVertices()
     {
         return this->m_vertices;
     }
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    Vector<Edge<typeG, typeT, nDim, typeD>*>&
-    Graph<typeG, typeT, nDim, directed, typeD>::GetEdges()
+             bool        directed>
+    Vector<Edge<typeG, typeT, typeD, nDim>*>&
+    Graph<typeG, typeT, typeD, nDim, directed>::GetEdges()
     {
         return this->m_edges;
     }
 
     template<typename typeG,
              typename typeT,
+             typename typeD,
              std::size_t nDim,
-             bool        directed,
-             typename typeD>
-    std::size_t Graph<typeG, typeT, nDim, directed, typeD>::GetNumVertices() const
+             bool        directed>
+    std::size_t Graph<typeG, typeT, typeD, nDim, directed>::GetNumVertices() const
     {
         return this->m_numVertices;
     }

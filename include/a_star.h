@@ -26,15 +26,20 @@ namespace graph
      * @param heuristic The heuristic function to estimate the cost to reach the
      * target node
      */
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void AStar(Graph<typeG, typeT, nDim>&      graph,
-                      std::size_t                     sourceID,
-                      std::size_t                     targetID,
-                      heuristics::distance::Heuristic heuristic =
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline void AStar(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                      std::size_t                                 sourceID,
+                      std::size_t                                 targetID,
+                      heuristics::distance::Heuristic             heuristic =
                           heuristics::distance::Heuristic::EUCLIDEAN)
     {
-        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(compare::Vertex<typeG, typeT, nDim>)>
+        bheap::PriorityQueue<
+            Vertex<typeG, typeT, typeD, nDim>*,
+            decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
@@ -50,13 +55,13 @@ namespace graph
         }
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = &graph.GetVertices().At(sourceID);
-        Vertex<typeG, typeT, nDim>* v = nullptr;
-        Vertex<typeG, typeT, nDim>* t = &graph.GetVertices().At(targetID);
+        Vertex<typeG, typeT, typeD, nDim>* u = &graph.GetVertices().At(sourceID);
+        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* t = &graph.GetVertices().At(targetID);
 
-        Edge<typeG, typeT, nDim>* uv;
+        Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
 
         graph.GetVertices().At(sourceID).SetCurrentCost(
             CalculateHeuristic(heuristic, u, t));

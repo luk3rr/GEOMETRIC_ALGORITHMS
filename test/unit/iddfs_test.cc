@@ -11,17 +11,17 @@
 TEST_CASE("IDDFS algorithm test")
 {
     // Create a graph with some vertices and edges
-    graph::Graph<uint32_t, uint32_t, 2, false> graph(9, 14);
+    graph::Graph<uint32_t, uint32_t> graph(9, 14);
 
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(0));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(1));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(2));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(3));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(4));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(5));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(6));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(7));
-    graph.AddVertex(graph::Vertex<uint32_t, uint32_t, 2>(8));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(0));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(1));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(2));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(3));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(4));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(5));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(6));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(7));
+    graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(8));
 
     // {vertex_i_ID, vertex_j_ID}
     // This graph can be found in the book 'Introduction to Algorithms,' by Thomas

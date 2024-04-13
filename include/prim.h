@@ -10,11 +10,11 @@
 #include <cstddef>
 #include <limits>
 
-#include "vector.h"
 #include "edge.h"
 #include "graph.h"
-#include "priority_queue_bheap.h"
 #include "graph_utils.h"
+#include "priority_queue_bheap.h"
+#include "vector.h"
 
 namespace graph
 {
@@ -26,11 +26,16 @@ namespace graph
      * @param sourceID The source vertex id from which to begin the MST
      *        calculation
      **/
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void Prim(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID)
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline void Prim(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                     std::size_t                                 sourceID)
     {
-        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(compare::Vertex<typeG, typeT, nDim>)>
+        bheap::PriorityQueue<Vertex<typeG, typeT, typeD, nDim>*,
+                             decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type
@@ -46,11 +51,11 @@ namespace graph
         }
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u  = nullptr;
-        Vertex<typeG, typeT, nDim>* v  = nullptr;
-        Edge<typeG, typeT, nDim>*   uv = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* u  = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* v  = nullptr;
+        Edge<typeG, typeT, typeD, nDim>*   uv = nullptr;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
 
         // A vector to track whether a vertex with ID as the index has been visited or
         // not
@@ -58,7 +63,7 @@ namespace graph
 
         minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
 
-        Vector<Vertex<typeG, typeT, nDim>*> aux;
+        Vector<Vertex<typeG, typeT, typeD, nDim>*> aux;
 
         while (not minPQueue.IsEmpty())
         {

@@ -12,13 +12,13 @@
 
 TEST_CASE("AddVertexAndEdge")
 {
-    graph::Graph<int32_t, double_t, 2, false> undirectedGraph(3, 3);
+    graph::Graph<int32_t, double_t> undirectedGraph(3, 3);
 
     SUBCASE("Add vertices to the graph")
     {
-        graph::Vertex<int32_t, double_t, 2> vertex1(0);
-        graph::Vertex<int32_t, double_t, 2> vertex2(1);
-        graph::Vertex<int32_t, double_t, 2> vertex3(2);
+        graph::Vertex<int32_t, double_t> vertex1(0);
+        graph::Vertex<int32_t, double_t> vertex2(1);
+        graph::Vertex<int32_t, double_t> vertex3(2);
 
         undirectedGraph.AddVertex(vertex1);
         undirectedGraph.AddVertex(vertex2);
@@ -30,9 +30,9 @@ TEST_CASE("AddVertexAndEdge")
 
     SUBCASE("Add edges to the graph")
     {
-        graph::Vertex<int32_t, double_t, 2> vertex1(0);
-        graph::Vertex<int32_t, double_t, 2> vertex2(1);
-        graph::Vertex<int32_t, double_t, 2> vertex3(2);
+        graph::Vertex<int32_t, double_t> vertex1(0);
+        graph::Vertex<int32_t, double_t> vertex2(1);
+        graph::Vertex<int32_t, double_t> vertex3(2);
 
         undirectedGraph.AddVertex(vertex1);
         undirectedGraph.AddVertex(vertex2);
@@ -51,14 +51,14 @@ TEST_CASE("AddVertexAndEdge")
 
 TEST_CASE("AddVertexWithIncrementalID")
 {
-    graph::Graph<int32_t, double_t, 2, false> undirectedGraph(3, 3);
+    graph::Graph<int32_t, double_t> undirectedGraph(3, 3);
 
     SUBCASE("Add vertices to the graph")
     {
-        graph::Vertex<int32_t, double_t, 2> vertex1(0);
-        graph::Vertex<int32_t, double_t, 2> vertex2(1);
-        graph::Vertex<int32_t, double_t, 2> vertex3(2);
-        graph::Vertex<int32_t, double_t, 2> vertex4(
+        graph::Vertex<int32_t, double_t> vertex1(0);
+        graph::Vertex<int32_t, double_t> vertex2(1);
+        graph::Vertex<int32_t, double_t> vertex3(2);
+        graph::Vertex<int32_t, double_t> vertex4(
             3); // ID greater than the number of vertices
 
         undirectedGraph.AddVertex(vertex1);

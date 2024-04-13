@@ -42,9 +42,9 @@ namespace graph
          * @brief A function object to compare two vertices based on their
          * current cost
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        auto Vertex = [](const graph::Vertex<typeG, typeT, nDim>* v1,
-                         const graph::Vertex<typeG, typeT, nDim>* v2) -> bool {
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        auto Vertex = [](const graph::Vertex<typeG, typeT, typeD, nDim>* v1,
+                         const graph::Vertex<typeG, typeT, typeD, nDim>* v2) -> bool {
             return v1->GetCurrentCost() <= v2->GetCurrentCost();
         };
 
@@ -52,18 +52,19 @@ namespace graph
          * @brief A function object to compare two vertices based on only their
          * heuristic cost
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        auto VertexHeuristic = [](const graph::Vertex<typeG, typeT, nDim>* v1,
-                                  const graph::Vertex<typeG, typeT, nDim>* v2) -> bool {
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        auto VertexHeuristic =
+            [](const graph::Vertex<typeG, typeT, typeD, nDim>* v1,
+               const graph::Vertex<typeG, typeT, typeD, nDim>* v2) -> bool {
             return v1->GetHeuristicCost() <= v2->GetHeuristicCost();
         };
 
         /**
          * @brief A function object to compare two edges based on their cost
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        auto Edge = [](const graph::Edge<typeG, typeT, nDim>* e1,
-                       const graph::Edge<typeG, typeT, nDim>* e2) -> bool {
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        auto Edge = [](const graph::Edge<typeG, typeT, typeD, nDim>* e1,
+                       const graph::Edge<typeG, typeT, typeD, nDim>* e2) -> bool {
             return e1->GetCost() <= e2->GetCost();
         };
     } // namespace compare
@@ -74,10 +75,10 @@ namespace graph
      * @param uv Pointer to the edge (u, v)
      * @return True if edge was relaxed, False otherwise
      **/
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline bool Relax(Vertex<typeG, typeT, nDim>* u,
-                      Vertex<typeG, typeT, nDim>* v,
-                      Edge<typeG, typeT, nDim>*   uv)
+    template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+    inline bool Relax(Vertex<typeG, typeT, typeD, nDim>* u,
+                      Vertex<typeG, typeT, typeD, nDim>* v,
+                      Edge<typeG, typeT, typeD, nDim>*   uv)
     {
         // Heuristic by default is 0
         if (v->GetCurrentCost() >
@@ -102,10 +103,10 @@ namespace graph
          * @param v Pointer to the second vertex
          * @return The heuristic cost between the two vertices
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline double_t CalculateHeuristic(heuristics::distance::Heuristic heuristic,
-                                           Vertex<typeG, typeT, nDim>*     u,
-                                           Vertex<typeG, typeT, nDim>*     v)
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        inline double_t CalculateHeuristic(heuristics::distance::Heuristic    heuristic,
+                                           Vertex<typeG, typeT, typeD, nDim>* u,
+                                           Vertex<typeG, typeT, typeD, nDim>* v)
         {
             switch (heuristic)
             {
@@ -130,14 +131,18 @@ namespace graph
         }
     } // namespace
 
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void PrintPath(Graph<typeG, typeT, nDim>&  graph,
-                          Vertex<typeG, typeT, nDim>* v)
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline void PrintPath(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                          Vertex<typeG, typeT, typeD, nDim>*          v)
     {
         // Create a vector to store the path
         Vector<uint32_t> path;
 
-        Edge<typeG, typeT, nDim>* uv;
+        Edge<typeG, typeT, typeD, nDim>* uv;
 
         path.PushBack(v->GetID());
         // Get the path

@@ -15,7 +15,7 @@ TEST_CASE("CreateVertex")
 {
     SUBCASE("Create Vertex with default values")
     {
-        graph::Vertex<int32_t, double_t, 2> vertex;
+        graph::Vertex<int32_t, double_t> vertex;
         CHECK(vertex.GetID() == 0);
         CHECK(vertex.GetCurrentCost() == 0);
         CHECK(vertex.GetEdge2Predecessor() == nullptr);
@@ -24,7 +24,7 @@ TEST_CASE("CreateVertex")
 
     SUBCASE("Create Vertex with specified ID")
     {
-        graph::Vertex<int32_t, double_t, 2> vertex(1);
+        graph::Vertex<int32_t, double_t> vertex(1);
         CHECK(vertex.GetID() == 1);
         CHECK(vertex.GetCurrentCost() == 0);
         CHECK(vertex.GetEdge2Predecessor() == nullptr);
@@ -34,16 +34,16 @@ TEST_CASE("CreateVertex")
 
 TEST_CASE("SetVertexAttributes")
 {
-    graph::Vertex<int32_t, double_t, 2> vertex;
-    graph::Vertex<int32_t, double_t, 2> vertex1;
-    graph::Vertex<int32_t, double_t, 2> vertex2;
+    graph::Vertex<int32_t, double_t> vertex;
+    graph::Vertex<int32_t, double_t> vertex1;
+    graph::Vertex<int32_t, double_t> vertex2;
 
     SUBCASE("Set ID, CurrentCost, and Edge2Predecessor")
     {
         vertex.SetID(2);
         vertex.SetCurrentCost(10);
 
-        graph::Edge<int32_t, double_t, 2> edge(&vertex1, &vertex2);
+        graph::Edge<int32_t, double_t> edge(&vertex1, &vertex2);
 
         vertex.SetEdge2Predecessor(&edge);
 
@@ -55,8 +55,8 @@ TEST_CASE("SetVertexAttributes")
 
 TEST_CASE("CompareVertices")
 {
-    graph::Vertex<int32_t, double_t, 2> vertex1;
-    graph::Vertex<int32_t, double_t, 2> vertex2;
+    graph::Vertex<int32_t, double_t> vertex1;
+    graph::Vertex<int32_t, double_t> vertex2;
 
     SUBCASE("Compare vertices based on current cost")
     {

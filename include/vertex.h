@@ -17,7 +17,7 @@
 
 namespace graph
 {
-    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
     class Edge;
 
     /**
@@ -29,10 +29,14 @@ namespace graph
      *
      * @tparam typeV The type for the cost of reaching this vertex
      * @tparam typeT Type of the coordinates of the points (e.g., int, double, etc.).
-     * @tparam nDim The dimensionality of the vertices
-     * @tparam typeD Type of data stored in the vertex
+     * @tparam typeD Type of data stored in the vertex. By default, it is a boolean
+     * value to use less memory
+     * @tparam nDim The dimensionality of the vertices. By default, it is 2
      */
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD = bool>
+    template<typename typeV,
+             typename typeT,
+             typename typeD   = bool,
+             std::size_t nDim = 2>
     class Vertex : public geom::Point<typeT, nDim>
     {
         private:
@@ -46,15 +50,15 @@ namespace graph
             typeD m_data; // Data stored in the vertex
 
             // Edge connecting to the successor and predecessor vertex
-            Edge<typeV, typeT, nDim, typeD>* m_successor;
-            Edge<typeV, typeT, nDim, typeD>* m_predecessor;
+            Edge<typeV, typeT, typeD, nDim>* m_successor;
+            Edge<typeV, typeT, typeD, nDim>* m_predecessor;
 
             uint32_t m_label;         // Vertex label
             uint32_t m_arrivalTime;   // Arrival time of the vertex
             uint32_t m_departureTime; // Departure time of the vertex
 
             // Adjacency list
-            Vector<Edge<typeV, typeT, nDim, typeD>*> m_adjList;
+            Vector<Edge<typeV, typeT, typeD, nDim>*> m_adjList;
 
         public:
             Vertex();
@@ -76,11 +80,11 @@ namespace graph
             ~Vertex();
 
             // Overload operators
-            bool operator==(const Vertex<typeV, typeT, nDim, typeD>& other) const;
-            bool operator<=(const Vertex<typeV, typeT, nDim, typeD>& other) const;
-            bool operator>=(const Vertex<typeV, typeT, nDim, typeD>& other) const;
-            bool operator<(const Vertex<typeV, typeT, nDim, typeD>& other) const;
-            bool operator>(const Vertex<typeV, typeT, nDim, typeD>& other) const;
+            bool operator==(const Vertex<typeV, typeT, typeD, nDim>& other) const;
+            bool operator<=(const Vertex<typeV, typeT, typeD, nDim>& other) const;
+            bool operator>=(const Vertex<typeV, typeT, typeD, nDim>& other) const;
+            bool operator<(const Vertex<typeV, typeT, typeD, nDim>& other) const;
+            bool operator>(const Vertex<typeV, typeT, typeD, nDim>& other) const;
 
             /**
              * @brief Set a new value for the vertex ID
@@ -111,14 +115,14 @@ namespace graph
              * @param edge A pointer to the edge connecting this vertex to its
              * successor
              */
-            void SetEdge2Successor(Edge<typeV, typeT, nDim, typeD>* edge);
+            void SetEdge2Successor(Edge<typeV, typeT, typeD, nDim>* edge);
 
             /**
              * @brief Set the edge connecting to the predecessor vertex
              * @param edge A pointer to the edge connecting this vertex to its
              * predecessor
              */
-            void SetEdge2Predecessor(Edge<typeV, typeT, nDim, typeD>* edge);
+            void SetEdge2Predecessor(Edge<typeV, typeT, typeD, nDim>* edge);
 
             /**
              * @brief Set the label of the vertex
@@ -167,13 +171,13 @@ namespace graph
              * @return A pointer to the edge connecting this vertex to its successor
              * vertex
              */
-            Edge<typeV, typeT, nDim, typeD>* GetEdge2Successor();
+            Edge<typeV, typeT, typeD, nDim>* GetEdge2Successor();
 
             /**
              * @return A pointer to the edge connecting this vertex to its predecessor
              * vertex
              */
-            Edge<typeV, typeT, nDim, typeD>* GetEdge2Predecessor();
+            Edge<typeV, typeT, typeD, nDim>* GetEdge2Predecessor();
 
             /**
              * @return The label of the vertex
@@ -193,11 +197,11 @@ namespace graph
             /**
              * @return Address of the adjacency list of this vertex
              */
-            Vector<Edge<typeV, typeT, nDim, typeD>*>& GetAdjacencyList();
+            Vector<Edge<typeV, typeT, typeD, nDim>*>& GetAdjacencyList();
     };
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vertex<typeV, typeT, nDim, typeD>::Vertex()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Vertex<typeV, typeT, typeD, nDim>::Vertex()
         : geom::Point<typeT, nDim>()
     {
         this->m_id            = 0;
@@ -211,8 +215,8 @@ namespace graph
         this->m_predecessor   = nullptr;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vertex<typeV, typeT, nDim, typeD>::Vertex(std::size_t id, typeD data)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Vertex<typeV, typeT, typeD, nDim>::Vertex(std::size_t id, typeD data)
         : geom::Point<typeT, nDim>()
     {
         this->m_id            = id;
@@ -226,8 +230,8 @@ namespace graph
         this->m_predecessor   = nullptr;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vertex<typeV, typeT, nDim, typeD>::Vertex(Vector<typeT> coordinates,
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Vertex<typeV, typeT, typeD, nDim>::Vertex(Vector<typeT> coordinates,
                                               std::size_t   id,
                                               typeD         data)
         : geom::Point<typeT, nDim>(coordinates)
@@ -243,166 +247,166 @@ namespace graph
         this->m_predecessor   = nullptr;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vertex<typeV, typeT, nDim, typeD>::~Vertex()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Vertex<typeV, typeT, typeD, nDim>::~Vertex()
     { }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    bool Vertex<typeV, typeT, nDim, typeD>::operator==(
-        const Vertex<typeV, typeT, nDim, typeD>& other) const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    bool Vertex<typeV, typeT, typeD, nDim>::operator==(
+        const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost == other.m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    bool Vertex<typeV, typeT, nDim, typeD>::operator<=(
-        const Vertex<typeV, typeT, nDim, typeD>& other) const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    bool Vertex<typeV, typeT, typeD, nDim>::operator<=(
+        const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost <= other.m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    bool Vertex<typeV, typeT, nDim, typeD>::operator>=(
-        const Vertex<typeV, typeT, nDim, typeD>& other) const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    bool Vertex<typeV, typeT, typeD, nDim>::operator>=(
+        const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost >= other.m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    bool Vertex<typeV, typeT, nDim, typeD>::operator<(
-        const Vertex<typeV, typeT, nDim, typeD>& other) const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    bool Vertex<typeV, typeT, typeD, nDim>::operator<(
+        const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost < other.m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    bool Vertex<typeV, typeT, nDim, typeD>::operator>(
-        const Vertex<typeV, typeT, nDim, typeD>& other) const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    bool Vertex<typeV, typeT, typeD, nDim>::operator>(
+        const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost > other.m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetID(std::size_t id)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetID(std::size_t id)
     {
         this->m_id = id;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetData(typeD data)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetData(typeD data)
     {
         this->m_data = data;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetCurrentCost(typeV cost)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetCurrentCost(typeV cost)
     {
         this->m_currentCost = cost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetHeuristicCost(double_t cost)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetHeuristicCost(double_t cost)
     {
         this->m_heuristicCost = cost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetEdge2Successor(
-        Edge<typeV, typeT, nDim, typeD>* edge)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetEdge2Successor(
+        Edge<typeV, typeT, typeD, nDim>* edge)
     {
         this->m_successor = edge;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetEdge2Predecessor(
-        Edge<typeV, typeT, nDim, typeD>* edge)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetEdge2Predecessor(
+        Edge<typeV, typeT, typeD, nDim>* edge)
     {
         this->m_predecessor = edge;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetLabel(uint32_t label)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetLabel(uint32_t label)
     {
         this->m_label = label;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetArrivalTime(uint32_t arrivalTime)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetArrivalTime(uint32_t arrivalTime)
     {
         this->m_arrivalTime = arrivalTime;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void Vertex<typeV, typeT, nDim, typeD>::SetDepartureTime(uint32_t departureTime)
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    void Vertex<typeV, typeT, typeD, nDim>::SetDepartureTime(uint32_t departureTime)
     {
         this->m_departureTime = departureTime;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    uint32_t Vertex<typeV, typeT, nDim, typeD>::GetDegree()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, typeD, nDim>::GetDegree()
     {
         return this->m_adjList.Size();
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    std::size_t Vertex<typeV, typeT, nDim, typeD>::GetID()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    std::size_t Vertex<typeV, typeT, typeD, nDim>::GetID()
     {
         return this->m_id;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    typeD Vertex<typeV, typeT, nDim, typeD>::GetData()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    typeD Vertex<typeV, typeT, typeD, nDim>::GetData()
     {
         return this->m_data;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    typeV Vertex<typeV, typeT, nDim, typeD>::GetCurrentCost() const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    typeV Vertex<typeV, typeT, typeD, nDim>::GetCurrentCost() const
     {
         return this->m_currentCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    double_t Vertex<typeV, typeT, nDim, typeD>::GetHeuristicCost() const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    double_t Vertex<typeV, typeT, typeD, nDim>::GetHeuristicCost() const
     {
         return this->m_heuristicCost;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Edge<typeV, typeT, nDim, typeD>*
-    Vertex<typeV, typeT, nDim, typeD>::GetEdge2Successor()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Edge<typeV, typeT, typeD, nDim>*
+    Vertex<typeV, typeT, typeD, nDim>::GetEdge2Successor()
     {
         return m_successor;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Edge<typeV, typeT, nDim, typeD>*
-    Vertex<typeV, typeT, nDim, typeD>::GetEdge2Predecessor()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Edge<typeV, typeT, typeD, nDim>*
+    Vertex<typeV, typeT, typeD, nDim>::GetEdge2Predecessor()
     {
         return m_predecessor;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    uint32_t Vertex<typeV, typeT, nDim, typeD>::GetLabel() const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, typeD, nDim>::GetLabel() const
     {
         return this->m_label;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    uint32_t Vertex<typeV, typeT, nDim, typeD>::GetArrivalTime() const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, typeD, nDim>::GetArrivalTime() const
     {
         return this->m_arrivalTime;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    uint32_t Vertex<typeV, typeT, nDim, typeD>::GetDepartureTime() const
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    uint32_t Vertex<typeV, typeT, typeD, nDim>::GetDepartureTime() const
     {
         return this->m_departureTime;
     }
 
-    template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vector<Edge<typeV, typeT, nDim, typeD>*>&
-    Vertex<typeV, typeT, nDim, typeD>::GetAdjacencyList()
+    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
+    Vector<Edge<typeV, typeT, typeD, nDim>*>&
+    Vertex<typeV, typeT, typeD, nDim>::GetAdjacencyList()
     {
         return m_adjList;
     }

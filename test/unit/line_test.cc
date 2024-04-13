@@ -32,7 +32,10 @@ TEST_CASE("Overload of equality operator")
         CHECK(line3 == line1);
     }
 
-    SUBCASE("Different points") { CHECK(not(line1 == line2)); }
+    SUBCASE("Different points")
+    {
+        CHECK(not(line1 == line2));
+    }
 }
 
 TEST_CASE("Test if a change in a Point attribute affects Line")

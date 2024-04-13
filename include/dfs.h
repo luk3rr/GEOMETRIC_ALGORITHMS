@@ -23,22 +23,26 @@ namespace graph
          * @param sourceID The ID of the source node
          * @param timestamp The time of entering sourceID vertex
          */
-        template<typename typeG, typename typeT, std::size_t nDim>
-        inline void DFS(Graph<typeG, typeT, nDim>& graph,
-                        std::size_t                currentVertexID,
-                        uint32_t&                  timestamp)
+        template<typename typeG,
+                 typename typeT,
+                 typename typeD,
+                 std::size_t nDim,
+                 bool        directed>
+        inline void DFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                        std::size_t                                 currentVertexID,
+                        uint32_t&                                   timestamp)
         {
 
             graph.GetVertices().At(currentVertexID).SetArrivalTime(++timestamp);
             graph.GetVertices().At(currentVertexID).SetLabel(VertexLabel::VISITED);
 
             // Auxiliar variables to make code most legible
-            Vertex<typeG, typeT, nDim>* u = nullptr;
-            Vertex<typeG, typeT, nDim>* v = nullptr;
+            Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+            Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-            Edge<typeG, typeT, nDim>* uv;
+            Edge<typeG, typeT, typeD, nDim>* uv;
 
-            Vector<Edge<typeG, typeT, nDim>*> uAdjList =
+            Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
                 graph.GetVertices().At(currentVertexID).GetAdjacencyList();
 
             u = &graph.GetVertices().At(currentVertexID);
@@ -73,8 +77,13 @@ namespace graph
      * Complexity: O(V + E), when V is the number of vertices and E is the number of
      * edges in the graph
      */
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void DFS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID)
+    template<typename typeG,
+             typename typeT,
+             std::size_t nDim,
+             bool        directed,
+             typename typeD>
+    inline void DFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                    std::size_t                                 sourceID)
     {
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
@@ -87,12 +96,12 @@ namespace graph
         graph.GetVertices().At(sourceID).SetLabel(VertexLabel::VISITED);
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = nullptr;
-        Vertex<typeG, typeT, nDim>* v = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-        Edge<typeG, typeT, nDim>* uv = nullptr;
+        Edge<typeG, typeT, typeD, nDim>* uv = nullptr;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList =
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
             graph.GetVertices().At(sourceID).GetAdjacencyList();
 
         u = &graph.GetVertices().At(sourceID);

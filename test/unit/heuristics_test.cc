@@ -11,8 +11,8 @@
 
 TEST_CASE("Euclidian distance")
 {
-    graph::Vertex<double_t, double_t, 2> source({ 0, 0 }, 0);
-    graph::Vertex<double_t, double_t, 2> target({ 3, 4 }, 1);
+    graph::Vertex<double_t, double_t> source({ 0, 0 }, 0);
+    graph::Vertex<double_t, double_t> target({ 3, 4 }, 1);
 
     double_t expected_distance = 5.0;
 
@@ -23,8 +23,8 @@ TEST_CASE("Euclidian distance")
 
 TEST_CASE("Manhattan distance")
 {
-    graph::Vertex<double_t, double_t, 2> source({ 0, 0 }, 0);
-    graph::Vertex<double_t, double_t, 2> target({ 3, 4 }, 1);
+    graph::Vertex<double_t, double_t> source({ 0, 0 }, 0);
+    graph::Vertex<double_t, double_t> target({ 3, 4 }, 1);
 
     double_t expected_distance = 7.0;
 
@@ -35,8 +35,8 @@ TEST_CASE("Manhattan distance")
 
 TEST_CASE("Minkowski distance")
 {
-    graph::Vertex<double_t, double_t, 2> source({ 0, 0 }, 0);
-    graph::Vertex<double_t, double_t, 2> target({ 3, 4 }, 1);
+    graph::Vertex<double_t, double_t> source({ 0, 0 }, 0);
+    graph::Vertex<double_t, double_t> target({ 3, 4 }, 1);
 
     double_t p                 = 2.0;
     double_t expected_distance = 5.0;
@@ -48,8 +48,8 @@ TEST_CASE("Minkowski distance")
 
 TEST_CASE("Hamming distance")
 {
-    graph::Vertex<uint32_t, uint32_t, 5> source({ 1, 0, 1, 1, 0 }, 0);
-    graph::Vertex<uint32_t, uint32_t, 5> target({ 0, 0, 1, 0, 1 }, 1);
+    graph::Vertex<uint32_t, uint32_t, bool, 5> source({ 1, 0, 1, 1, 0 }, 0);
+    graph::Vertex<uint32_t, uint32_t, bool, 5> target({ 0, 0, 1, 0, 1 }, 1);
 
     double_t expected_distance = 3.0;
 

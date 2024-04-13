@@ -27,16 +27,21 @@ namespace graph
      * Complexity: O(V + E), when V is the number of vertices and E is the number of
      * edges in the graph
      */
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline void BFS(Graph<typeG, typeT, nDim>& graph, std::size_t sourceID)
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline void BFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                    std::size_t                                 sourceID)
     {
-        slkd::Queue<Vertex<typeG, typeT, nDim>*> queue;
+        slkd::Queue<Vertex<typeG, typeT, typeD, nDim>*> queue;
 
         // Defines the infinity value for the typeG type
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
-        // Initialize all vertex costs to infinity and labels to UNVISITED, except source
-        // vertex
+        // Initialize all vertex costs to infinity and labels to UNVISITED, except
+        // source vertex
         for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
         {
             if (i != sourceID)
@@ -52,12 +57,12 @@ namespace graph
         queue.Enqueue(&graph.GetVertices().At(sourceID));
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = nullptr;
-        Vertex<typeG, typeT, nDim>* v = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-        Edge<typeG, typeT, nDim>* uv;
+        Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
 
         while (not queue.IsEmpty())
         {

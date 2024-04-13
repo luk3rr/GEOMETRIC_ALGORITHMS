@@ -25,15 +25,20 @@ namespace graph
      * @param targetID ID of the target vertex
      * @param heuristic Heuristic to be used in the algorithm
      */
-    template<typename typeG, typename typeT, std::size_t nDim>
-    inline bool GreedyBFS(Graph<typeG, typeT, nDim>&      graph,
-                          std::size_t                     sourceID,
-                          std::size_t                     targetID,
-                          heuristics::distance::Heuristic heuristic =
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline bool GreedyBFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                          std::size_t                                 sourceID,
+                          std::size_t                                 targetID,
+                          heuristics::distance::Heuristic             heuristic =
                               heuristics::distance::Heuristic::EUCLIDEAN)
     {
-        bheap::PriorityQueue<Vertex<typeG, typeT, nDim>*,
-                             decltype(compare::VertexHeuristic<typeG, typeT, nDim>)>
+        bheap::PriorityQueue<
+            Vertex<typeG, typeT, typeD, nDim>*,
+            decltype(compare::VertexHeuristic<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Set all vertices as not visited
@@ -45,9 +50,9 @@ namespace graph
         }
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, nDim>* u = nullptr;
-        Vertex<typeG, typeT, nDim>* v = nullptr;
-        Vertex<typeG, typeT, nDim>* t = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
+        Vertex<typeG, typeT, typeD, nDim>* t = nullptr;
 
         // Check if source and target vertices are valid
         try
@@ -62,9 +67,9 @@ namespace graph
             return false;
         }
 
-        Edge<typeG, typeT, nDim>* uv;
+        Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, nDim>*> uAdjList;
+        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
 
         graph.GetVertices().At(sourceID).SetHeuristicCost(
             CalculateHeuristic(heuristic, u, t));

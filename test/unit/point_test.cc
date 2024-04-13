@@ -12,9 +12,9 @@
 
 TEST_CASE("Overload operador de igualdade")
 {
-    geom::Point<double_t, 2> A({1, 5});
-    geom::Point<double_t, 2> B({1, 3});
-    geom::Point<double_t, 2> C({1, 5});
+    geom::Point<double_t, 2> A({ 1, 5 });
+    geom::Point<double_t, 2> B({ 1, 3 });
+    geom::Point<double_t, 2> C({ 1, 5 });
 
     SUBCASE("Pontos iguais")
     {
@@ -22,7 +22,10 @@ TEST_CASE("Overload operador de igualdade")
         CHECK(C == A);
     }
 
-    SUBCASE("Pontos diferentes") { CHECK(not(A == B)); }
+    SUBCASE("Pontos diferentes")
+    {
+        CHECK(not(A == B));
+    }
 }
 
 // TODO: Definir se o operador de overload será implementado ou comparador
