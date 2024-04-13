@@ -47,3 +47,24 @@ TEST_CASE("AddVertexAndEdge")
         CHECK(undirectedGraph.GetEdges().Size() == 3);
     }
 }
+
+TEST_CASE("AddVertexWithIncrementalID")
+{
+    graph::Graph<int32_t, double_t, 2, false> undirectedGraph(3, 3);
+
+    SUBCASE("Add vertices to the graph")
+    {
+        graph::Vertex<int32_t, double_t, 2> vertex1(0);
+        graph::Vertex<int32_t, double_t, 2> vertex2(1);
+        graph::Vertex<int32_t, double_t, 2> vertex3(2);
+        graph::Vertex<int32_t, double_t, 2> vertex4(
+            3); // ID greater than the number of vertices
+
+        undirectedGraph.AddVertex(vertex1);
+        undirectedGraph.AddVertex(vertex2);
+        undirectedGraph.AddVertex(vertex3);
+        undirectedGraph.AddVertex(vertex4);
+
+        CHECK(undirectedGraph.GetVertices().Size() == 4);
+    }
+}

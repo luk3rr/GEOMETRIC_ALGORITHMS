@@ -114,6 +114,11 @@ namespace graph
     void
     Graph<typeG, typeT, nDim, directed>::AddVertex(Vertex<typeG, typeT, nDim> newVertex)
     {
+        if (newVertex.GetID() >= this->m_vertices.Size())
+        {
+            m_vertices.Resize(newVertex.GetID() + 1);
+        }
+
         this->m_vertices[newVertex.GetID()] = newVertex;
     }
 
@@ -141,7 +146,8 @@ namespace graph
     }
 
     template<typename typeG, typename typeT, std::size_t nDim, bool directed>
-    void Graph<typeG, typeT, nDim, directed>::AddEdge(std::size_t vertexID, std::size_t neighborID)
+    void Graph<typeG, typeT, nDim, directed>::AddEdge(std::size_t vertexID,
+                                                      std::size_t neighborID)
     {
         this->AddEdge(vertexID, neighborID, 0);
     }
