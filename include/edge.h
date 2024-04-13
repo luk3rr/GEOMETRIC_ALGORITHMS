@@ -26,8 +26,10 @@ namespace graph
      * @tparam typeE Type of the edge cost (e.g., int, double, etc.).
      * @tparam typeT Type of the coordinates of the points (e.g., int, double, etc.).
      * @tparam nDim The number of dimensions for the line (e.g., 2 for 2D, 3 for 3D).
+     * @tparam typeD Type of the data stored in the vertices (e.g., int, double, vector,
+     * etc.).
      */
-    template<typename typeE, typename typeT, std::size_t nDim>
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD = bool>
     class Edge : public geom::Line<typeT, nDim>
     {
         private:
@@ -35,10 +37,11 @@ namespace graph
             typeE m_edgeCost;
 
         public:
-            Edge(Vertex<typeE, typeT, nDim>* sideA, Vertex<typeE, typeT, nDim>* sideB);
-            Edge(Vertex<typeE, typeT, nDim>* sideA,
-                 Vertex<typeE, typeT, nDim>* sideB,
-                 typeE                       edgeCost);
+            Edge(Vertex<typeE, typeT, nDim, typeD>* sideA,
+                 Vertex<typeE, typeT, nDim, typeD>* sideB);
+            Edge(Vertex<typeE, typeT, nDim, typeD>* sideA,
+                 Vertex<typeE, typeT, nDim, typeD>* sideB,
+                 typeE                              edgeCost);
 
             ~Edge();
 
@@ -70,42 +73,42 @@ namespace graph
             /**
              * @return Pair<a*, b*>, where a, b are pointers to vertex
              **/
-            Pair<Vertex<typeE, typeT, nDim>*, Vertex<typeE, typeT, nDim>*>
+            Pair<Vertex<typeE, typeT, nDim, typeD>*, Vertex<typeE, typeT, nDim, typeD>*>
             GetVertices();
     };
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Edge<typeE, typeT, nDim>::Edge(Vertex<typeE, typeT, nDim>* sideA,
-                                   Vertex<typeE, typeT, nDim>* sideB)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Edge<typeE, typeT, nDim, typeD>::Edge(Vertex<typeE, typeT, nDim, typeD>* sideA,
+                                          Vertex<typeE, typeT, nDim, typeD>* sideB)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
         this->m_edgeCost = 0;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Edge<typeE, typeT, nDim>::Edge(Vertex<typeE, typeT, nDim>* sideA,
-                                   Vertex<typeE, typeT, nDim>* sideB,
-                                   typeE                       edgeCost)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Edge<typeE, typeT, nDim, typeD>::Edge(Vertex<typeE, typeT, nDim, typeD>* sideA,
+                                          Vertex<typeE, typeT, nDim, typeD>* sideB,
+                                          typeE                              edgeCost)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
         this->m_edgeCost = edgeCost;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Edge<typeE, typeT, nDim>::Edge(const Edge& other) : geom::Line<typeT, nDim>(other)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Edge<typeE, typeT, nDim, typeD>::Edge(const Edge& other)
+        : geom::Line<typeT, nDim>(other)
 
     {
         this->m_edgeCost = other.m_edgeCost;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Edge<typeE, typeT, nDim>::~Edge()
-    {
-    }
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Edge<typeE, typeT, nDim, typeD>::~Edge()
+    { }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Edge<typeE, typeT, nDim>&
-    Edge<typeE, typeT, nDim>::operator=(const Edge<typeE, typeT, nDim>& other)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Edge<typeE, typeT, nDim, typeD>& Edge<typeE, typeT, nDim, typeD>::operator=(
+        const Edge<typeE, typeT, nDim, typeD>& other)
     {
         if (this != &other)
         {
@@ -116,32 +119,33 @@ namespace graph
         return *this;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    bool Edge<typeE, typeT, nDim>::operator<(const Edge& other)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    bool Edge<typeE, typeT, nDim, typeD>::operator<(const Edge& other)
     {
         return this->m_edgeCost < other.m_edgeCost;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    void Edge<typeE, typeT, nDim>::SetCost(typeE newCost)
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    void Edge<typeE, typeT, nDim, typeD>::SetCost(typeE newCost)
     {
         this->m_edgeCost = newCost;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    typeE Edge<typeE, typeT, nDim>::GetCost()
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    typeE Edge<typeE, typeT, nDim, typeD>::GetCost()
     {
         return this->m_edgeCost;
     }
 
-    template<typename typeE, typename typeT, std::size_t nDim>
-    Pair<Vertex<typeE, typeT, nDim>*, Vertex<typeE, typeT, nDim>*>
-    Edge<typeE, typeT, nDim>::GetVertices()
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
+    Pair<Vertex<typeE, typeT, nDim, typeD>*, Vertex<typeE, typeT, nDim, typeD>*>
+    Edge<typeE, typeT, nDim, typeD>::GetVertices()
     {
         // Make dynamic cast to get correct data from base class
-        return Pair<Vertex<typeE, typeT, nDim>*, Vertex<typeE, typeT, nDim>*>(
-            dynamic_cast<Vertex<typeE, typeT, nDim>*>(this->GetA()),
-            dynamic_cast<Vertex<typeE, typeT, nDim>*>(this->GetB()));
+        return Pair<Vertex<typeE, typeT, nDim, typeD>*,
+                    Vertex<typeE, typeT, nDim, typeD>*>(
+            dynamic_cast<Vertex<typeE, typeT, nDim, typeD>*>(this->GetA()),
+            dynamic_cast<Vertex<typeE, typeT, nDim, typeD>*>(this->GetB()));
     }
 
 } // namespace graph

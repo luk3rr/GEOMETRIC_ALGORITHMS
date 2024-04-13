@@ -17,7 +17,7 @@
 
 namespace graph
 {
-    template<typename typeE, typename typeT, std::size_t nDim>
+    template<typename typeE, typename typeT, std::size_t nDim, typename typeD>
     class Edge;
 
     /**
@@ -46,15 +46,15 @@ namespace graph
             typeD m_data; // Data stored in the vertex
 
             // Edge connecting to the successor and predecessor vertex
-            Edge<typeV, typeT, nDim>* m_successor;
-            Edge<typeV, typeT, nDim>* m_predecessor;
+            Edge<typeV, typeT, nDim, typeD>* m_successor;
+            Edge<typeV, typeT, nDim, typeD>* m_predecessor;
 
             uint32_t m_label;         // Vertex label
             uint32_t m_arrivalTime;   // Arrival time of the vertex
             uint32_t m_departureTime; // Departure time of the vertex
 
             // Adjacency list
-            Vector<Edge<typeV, typeT, nDim>*> m_adjList;
+            Vector<Edge<typeV, typeT, nDim, typeD>*> m_adjList;
 
         public:
             Vertex();
@@ -111,14 +111,14 @@ namespace graph
              * @param edge A pointer to the edge connecting this vertex to its
              * successor
              */
-            void SetEdge2Successor(Edge<typeV, typeT, nDim>* edge);
+            void SetEdge2Successor(Edge<typeV, typeT, nDim, typeD>* edge);
 
             /**
              * @brief Set the edge connecting to the predecessor vertex
              * @param edge A pointer to the edge connecting this vertex to its
              * predecessor
              */
-            void SetEdge2Predecessor(Edge<typeV, typeT, nDim>* edge);
+            void SetEdge2Predecessor(Edge<typeV, typeT, nDim, typeD>* edge);
 
             /**
              * @brief Set the label of the vertex
@@ -167,13 +167,13 @@ namespace graph
              * @return A pointer to the edge connecting this vertex to its successor
              * vertex
              */
-            Edge<typeV, typeT, nDim>* GetEdge2Successor();
+            Edge<typeV, typeT, nDim, typeD>* GetEdge2Successor();
 
             /**
              * @return A pointer to the edge connecting this vertex to its predecessor
              * vertex
              */
-            Edge<typeV, typeT, nDim>* GetEdge2Predecessor();
+            Edge<typeV, typeT, nDim, typeD>* GetEdge2Predecessor();
 
             /**
              * @return The label of the vertex
@@ -193,7 +193,7 @@ namespace graph
             /**
              * @return Address of the adjacency list of this vertex
              */
-            Vector<Edge<typeV, typeT, nDim>*>& GetAdjacencyList();
+            Vector<Edge<typeV, typeT, nDim, typeD>*>& GetAdjacencyList();
     };
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
@@ -307,15 +307,15 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    void
-    Vertex<typeV, typeT, nDim, typeD>::SetEdge2Successor(Edge<typeV, typeT, nDim>* edge)
+    void Vertex<typeV, typeT, nDim, typeD>::SetEdge2Successor(
+        Edge<typeV, typeT, nDim, typeD>* edge)
     {
         this->m_successor = edge;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
     void Vertex<typeV, typeT, nDim, typeD>::SetEdge2Predecessor(
-        Edge<typeV, typeT, nDim>* edge)
+        Edge<typeV, typeT, nDim, typeD>* edge)
     {
         this->m_predecessor = edge;
     }
@@ -369,13 +369,15 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim, typeD>::GetEdge2Successor()
+    Edge<typeV, typeT, nDim, typeD>*
+    Vertex<typeV, typeT, nDim, typeD>::GetEdge2Successor()
     {
         return m_successor;
     }
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Edge<typeV, typeT, nDim>* Vertex<typeV, typeT, nDim, typeD>::GetEdge2Predecessor()
+    Edge<typeV, typeT, nDim, typeD>*
+    Vertex<typeV, typeT, nDim, typeD>::GetEdge2Predecessor()
     {
         return m_predecessor;
     }
@@ -399,7 +401,7 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, std::size_t nDim, typename typeD>
-    Vector<Edge<typeV, typeT, nDim>*>&
+    Vector<Edge<typeV, typeT, nDim, typeD>*>&
     Vertex<typeV, typeT, nDim, typeD>::GetAdjacencyList()
     {
         return m_adjList;
