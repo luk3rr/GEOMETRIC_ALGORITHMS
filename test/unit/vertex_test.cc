@@ -9,6 +9,7 @@
 #include <cmath>
 
 #include "vertex.h"
+#include "edge.h"
 
 TEST_CASE("CreateVertex")
 {

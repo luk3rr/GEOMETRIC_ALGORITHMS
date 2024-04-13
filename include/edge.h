@@ -12,12 +12,10 @@
 #include "pair.h"
 
 #include "line.h"
+#include "vertex.h"
 
 namespace graph
 {
-    template<typename typeE, typename typeT, std::size_t nDim>
-    class Vertex;
-
     /**
      * @brief Represents an edge in a graph in n-dimensional space.
      *
