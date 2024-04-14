@@ -101,6 +101,11 @@ namespace graph
              * @return The number of vertices in the graph
              **/
             std::size_t GetNumVertices() const;
+
+            /**
+             * @brief Destroys the graph, deallocating all edges
+             **/
+            void Destroy();
     };
 
     template<typename typeG,
@@ -128,10 +133,7 @@ namespace graph
              bool        directed>
     Graph<typeG, typeT, typeD, nDim, directed>::~Graph()
     {
-        for (auto edge : this->m_edges)
-        {
-            delete edge;
-        }
+        this->Destroy();
     }
 
     template<typename typeG,
@@ -219,6 +221,23 @@ namespace graph
     std::size_t Graph<typeG, typeT, typeD, nDim, directed>::GetNumVertices() const
     {
         return this->m_numVertices;
+    }
+
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    void Graph<typeG, typeT, typeD, nDim, directed>::Destroy()
+    {
+        for (auto edge : this->m_edges)
+        {
+            delete edge;
+        }
+
+        this->m_edges.Clear();
+        this->m_vertices.Clear();
+        this->m_numVertices = 0;
     }
 
 } // namespace graph
