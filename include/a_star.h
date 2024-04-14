@@ -37,9 +37,8 @@ namespace graph
                       heuristics::distance::Heuristic             heuristic =
                           heuristics::distance::Heuristic::EUCLIDEAN)
     {
-        bheap::PriorityQueue<
-            Vertex<typeG, typeT, typeD, nDim>*,
-            decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
+        bheap::PriorityQueue<Vertex<typeG, typeT, typeD, nDim>*,
+                             decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Defines the infinity value for the typeG type

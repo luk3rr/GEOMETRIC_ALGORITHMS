@@ -42,7 +42,7 @@ namespace graph
          * @brief A function object to compare two vertices based on their
          * current cost
          */
-        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim = 2>
         auto Vertex = [](const graph::Vertex<typeG, typeT, typeD, nDim>* v1,
                          const graph::Vertex<typeG, typeT, typeD, nDim>* v2) -> bool {
             return v1->GetCurrentCost() <= v2->GetCurrentCost();
@@ -52,7 +52,7 @@ namespace graph
          * @brief A function object to compare two vertices based on only their
          * heuristic cost
          */
-        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim = 2>
         auto VertexHeuristic =
             [](const graph::Vertex<typeG, typeT, typeD, nDim>* v1,
                const graph::Vertex<typeG, typeT, typeD, nDim>* v2) -> bool {
@@ -62,7 +62,7 @@ namespace graph
         /**
          * @brief A function object to compare two edges based on their cost
          */
-        template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+        template<typename typeG, typename typeT, typename typeD, std::size_t nDim = 2>
         auto Edge = [](const graph::Edge<typeG, typeT, typeD, nDim>* e1,
                        const graph::Edge<typeG, typeT, typeD, nDim>* e2) -> bool {
             return e1->GetCost() <= e2->GetCost();
@@ -75,7 +75,7 @@ namespace graph
      * @param uv Pointer to the edge (u, v)
      * @return True if edge was relaxed, False otherwise
      **/
-    template<typename typeG, typename typeT, typename typeD, std::size_t nDim>
+    template<typename typeG, typename typeT, typename typeD, std::size_t nDim = 2>
     inline bool Relax(Vertex<typeG, typeT, typeD, nDim>* u,
                       Vertex<typeG, typeT, typeD, nDim>* v,
                       Edge<typeG, typeT, typeD, nDim>*   uv)
