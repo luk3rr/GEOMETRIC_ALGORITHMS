@@ -13,6 +13,7 @@
 #include "vector.h"
 
 #include "edge.h"
+#include "map.h"
 #include "vertex.h"
 
 namespace graph
@@ -45,21 +46,14 @@ namespace graph
     class Graph
     {
         private:
-            // Each vector position is the vertex ID
-            Vector<Vertex<typeG, typeT, typeD, nDim>> m_vertices;
+            // Store all vertices created by this graph in a map
+            rbtree::Map<std::size_t, Vertex<typeG, typeT, typeD, nDim>> m_vertices;
 
             // Store all edges created by this graph
             Vector<Edge<typeG, typeT, typeD, nDim>*> m_edges;
 
-            // Number of vertices in the graph
-            std::size_t m_numVertices;
-
         public:
-            /**
-             * @param numVertices Number of vertices in the graph
-             * @param numEdges Number of edges in the graph
-             **/
-            Graph(std::size_t numVertices, std::size_t numEdges);
+            Graph();
 
             ~Graph();
 
@@ -85,10 +79,10 @@ namespace graph
             void AddEdge(std::size_t vertexID, std::size_t neighborID);
 
             /**
-             * @brief Retrieves a reference to the vector of vertices
-             * @return A reference to the vector containing all vertices in the graph
+             * @brief Retrieves a reference to the map of vertices
+             * @return A reference to the map containing all vertices in the graph
              **/
-            Vector<Vertex<typeG, typeT, typeD, nDim>>& GetVertices();
+            rbtree::Map<std::size_t, Vertex<typeG, typeT, typeD, nDim>>& GetVertices();
 
             /**
              * @brief Retrieves a reference to the vector of edges
@@ -113,18 +107,8 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    Graph<typeG, typeT, typeD, nDim, directed>::Graph(std::size_t numVertices,
-                                                      std::size_t numEdges)
-    {
-        // Resize the vector of vertices to allocate space for 'numVertices' elements,
-        // allowing access using the [] operator.
-        this->m_vertices.Resize(numVertices);
-
-        // Reserve space in the vector of edges to optimize for 'numEdges' elements
-        this->m_edges.Reserve(numEdges);
-
-        this->m_numVertices = 0;
-    }
+    Graph<typeG, typeT, typeD, nDim, directed>::Graph()
+    { }
 
     template<typename typeG,
              typename typeT,
@@ -144,13 +128,7 @@ namespace graph
     void Graph<typeG, typeT, typeD, nDim, directed>::AddVertex(
         Vertex<typeG, typeT, typeD, nDim> newVertex)
     {
-        if (newVertex.GetID() >= this->m_vertices.Size())
-        {
-            m_vertices.Resize(newVertex.GetID() + 1);
-        }
-
-        this->m_vertices[newVertex.GetID()] = newVertex;
-        this->m_numVertices++;
+        this->m_vertices.Insert(newVertex.GetID(), newVertex);
     }
 
     template<typename typeG,
@@ -196,7 +174,7 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    Vector<Vertex<typeG, typeT, typeD, nDim>>&
+    rbtree::Map<std::size_t, Vertex<typeG, typeT, typeD, nDim>>&
     Graph<typeG, typeT, typeD, nDim, directed>::GetVertices()
     {
         return this->m_vertices;
@@ -220,7 +198,7 @@ namespace graph
              bool        directed>
     std::size_t Graph<typeG, typeT, typeD, nDim, directed>::GetNumVertices() const
     {
-        return this->m_numVertices;
+        return this->m_vertices.Size();
     }
 
     template<typename typeG,
@@ -236,8 +214,7 @@ namespace graph
         }
 
         this->m_edges.Clear();
-        this->m_vertices.Clear();
-        this->m_numVertices = 0;
+        this->GetVertices().Clear();
     }
 
 } // namespace graph

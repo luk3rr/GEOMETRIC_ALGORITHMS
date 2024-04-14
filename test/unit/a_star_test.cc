@@ -11,7 +11,7 @@
 TEST_CASE("A* Search algorithm test")
 {
     // Create a graph with some vertices and edges
-    graph::Graph<double_t, uint32_t> graph(9, 14);
+    graph::Graph<double_t, uint32_t> graph;
 
     graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 3, 4 }, 0));
     graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 4, 5 }, 1));

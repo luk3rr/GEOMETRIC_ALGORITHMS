@@ -11,7 +11,7 @@
 TEST_CASE("DFS algorithm test")
 {
     // Create a graph with some vertices and edges
-    graph::Graph<uint32_t, uint32_t> graph(9, 14);
+    graph::Graph<uint32_t, uint32_t> graph;
 
     graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(0));
     graph.AddVertex(graph::Vertex<uint32_t, uint32_t>(1));

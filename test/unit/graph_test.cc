@@ -12,7 +12,7 @@
 
 TEST_CASE("AddVertexAndEdge")
 {
-    graph::Graph<int32_t, double_t> undirectedGraph(3, 3);
+    graph::Graph<int32_t, double_t> undirectedGraph;
 
     SUBCASE("Add vertices to the graph")
     {
@@ -51,7 +51,7 @@ TEST_CASE("AddVertexAndEdge")
 
 TEST_CASE("AddVertexWithIncrementalID")
 {
-    graph::Graph<int32_t, double_t> undirectedGraph(3, 3);
+    graph::Graph<int32_t, double_t> undirectedGraph;
 
     SUBCASE("Add vertices to the graph")
     {
@@ -73,7 +73,7 @@ TEST_CASE("AddVertexWithIncrementalID")
 
 TEST_CASE("Destroy the graph")
 {
-    graph::Graph<int32_t, double_t> undirectedGraph(3, 3);
+    graph::Graph<int32_t, double_t> undirectedGraph;
 
     SUBCASE("Add vertices to the graph")
     {
