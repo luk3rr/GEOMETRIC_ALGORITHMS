@@ -8,15 +8,14 @@
 
 #include <cmath>
 
-#include "vertex.h"
 #include "edge.h"
+#include "vertex.h"
 
 TEST_CASE("CreateVertex")
 {
     SUBCASE("Create Vertex with default values")
     {
         graph::Vertex<int32_t, double_t> vertex;
-        CHECK(vertex.GetID() == 0);
         CHECK(vertex.GetCurrentCost() == 0);
         CHECK(vertex.GetEdge2Predecessor() == nullptr);
         CHECK(vertex.GetAdjacencyList().Size() == 0);
@@ -34,23 +33,19 @@ TEST_CASE("CreateVertex")
 
 TEST_CASE("SetVertexAttributes")
 {
-    graph::Vertex<int32_t, double_t> vertex;
+    graph::Vertex<int32_t, double_t> vertex0;
     graph::Vertex<int32_t, double_t> vertex1;
     graph::Vertex<int32_t, double_t> vertex2;
 
-    SUBCASE("Set ID, CurrentCost, and Edge2Predecessor")
-    {
-        vertex.SetID(2);
-        vertex.SetCurrentCost(10);
+    vertex0.SetCurrentCost(10);
 
-        graph::Edge<int32_t, double_t> edge(&vertex1, &vertex2, 0);
+    graph::Edge<int32_t, double_t> edge(0, &vertex1, &vertex2);
 
-        vertex.SetEdge2Predecessor(&edge);
+    vertex0.SetEdge2Predecessor(&edge);
 
-        CHECK(vertex.GetID() == 2);
-        CHECK(vertex.GetCurrentCost() == 10);
-        CHECK(vertex.GetEdge2Predecessor() == &edge);
-    }
+    CHECK(vertex0.GetID() == 0);
+    CHECK(vertex0.GetCurrentCost() == 10);
+    CHECK(vertex0.GetEdge2Predecessor() == &edge);
 }
 
 TEST_CASE("CompareVertices")

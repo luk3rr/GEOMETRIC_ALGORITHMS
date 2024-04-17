@@ -76,7 +76,7 @@ namespace graph
 
             if (u->GetID() == targetID)
             {
-                PrintPath(graph, u);
+                // PrintPath(graph, u);
                 break;
             }
 

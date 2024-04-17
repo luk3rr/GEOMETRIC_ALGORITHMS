@@ -69,14 +69,14 @@ namespace graph
              * @param id Vertex ID
              * @param data Data stored in the vertex
              */
-            Vertex(std::size_t m_id, typeD data = typeD());
+            Vertex(std::size_t id, typeD data = typeD());
 
             /**
              * @brief Constructor overload
              * @param coordinates Point coordinates
              * @param id Vertex ID
              */
-            Vertex(Vector<typeT> coordinates, std::size_t id, typeD data = typeD());
+            Vertex(std::size_t id, Vector<typeT> coordinates, typeD data = typeD());
 
             ~Vertex();
 
@@ -86,12 +86,6 @@ namespace graph
             bool operator>=(const Vertex<typeV, typeT, typeD, nDim>& other) const;
             bool operator<(const Vertex<typeV, typeT, typeD, nDim>& other) const;
             bool operator>(const Vertex<typeV, typeT, typeD, nDim>& other) const;
-
-            /**
-             * @brief Set a new value for the vertex ID
-             * @param id New value for the vertex ID
-             */
-            void SetID(std::size_t id);
 
             /**
              * @brief Set a new value for the data stored in the vertex
@@ -233,9 +227,9 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
-    Vertex<typeV, typeT, typeD, nDim>::Vertex(Vector<typeT> coordinates,
-                                              std::size_t   id,
-                                              typeD         data)
+    Vertex<typeV, typeT, typeD, nDim>::Vertex(std::size_t   id,
+                                              Vector<typeT> coordinates,
+                                              typeD data)
         : geom::Point<typeT, nDim>(coordinates)
     {
         this->m_id            = id;
@@ -286,12 +280,6 @@ namespace graph
         const Vertex<typeV, typeT, typeD, nDim>& other) const
     {
         return this->m_currentCost > other.m_currentCost;
-    }
-
-    template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
-    void Vertex<typeV, typeT, typeD, nDim>::SetID(std::size_t id)
-    {
-        this->m_id = id;
     }
 
     template<typename typeV, typename typeT, typename typeD, std::size_t nDim>

@@ -14,108 +14,106 @@ TEST_CASE("AddVertexAndEdge")
 {
     graph::Graph<int32_t, double_t> undirectedGraph;
 
-    SUBCASE("Add vertices to the graph")
+    undirectedGraph.AddVertex();
+    undirectedGraph.AddVertex();
+    undirectedGraph.AddVertex();
+
+    REQUIRE(undirectedGraph.GetVertices().Size() == 3);
+    REQUIRE(undirectedGraph.GetNumVertices() == 3);
+
+    // Add an edge between vertex 0 and 1 with cost 10
+    undirectedGraph.AddEdge(0, 1, 10);
+    // Add an edge between vertex 1 and 2 with cost 20
+    undirectedGraph.AddEdge(1, 2, 20);
+    // Add an edge between vertex 2 and 0 with cost 30
+    undirectedGraph.AddEdge(2, 0, 30);
+
+    CHECK(undirectedGraph.GetEdges().Size() == 3);
+}
+
+TEST_CASE("Adding an edge to a vertex that does not exist")
+{
+
+    graph::Graph<int32_t, double_t> undirectedGraph;
+
+    undirectedGraph.AddVertex();
+
+    SUBCASE("(A,B), A does not exist")
     {
-        graph::Vertex<int32_t, double_t> vertex1(0);
-        graph::Vertex<int32_t, double_t> vertex2(1);
-        graph::Vertex<int32_t, double_t> vertex3(2);
-
-        undirectedGraph.AddVertex(vertex1);
-        undirectedGraph.AddVertex(vertex2);
-        undirectedGraph.AddVertex(vertex3);
-
-        CHECK(undirectedGraph.GetVertices().Size() == 3);
-        CHECK(undirectedGraph.GetNumVertices() == 3);
+        CHECK_FALSE(undirectedGraph.AddEdge(20, 0));
     }
 
-    SUBCASE("Add edges to the graph")
+    SUBCASE("(A,B), B does not exist")
     {
-        graph::Vertex<int32_t, double_t> vertex1(0);
-        graph::Vertex<int32_t, double_t> vertex2(1);
-        graph::Vertex<int32_t, double_t> vertex3(2);
-
-        undirectedGraph.AddVertex(vertex1);
-        undirectedGraph.AddVertex(vertex2);
-        undirectedGraph.AddVertex(vertex3);
-
-        // Add an edge between vertex 0 and 1 with cost 10
-        undirectedGraph.AddEdge(0, 1, 10);
-        // Add an edge between vertex 1 and 2 with cost 20
-        undirectedGraph.AddEdge(1, 2, 20);
-        // Add an edge between vertex 2 and 0 with cost 30
-        undirectedGraph.AddEdge(2, 0, 30);
-
-        CHECK(undirectedGraph.GetEdges().Size() == 3);
+        CHECK_FALSE(undirectedGraph.AddEdge(0, 20));
     }
 }
 
-TEST_CASE("AddVertexWithIncrementalID")
+TEST_CASE("Removing a vertex from the graph")
 {
     graph::Graph<int32_t, double_t> undirectedGraph;
 
-    SUBCASE("Add vertices to the graph")
+    undirectedGraph.AddVertex();
+
+    SUBCASE("Removing an existing vertex")
     {
-        graph::Vertex<int32_t, double_t> vertex1(0);
-        graph::Vertex<int32_t, double_t> vertex2(1);
-        graph::Vertex<int32_t, double_t> vertex3(2);
-        graph::Vertex<int32_t, double_t> vertex4(
-            3); // ID greater than the number of vertices
-
-        undirectedGraph.AddVertex(vertex1);
-        undirectedGraph.AddVertex(vertex2);
-        undirectedGraph.AddVertex(vertex3);
-        undirectedGraph.AddVertex(vertex4);
-
-        CHECK(undirectedGraph.GetVertices().Size() == 4);
-        CHECK(undirectedGraph.GetNumVertices() == 4);
+        REQUIRE(undirectedGraph.ContainsVertex(0));
+        CHECK(undirectedGraph.RemoveVertex(0));
+        CHECK_FALSE(undirectedGraph.ContainsVertex(0));
     }
+
+    SUBCASE("Removing a non-existing vertex")
+    {
+        CHECK_FALSE(undirectedGraph.RemoveVertex(20));
+    }
+}
+
+TEST_CASE("Removing an edge from the graph")
+{
+    graph::Graph<int32_t, double_t> undirectedGraph;
+
+    undirectedGraph.AddVertex();
+    undirectedGraph.AddVertex();
+
+    undirectedGraph.AddEdge(0, 1);
+
+   SUBCASE("Removing an existing edge")
+   {
+       REQUIRE(undirectedGraph.ContainsEdge(0));
+       CHECK(undirectedGraph.RemoveEdge(0));
+       CHECK_FALSE(undirectedGraph.ContainsEdge(0));
+   }
+
+   SUBCASE("Removing a non-existing edge")
+   {
+       CHECK_FALSE(undirectedGraph.RemoveEdge(20));
+   }
 }
 
 TEST_CASE("Destroy the graph")
 {
     graph::Graph<int32_t, double_t> undirectedGraph;
 
-    SUBCASE("Add vertices to the graph")
-    {
-        graph::Vertex<int32_t, double_t> vertex1(0);
-        graph::Vertex<int32_t, double_t> vertex2(1);
-        graph::Vertex<int32_t, double_t> vertex3(2);
+    undirectedGraph.AddVertex();
+    undirectedGraph.AddVertex();
+    undirectedGraph.AddVertex();
 
-        undirectedGraph.AddVertex(vertex1);
-        undirectedGraph.AddVertex(vertex2);
-        undirectedGraph.AddVertex(vertex3);
+    REQUIRE(undirectedGraph.GetVertices().Size() >= 3);
+    REQUIRE(undirectedGraph.GetNumVertices() >= 3);
 
-        CHECK(undirectedGraph.GetVertices().Size() == 3);
-        CHECK(undirectedGraph.GetNumVertices() == 3);
-    }
+    // Add an edge between vertex 0 and 1 with cost 10
+    undirectedGraph.AddEdge(0, 1, 10);
+    // Add an edge between vertex 1 and 2 with cost 20
+    undirectedGraph.AddEdge(1, 2, 20);
+    // Add an edge between vertex 2 and 0 with cost 30
+    undirectedGraph.AddEdge(2, 0, 30);
 
-    SUBCASE("Add edges to the graph")
-    {
-        graph::Vertex<int32_t, double_t> vertex1(0);
-        graph::Vertex<int32_t, double_t> vertex2(1);
-        graph::Vertex<int32_t, double_t> vertex3(2);
+    REQUIRE(undirectedGraph.GetEdges().Size() >= 3);
 
-        undirectedGraph.AddVertex(vertex1);
-        undirectedGraph.AddVertex(vertex2);
-        undirectedGraph.AddVertex(vertex3);
+    undirectedGraph.Destroy();
 
-        // Add an edge between vertex 0 and 1 with cost 10
-        undirectedGraph.AddEdge(0, 1, 10);
-        // Add an edge between vertex 1 and 2 with cost 20
-        undirectedGraph.AddEdge(1, 2, 20);
-        // Add an edge between vertex 2 and 0 with cost 30
-        undirectedGraph.AddEdge(2, 0, 30);
-
-        CHECK(undirectedGraph.GetEdges().Size() == 3);
-    }
-
-    SUBCASE("Destroy the graph")
-    {
-        undirectedGraph.Destroy();
-
-        CHECK(undirectedGraph.GetVertices().Size() == 0);
-        CHECK(undirectedGraph.GetEdges().Size() == 0);
-        CHECK(undirectedGraph.GetNumVertices() == 0);
-        CHECK(undirectedGraph.GetEdges().Size() == 0);
-    }
+    CHECK(undirectedGraph.GetVertices().Size() == 0);
+    CHECK(undirectedGraph.GetEdges().Size() == 0);
+    CHECK(undirectedGraph.GetNumVertices() == 0);
+    CHECK(undirectedGraph.GetEdges().Size() == 0);
 }

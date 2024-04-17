@@ -51,6 +51,8 @@ namespace graph
             rbtree::Map<std::size_t, Vertex<typeG, typeT, typeD, nDim>> m_vertices;
             rbtree::Map<std::size_t, Edge<typeG, typeT, typeD, nDim>*>  m_edges;
 
+            std::size_t m_vertexCount;
+            std::size_t m_EdgeCount;
             // Store all edges created by this graph
             // Vector<Edge<typeG, typeT, typeD, nDim>*> m_edges;
 
@@ -60,25 +62,49 @@ namespace graph
             ~Graph();
 
             /**
-             * @brief Adds a vertex to the graph
-             * @param vertex New vertex to be added to the graph
-             **/
-            void AddVertex(Vertex<typeG, typeT, typeD, nDim> vertex);
+             * @brief Adds a new vertex to the graph
+             * @param data The data to be stored in the vertex. Defaults to an empty
+             * instance of typeD
+             * @return A reference to the vertex created
+             */
+            Vertex<typeG, typeT, typeD, nDim>& AddVertex(typeD data = typeD());
+
+            /**
+             * @brief Adds a new vertex to the graph.
+             * @param data The data to be stored in the vertex. Defaults to an empty
+             * instance of typeD
+             * @param coordinates Coordinates of the vertex
+             * return A reference to the vertex created
+             */
+            Vertex<typeG, typeT, typeD, nDim>& AddVertex(Vector<typeT> coordinates,
+                                                         typeD         data = typeD());
 
             /**
              * @brief Adds a edge
              * @param vertexID ID of the vertex that will receive a neighbor
              * @param neighborID ID of the neighbor
              * @param edgeCost Cost of the edge
+             * @return True if the edge was added, False otherwise
+             *
+             * The edge will not be added if any of the vertices does not exist
+             *
+             * The ID of the edge is an incremental integer and can be obtained after
+             * creating the vertex by calling GetLastEdgeID()
              **/
-            void AddEdge(std::size_t vertexID, std::size_t neighborID, typeG edgeCost);
+            bool AddEdge(std::size_t vertexID, std::size_t neighborID, typeG edgeCost);
 
             /**
              * @brief Adds a edge
              * @param vertexID ID of the vertex that will receive a neighbor
              * @param neighborID ID of the neighbor
+             * @return True if the edge was added, False otherwise
+             *
+             * The edge will not be added if any of the vertices does not exist
+             *
+             * The ID of the edge is an incremental integer and can be obtained after
+             * creating the vertex by calling GetLastEdgeID()
              **/
-            void AddEdge(std::size_t vertexID, std::size_t neighborID);
+            bool AddEdge(std::size_t vertexID, std::size_t neighborID);
 
             /**
              * @brief Removes a vertex from the graph
@@ -133,6 +159,18 @@ namespace graph
             std::size_t GetNumEdges() const;
 
             /**
+             * @brief Retrieves the ID of the last created vertex
+             * @return The ID of the last vertex created
+             */
+            std::size_t GetLastVertexID() const;
+
+            /**
+             * @brief Retrieves the ID of the last created edge
+             * @return The ID of the last edge created
+             */
+            std::size_t GetLastEdgeID() const;
+
+            /**
              * @brief Checks if the graph contains a vertex with a given ID
              * @param vertexID ID of the vertex to be checked
              * @return True if the graph contains the vertex, false otherwise
@@ -158,7 +196,10 @@ namespace graph
              std::size_t nDim,
              bool        directed>
     Graph<typeG, typeT, typeD, nDim, directed>::Graph()
-    { }
+    {
+        this->m_vertexCount = 0;
+        this->m_EdgeCount   = 0;
+    }
 
     template<typename typeG,
              typename typeT,
@@ -175,10 +216,10 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    void Graph<typeG, typeT, typeD, nDim, directed>::AddVertex(
-        Vertex<typeG, typeT, typeD, nDim> newVertex)
+    Vertex<typeG, typeT, typeD, nDim>&
+    Graph<typeG, typeT, typeD, nDim, directed>::AddVertex(typeD data)
     {
-        this->m_vertices.Insert(newVertex.GetID(), newVertex);
+        return this->AddVertex(Vector<typeT>(), data);
     }
 
     template<typename typeG,
@@ -186,15 +227,38 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    void Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
+    Vertex<typeG, typeT, typeD, nDim>&
+    Graph<typeG, typeT, typeD, nDim, directed>::AddVertex(Vector<typeT> coordinates,
+                                                          typeD         data)
+    {
+        this->m_vertices.Insert(
+            m_vertexCount,
+            Vertex<typeG, typeT, typeD, nDim>(m_vertexCount, coordinates, data));
+
+        this->m_vertexCount++;
+
+        return this->m_vertices.Get(m_vertexCount - 1);
+    }
+
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    bool Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
                                                              std::size_t neighborID,
                                                              typeG       edgeCost)
     {
+        // Check if vertices exists
+        if (not(this->m_vertices.Contains(vertexID) and
+                this->m_vertices.Contains(neighborID)))
+            return false;
+
         // Create a ptr for the edge
         Edge<typeG, typeT, typeD, nDim>* edge =
-            new Edge<typeG, typeT, typeD, nDim>(&this->m_vertices[vertexID],
+            new Edge<typeG, typeT, typeD, nDim>(this->m_EdgeCount,
+                                                &this->m_vertices[vertexID],
                                                 &this->m_vertices[neighborID],
-                                                this->m_edges.Size(),
                                                 edgeCost);
 
         // Add the edge to the neighbor list of vertexID
@@ -207,6 +271,10 @@ namespace graph
 
         // Store the edge to deallocate the memory later
         this->m_edges.Insert(edge->GetID(), edge);
+
+        this->m_EdgeCount++;
+
+        return true;
     }
 
     template<typename typeG,
@@ -214,10 +282,10 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    void Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
+    bool Graph<typeG, typeT, typeD, nDim, directed>::AddEdge(std::size_t vertexID,
                                                              std::size_t neighborID)
     {
-        this->AddEdge(vertexID, neighborID, 0);
+        return this->AddEdge(vertexID, neighborID, 0);
     }
 
     template<typename typeG,
@@ -232,9 +300,8 @@ namespace graph
             return false;
 
         Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
-        Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
-        u = &this->m_vertices[vertexID];
+        u = &this->m_vertices.Get(vertexID);
 
         // Remove all edges that have vertexID as a neighbor
         for (auto& edge : u->GetAdjacencyList())
@@ -259,23 +326,31 @@ namespace graph
         if (not this->m_edges.Contains(edgeID))
             return false;
 
-        Edge<typeG, typeT, typeD, nDim>*   edge = &this->m_edges[edgeID];
+        Edge<typeG, typeT, typeD, nDim>*   edge = nullptr;
         Vertex<typeG, typeT, typeD, nDim>* u    = nullptr;
         Vertex<typeG, typeT, typeD, nDim>* v    = nullptr;
 
-        // Remove the edge from u
-        u->GetAdjacencyList().Remove(edge->GetID());
+        edge = this->m_edges.Get(edgeID); // this->m_edges[edgeID];
 
-        // if the graph is undirected, remove the edge from v,
-        // since the edge is shared by both vertices
-        if (not directed)
+        u = edge->GetVertices().GetFirst();
+        v = edge->GetVertices().GetSecond();
+
+        if (directed)
         {
-            // Get the neighbor vertex
-            edge->GetVertices().GetFirst()->GetID() == u->GetID()
-                ? v = &this->m_vertices[edge->GetVertices().GetSecond()->GetID()]
-                : v = &this->m_vertices[edge->GetVertices().GetFirst()->GetID()];
+            // If the graph is directed, remove the edge only from the adjacency list of
+            // u, if it exists. Otherwise, remove from v
+            if (u->GetAdjacencyList().Contains(edgeID))
+                u->GetAdjacencyList().Remove(edgeID);
 
-            v->GetAdjacencyList().Remove(edge->GetID());
+            else
+                v->GetAdjacencyList().Remove(edgeID);
+        }
+        else
+        {
+            // If the graph is not directed, then there is a pointer to the edge in each
+            // vertex, so remove them
+            u->GetAdjacencyList().Remove(edgeID);
+            v->GetAdjacencyList().Remove(edgeID);
         }
 
         // Remove the edge from the graph
@@ -370,8 +445,28 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    bool Graph<typeG, typeT, typeD, nDim, directed>::ContainsVertex(
-        std::size_t vertexID)
+    std::size_t Graph<typeG, typeT, typeD, nDim, directed>::GetLastVertexID() const
+    {
+        return this->m_vertexCount - 1;
+    }
+
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    std::size_t Graph<typeG, typeT, typeD, nDim, directed>::GetLastEdgeID() const
+    {
+        return this->m_edgeCount - 1;
+    }
+
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    bool
+    Graph<typeG, typeT, typeD, nDim, directed>::ContainsVertex(std::size_t vertexID)
     {
         return this->m_vertices.Contains(vertexID);
     }
@@ -381,8 +476,7 @@ namespace graph
              typename typeD,
              std::size_t nDim,
              bool        directed>
-    bool
-    Graph<typeG, typeT, typeD, nDim, directed>::ContainsEdge(std::size_t edgeID)
+    bool Graph<typeG, typeT, typeD, nDim, directed>::ContainsEdge(std::size_t edgeID)
     {
         return this->m_edges.Contains(edgeID);
     }

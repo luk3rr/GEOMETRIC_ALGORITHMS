@@ -13,15 +13,15 @@ TEST_CASE("Greedy Best-First Search algorithm test")
     // Create a graph with some vertices and edges
     graph::Graph<double_t, uint32_t> graph;
 
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 3, 4 }, 0));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 4, 5 }, 1));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 6, 5 }, 2));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 8, 5 }, 3));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 9, 4 }, 4));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 8, 3 }, 5));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 6, 3 }, 6));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 4, 3 }, 7));
-    graph.AddVertex(graph::Vertex<double_t, uint32_t>({ 5, 4 }, 8));
+    graph.AddVertex({ 3, 4 });
+    graph.AddVertex({ 4, 5 });
+    graph.AddVertex({ 6, 5 });
+    graph.AddVertex({ 8, 5 });
+    graph.AddVertex({ 9, 4 });
+    graph.AddVertex({ 8, 3 });
+    graph.AddVertex({ 6, 3 });
+    graph.AddVertex({ 4, 3 });
+    graph.AddVertex({ 5, 4 });
 
     // {vertex_i_ID, vertex_j_ID, cost of the edge connecting the two}
     // This graph can be found in the book 'Introduction to Algorithms,' by Thomas

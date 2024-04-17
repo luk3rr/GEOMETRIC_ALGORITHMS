@@ -44,13 +44,13 @@ namespace graph
             typeE m_edgeCost;
 
         public:
-            Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
-                 Vertex<typeE, typeT, typeD, nDim>* sideB,
-                 std::size_t                        id);
+            Edge(std::size_t                        id,
+                 Vertex<typeE, typeT, typeD, nDim>* sideA,
+                 Vertex<typeE, typeT, typeD, nDim>* sideB);
 
-            Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
+            Edge(std::size_t                        id,
+                 Vertex<typeE, typeT, typeD, nDim>* sideA,
                  Vertex<typeE, typeT, typeD, nDim>* sideB,
-                 std::size_t                        id,
                  typeE                              edgeCost);
 
             ~Edge();
@@ -93,9 +93,9 @@ namespace graph
     };
 
     template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
-    Edge<typeE, typeT, typeD, nDim>::Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
-                                          Vertex<typeE, typeT, typeD, nDim>* sideB,
-                                          std::size_t                        id)
+    Edge<typeE, typeT, typeD, nDim>::Edge(std::size_t                        id,
+                                          Vertex<typeE, typeT, typeD, nDim>* sideA,
+                                          Vertex<typeE, typeT, typeD, nDim>* sideB)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
         this->m_id       = id;
@@ -103,9 +103,9 @@ namespace graph
     }
 
     template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
-    Edge<typeE, typeT, typeD, nDim>::Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
+    Edge<typeE, typeT, typeD, nDim>::Edge(std::size_t                        id,
+                                          Vertex<typeE, typeT, typeD, nDim>* sideA,
                                           Vertex<typeE, typeT, typeD, nDim>* sideB,
-                                          std::size_t                        id,
                                           typeE                              edgeCost)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
