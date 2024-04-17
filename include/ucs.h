@@ -8,7 +8,6 @@
 #define UCS_H_
 
 #include <cstddef>
-#include <cstdint>
 #include <limits>
 
 #include "edge.h"
@@ -42,16 +41,13 @@ namespace graph
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
         // Set all vertices as not visited
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        // Pair<first, second> = <ID, Vertex>
+        for (auto& pair : graph.GetVertices())
         {
-            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
-            graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetLabel(VertexLabel::UNVISITED);
+            pair.GetSecond().SetCurrentCost(INFINITY_VALUE);
+            pair.GetSecond().SetEdge2Predecessor(nullptr);
         }
-
-        graph.GetVertices().At(sourceID).SetCurrentCost(0);
-
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
 
         // Auxiliar variables to make code most legible
         Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
@@ -59,7 +55,11 @@ namespace graph
 
         Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
+        u = &graph.GetVertex(sourceID);
+
+        u->SetCurrentCost(0);
+
+        minPQueue.Enqueue(u);
 
         while (not minPQueue.IsEmpty())
         {
@@ -70,20 +70,18 @@ namespace graph
             if (u->GetID() == targetID)
                 break;
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
-                if (v->GetLabel() == VertexLabel::UNVISITED and
-                    Relax(u, v, uAdjList.At(i)))
+                if (v->GetLabel() == VertexLabel::UNVISITED and Relax(u, v, uv))
                 {
                     minPQueue.Enqueue(v);
                 }

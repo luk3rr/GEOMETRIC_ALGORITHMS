@@ -43,7 +43,7 @@ TEST_CASE("SetVertexAttributes")
         vertex.SetID(2);
         vertex.SetCurrentCost(10);
 
-        graph::Edge<int32_t, double_t> edge(&vertex1, &vertex2);
+        graph::Edge<int32_t, double_t> edge(&vertex1, &vertex2, 0);
 
         vertex.SetEdge2Predecessor(&edge);
 

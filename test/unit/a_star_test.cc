@@ -43,5 +43,5 @@ TEST_CASE("A* Search algorithm test")
 
     graph::AStar(graph, 4, 0);
 
-    CHECK(graph.GetVertices().At(0).GetCurrentCost() == 21);
+    CHECK(graph.GetVertex(0).GetCurrentCost() == 21);
 }

@@ -42,12 +42,11 @@ namespace graph
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
         // Initialize all vertex costs to infinity
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        // Pair<first, second> = <ID, Vertex>
+        for (auto& pair : graph.GetVertices())
         {
-            if (i != sourceID)
-                graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
-
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetCurrentCost(INFINITY_VALUE);
+            pair.GetSecond().SetEdge2Predecessor(nullptr);
         }
 
         // Auxiliar variables to make code most legible
@@ -55,13 +54,11 @@ namespace graph
         Vertex<typeG, typeT, typeD, nDim>* v  = nullptr;
         Edge<typeG, typeT, typeD, nDim>*   uv = nullptr;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
-
         // A vector to track whether a vertex with ID as the index has been visited or
         // not
         Vector<bool> inMst(graph.GetVertices().Size(), false);
 
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
+        minPQueue.Enqueue(&graph.GetVertex(sourceID));
 
         Vector<Vertex<typeG, typeT, typeD, nDim>*> aux;
 
@@ -69,18 +66,17 @@ namespace graph
         {
             u = minPQueue.Dequeue();
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
                 // Edge uv (or vu, if is non-directed)
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 // Check if the neighbor vertex 'v' is not in the Minimum Spanning Tree
                 // (MST) and if the cost of the edge 'uv' is less than the current cost

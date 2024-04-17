@@ -19,7 +19,7 @@ TEST_CASE("Test graph::Edge class construction and basic operations")
     graph::Vertex<double_t, double_t> vertexB({ 1.0, 1.0 }, 1);
 
     // Create an edge with default cost
-    graph::Edge<double_t, double_t> edgeAB(&vertexA, &vertexB);
+    graph::Edge<double_t, double_t> edgeAB(&vertexA, &vertexB, 0);
 
     CHECK(edgeAB.GetA() == &vertexA);
     CHECK(edgeAB.GetB() == &vertexB);
@@ -27,7 +27,7 @@ TEST_CASE("Test graph::Edge class construction and basic operations")
     CHECK(edgeAB.GetCost() == 0);
 
     // Create an edge with a specified cost
-    graph::Edge<double_t, double_t> edgeBA(&vertexB, &vertexA, 10);
+    graph::Edge<double_t, double_t> edgeBA(&vertexB, &vertexA, 1, 10);
     CHECK(edgeBA.GetA() == &vertexB);
     CHECK(edgeBA.GetB() == &vertexA);
     CHECK(edgeBA.GetCost() == 10);
@@ -42,8 +42,8 @@ TEST_CASE("Test graph::Edge comparison")
     graph::Vertex<int32_t, double_t> vertexA({ 0.0, 0.0 }, 0);
     graph::Vertex<int32_t, double_t> vertexB({ 1.0, 1.0 }, 1);
 
-    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB);
-    graph::Edge<int32_t, double_t> edgeBA(&vertexB, &vertexA, 10);
+    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB, 0);
+    graph::Edge<int32_t, double_t> edgeBA(&vertexB, &vertexA, 1, 10);
 
     CHECK(edgeAB < edgeBA); // Compare by cost
 }
@@ -53,7 +53,7 @@ TEST_CASE("Test graph::Edge vertices extraction")
     graph::Vertex<int32_t, double_t> vertexA({ 0.0, 0.0 }, 0);
     graph::Vertex<int32_t, double_t> vertexB({ 1.0, 1.0 }, 1);
 
-    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB);
+    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB, 0);
 
     Pair<graph::Vertex<int32_t, double_t>*, graph::Vertex<int32_t, double_t>*>
         vertices = edgeAB.GetVertices();
@@ -67,7 +67,7 @@ TEST_CASE("Test graph::Edge copy constructor and assignment operator")
     graph::Vertex<int32_t, double_t> vertexA({ 0.0, 0.0 }, 0);
     graph::Vertex<int32_t, double_t> vertexB({ 1.0, 1.0 }, 1);
 
-    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB);
+    graph::Edge<int32_t, double_t> edgeAB(&vertexA, &vertexB, 0);
 
     SUBCASE("Copy constructor")
     {

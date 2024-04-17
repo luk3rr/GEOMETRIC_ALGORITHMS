@@ -37,14 +37,20 @@ namespace graph
     class Edge : public geom::Line<typeT, nDim>
     {
         private:
+            // The id of the edge
+            std::size_t m_id;
+
             // The cost of this edge
             typeE m_edgeCost;
 
         public:
             Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
-                 Vertex<typeE, typeT, typeD, nDim>* sideB);
+                 Vertex<typeE, typeT, typeD, nDim>* sideB,
+                 std::size_t                        id);
+
             Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
                  Vertex<typeE, typeT, typeD, nDim>* sideB,
+                 std::size_t                        id,
                  typeE                              edgeCost);
 
             ~Edge();
@@ -70,6 +76,11 @@ namespace graph
             void SetCost(typeE newCost);
 
             /**
+             * @return Id of the edge
+             **/
+            std::size_t GetID();
+
+            /**
              * @return Cost of the edge
              **/
             typeE GetCost();
@@ -83,18 +94,22 @@ namespace graph
 
     template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
     Edge<typeE, typeT, typeD, nDim>::Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
-                                          Vertex<typeE, typeT, typeD, nDim>* sideB)
+                                          Vertex<typeE, typeT, typeD, nDim>* sideB,
+                                          std::size_t                        id)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
+        this->m_id       = id;
         this->m_edgeCost = 0;
     }
 
     template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
     Edge<typeE, typeT, typeD, nDim>::Edge(Vertex<typeE, typeT, typeD, nDim>* sideA,
                                           Vertex<typeE, typeT, typeD, nDim>* sideB,
+                                          std::size_t                        id,
                                           typeE                              edgeCost)
         : geom::Line<typeT, nDim>(*sideA, *sideB)
     {
+        this->m_id       = id;
         this->m_edgeCost = edgeCost;
     }
 
@@ -103,6 +118,7 @@ namespace graph
         : geom::Line<typeT, nDim>(other)
 
     {
+        this->m_id       = other.m_id;
         this->m_edgeCost = other.m_edgeCost;
     }
 
@@ -133,6 +149,12 @@ namespace graph
     void Edge<typeE, typeT, typeD, nDim>::SetCost(typeE newCost)
     {
         this->m_edgeCost = newCost;
+    }
+
+    template<typename typeE, typename typeT, typename typeD, std::size_t nDim>
+    std::size_t Edge<typeE, typeT, typeD, nDim>::GetID()
+    {
+        return this->m_id;
     }
 
     template<typename typeE, typename typeT, typename typeD, std::size_t nDim>

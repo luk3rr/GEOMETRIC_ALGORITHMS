@@ -13,7 +13,6 @@
 #include "graph.h"
 #include "graph_utils.h"
 #include "priority_queue_bheap.h"
-#include "vector.h"
 #include "vertex.h"
 
 namespace graph
@@ -42,17 +41,11 @@ namespace graph
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
         // Initialize all vertex costs to infinity
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        for (auto& pair : graph.GetVertices())
         {
-            if (i != sourceID)
-                graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
-
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetCurrentCost(INFINITY_VALUE);
+            pair.GetSecond().SetEdge2Predecessor(nullptr);
         }
-
-        graph.GetVertices().At(sourceID).SetCurrentCost(0);
-
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
 
         // Auxiliar variables to make code most legible
         Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
@@ -60,26 +53,29 @@ namespace graph
 
         Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
+        u = &graph.GetVertex(sourceID);
+
+        u->SetCurrentCost(0);
+
+        minPQueue.Enqueue(u);
 
         while (not minPQueue.IsEmpty())
         {
             u = minPQueue.Dequeue();
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
                 // Edge uv (or vu, if is non-directed)
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
-                if (Relax(u, v, uAdjList.At(i)))
+                if (Relax(u, v, uv))
                 {
                     // If the neighbor's cost is updated, then add again to queue to
                     // update all neighbors with new cost

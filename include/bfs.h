@@ -42,19 +42,12 @@ namespace graph
 
         // Initialize all vertex costs to infinity and labels to UNVISITED, except
         // source vertex
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        for (auto& pair : graph.GetVertices())
         {
-            if (i != sourceID)
-                graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
-
-            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetCurrentCost(INFINITY_VALUE);
+            pair.GetSecond().SetLabel(VertexLabel::UNVISITED);
+            pair.GetSecond().SetEdge2Predecessor(nullptr);
         }
-
-        graph.GetVertices().At(sourceID).SetCurrentCost(0);
-        graph.GetVertices().At(sourceID).SetLabel(VertexLabel::PROCESSING);
-
-        queue.Enqueue(&graph.GetVertices().At(sourceID));
 
         // Auxiliar variables to make code most legible
         Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
@@ -62,23 +55,27 @@ namespace graph
 
         Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
+        u = &graph.GetVertex(sourceID);
+
+        u->SetCurrentCost(0);
+        u->SetLabel(VertexLabel::PROCESSING);
+
+        queue.Enqueue(u);
 
         while (not queue.IsEmpty())
         {
             u = queue.Dequeue();
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 if (v->GetLabel() == VertexLabel::UNVISITED)
                 {

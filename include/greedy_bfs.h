@@ -36,17 +36,22 @@ namespace graph
                           heuristics::distance::Heuristic             heuristic =
                               heuristics::distance::Heuristic::EUCLIDEAN)
     {
+        // Check if the graph contains the source and target vertices
+        if (not(graph.ContainsVertex(sourceID) and graph.ContainsVertex(targetID)))
+            return false;
+
         bheap::PriorityQueue<
             Vertex<typeG, typeT, typeD, nDim>*,
             decltype(compare::VertexHeuristic<typeG, typeT, typeD, nDim>)>
             minPQueue;
 
         // Set all vertices as not visited
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        // Pair<first, second> = <ID, Vertex>
+        for (auto& pair : graph.GetVertices())
         {
-            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
-            graph.GetVertices().At(i).SetHeuristicCost(0);
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetLabel(VertexLabel::UNVISITED);
+            pair.GetSecond().SetHeuristicCost(0);
+            pair.GetSecond().SetEdge2Predecessor(nullptr);
         }
 
         // Auxiliar variables to make code most legible
@@ -54,27 +59,21 @@ namespace graph
         Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
         Vertex<typeG, typeT, typeD, nDim>* t = nullptr;
 
-        // Check if source and target vertices are valid
+        Edge<typeG, typeT, typeD, nDim>* uv;
+
         try
         {
-            u = &graph.GetVertices().At(sourceID);
-            v = nullptr;
-            t = &graph.GetVertices().At(targetID);
+            u = &graph.GetVertex(sourceID);
+            t = &graph.GetVertex(targetID);
         }
         catch (const std::out_of_range& e)
         {
-            // sourceID or targetID are invalid, that is, they are not in the graph
             return false;
         }
 
-        Edge<typeG, typeT, typeD, nDim>* uv;
+        u->SetHeuristicCost(CalculateHeuristic(heuristic, u, t));
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
-
-        graph.GetVertices().At(sourceID).SetHeuristicCost(
-            CalculateHeuristic(heuristic, u, t));
-
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
+        minPQueue.Enqueue(u);
 
         while (not minPQueue.IsEmpty())
         {
@@ -88,17 +87,16 @@ namespace graph
                 return true;
             }
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 if (v->GetLabel() == VertexLabel::UNVISITED)
                 {

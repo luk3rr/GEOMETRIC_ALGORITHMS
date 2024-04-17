@@ -45,29 +45,28 @@ namespace graph
         typeG INFINITY_VALUE = std::numeric_limits<typeG>::max();
 
         // Set all vertices as not visited
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        // Pair<first, second> = <ID, Vertex>
+        for (auto& pair : graph.GetVertices())
         {
-            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
-            graph.GetVertices().At(i).SetCurrentCost(INFINITY_VALUE);
-            graph.GetVertices().At(i).SetHeuristicCost(0);
-            graph.GetVertices().At(i).SetEdge2Predecessor(nullptr);
+            pair.GetSecond().SetLabel(VertexLabel::UNVISITED);
+            pair.GetSecond().SetCurrentCost(INFINITY_VALUE);
+            pair.GetSecond().SetHeuristicCost(INFINITY_VALUE);
         }
 
         // Auxiliar variables to make code most legible
-        Vertex<typeG, typeT, typeD, nDim>* u = &graph.GetVertices().At(sourceID);
+        Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
         Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
-        Vertex<typeG, typeT, typeD, nDim>* t = &graph.GetVertices().At(targetID);
+        Vertex<typeG, typeT, typeD, nDim>* t = nullptr;
 
         Edge<typeG, typeT, typeD, nDim>* uv;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList;
+        u = &graph.GetVertex(sourceID);
+        t = &graph.GetVertex(targetID);
 
-        graph.GetVertices().At(sourceID).SetCurrentCost(
-            CalculateHeuristic(heuristic, u, t));
-        graph.GetVertices().At(sourceID).SetHeuristicCost(
-            CalculateHeuristic(heuristic, u, t));
+        u->SetCurrentCost(CalculateHeuristic(heuristic, u, t));
+        u->SetHeuristicCost(CalculateHeuristic(heuristic, u, t));
 
-        minPQueue.Enqueue(&graph.GetVertices().At(sourceID));
+        minPQueue.Enqueue(u);
 
         while (not minPQueue.IsEmpty())
         {
@@ -77,27 +76,25 @@ namespace graph
 
             if (u->GetID() == targetID)
             {
-                // PrintPath(graph, u);
+                PrintPath(graph, u);
                 break;
             }
 
-            uAdjList = u->GetAdjacencyList();
-
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
-                uv = uAdjList.At(i);
-
+                uv = pair.GetSecond();
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 if (v->GetLabel() == VertexLabel::UNVISITED)
                 {
                     v->SetHeuristicCost(CalculateHeuristic(heuristic, v, t));
 
-                    if (Relax(u, v, uAdjList.At(i)))
+                    if (Relax(u, v, uv))
                     {
                         minPQueue.Enqueue(v);
                     }

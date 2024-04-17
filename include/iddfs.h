@@ -42,29 +42,27 @@ namespace graph
             if (depth <= 0)
                 return false;
 
-            graph.GetVertices().At(currentVertexID).SetLabel(label);
-
             // Auxiliar variables to make code most legible
             Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
             Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
             Edge<typeG, typeT, typeD, nDim>* uv;
 
-            Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
-                graph.GetVertices().At(currentVertexID).GetAdjacencyList();
+            u = &graph.GetVertex(currentVertexID);
 
-            u = &graph.GetVertices().At(currentVertexID);
+            u->SetLabel(label);
 
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+            // Pair<first, second> = <ID, Edge>
+            for (auto& pair : u->GetAdjacencyList())
             {
                 // Edge uv (or vu, if is non-directed)
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 if (v->GetLabel() != label)
                 {

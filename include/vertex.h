@@ -11,6 +11,7 @@
 #include <cstddef>
 #include <cstdint>
 
+#include "map.h"
 #include "vector.h"
 
 #include "point.h"
@@ -58,7 +59,7 @@ namespace graph
             uint32_t m_departureTime; // Departure time of the vertex
 
             // Adjacency list
-            Vector<Edge<typeV, typeT, typeD, nDim>*> m_adjList;
+            rbtree::Map<std::size_t, Edge<typeV, typeT, typeD, nDim>*> m_adjList;
 
         public:
             Vertex();
@@ -197,7 +198,8 @@ namespace graph
             /**
              * @return Address of the adjacency list of this vertex
              */
-            Vector<Edge<typeV, typeT, typeD, nDim>*>& GetAdjacencyList();
+            rbtree::Map<std::size_t, Edge<typeV, typeT, typeD, nDim>*>&
+            GetAdjacencyList();
     };
 
     template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
@@ -405,7 +407,7 @@ namespace graph
     }
 
     template<typename typeV, typename typeT, typename typeD, std::size_t nDim>
-    Vector<Edge<typeV, typeT, typeD, nDim>*>&
+    rbtree::Map<std::size_t, Edge<typeV, typeT, typeD, nDim>*>&
     Vertex<typeV, typeT, typeD, nDim>::GetAdjacencyList()
     {
         return m_adjList;

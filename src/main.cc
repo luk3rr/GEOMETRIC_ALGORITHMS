@@ -6,6 +6,12 @@
 
 #include <iostream>
 
+#include "bfs.h"
+#include "dfs.h"
+#include "dijkstra.h"
+#include "graph.h"
+#include "a_star.h"
+
 int main()
 {
     std::cout << "Hello, World!" << std::endl;

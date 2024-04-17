@@ -7,6 +7,7 @@
 #ifndef DFS_H_
 #define DFS_H_
 
+#include <cstddef>
 #include <cstdint>
 
 #include "graph.h"
@@ -32,31 +33,28 @@ namespace graph
                         std::size_t                                 currentVertexID,
                         uint32_t&                                   timestamp)
         {
-
-            graph.GetVertices().At(currentVertexID).SetArrivalTime(++timestamp);
-            graph.GetVertices().At(currentVertexID).SetLabel(VertexLabel::VISITED);
-
             // Auxiliar variables to make code most legible
             Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
             Vertex<typeG, typeT, typeD, nDim>* v = nullptr;
 
             Edge<typeG, typeT, typeD, nDim>* uv;
 
-            Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
-                graph.GetVertices().At(currentVertexID).GetAdjacencyList();
+            u = &graph.GetVertex(currentVertexID);
 
-            u = &graph.GetVertices().At(currentVertexID);
+            u->SetArrivalTime(++timestamp);
+            u->SetLabel(VertexLabel::VISITED);
 
-            for (std::size_t i = 0; i < uAdjList.Size(); i++)
+
+            for (auto& pair : u->GetAdjacencyList())
             {
                 // Edge uv (or vu, if is non-directed)
-                uv = uAdjList.At(i);
+                uv = pair.GetSecond();
 
                 // Get the pointer do neighbor vertex, since one end of the edge is
                 // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                    : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
                 if (v->GetLabel() == VertexLabel::UNVISITED)
                 {
@@ -64,7 +62,7 @@ namespace graph
                 }
             }
 
-            graph.GetVertices().At(currentVertexID).SetDepartureTime(++timestamp);
+            u->SetDepartureTime(++timestamp);
         }
     } // namespace
 
@@ -85,15 +83,10 @@ namespace graph
     inline void DFS(Graph<typeG, typeT, typeD, nDim, directed>& graph,
                     std::size_t                                 sourceID)
     {
-        for (std::size_t i = 0; i < graph.GetVertices().Size(); i++)
+        for (auto& pair : graph.GetVertices())
         {
-            graph.GetVertices().At(i).SetLabel(VertexLabel::UNVISITED);
+            pair.GetSecond().SetLabel(VertexLabel::UNVISITED);
         }
-
-        uint32_t timestamp = 0;
-
-        graph.GetVertices().At(sourceID).SetArrivalTime(timestamp);
-        graph.GetVertices().At(sourceID).SetLabel(VertexLabel::VISITED);
 
         // Auxiliar variables to make code most legible
         Vertex<typeG, typeT, typeD, nDim>* u = nullptr;
@@ -101,21 +94,23 @@ namespace graph
 
         Edge<typeG, typeT, typeD, nDim>* uv = nullptr;
 
-        Vector<Edge<typeG, typeT, typeD, nDim>*> uAdjList =
-            graph.GetVertices().At(sourceID).GetAdjacencyList();
+        uint32_t timestamp = 0;
 
-        u = &graph.GetVertices().At(sourceID);
+        u = &graph.GetVertex(sourceID);
 
-        for (std::size_t i = 0; i < uAdjList.Size(); i++)
+        u->SetArrivalTime(timestamp);
+        u->SetLabel(VertexLabel::VISITED);
+
+        for (auto& pair : u->GetAdjacencyList())
         {
             // Edge uv (or vu, if is non-directed)
-            uv = uAdjList.At(i);
+            uv = pair.GetSecond();
 
             // Get the pointer do neighbor vertex, since one end of the edge is
             // vertex u, and the other end is vertex v
             uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                ? v = &graph.GetVertices()[uv->GetVertices().GetSecond()->GetID()]
-                : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
+                ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
             if (v->GetLabel() == VertexLabel::UNVISITED)
             {
@@ -123,7 +118,7 @@ namespace graph
             }
         }
 
-        graph.GetVertices().At(sourceID).SetDepartureTime(++timestamp);
+        u->SetDepartureTime(++timestamp);
     }
 
 } // namespace graph
