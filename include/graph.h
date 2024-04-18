@@ -493,6 +493,9 @@ namespace graph
 
         this->m_vertices.Clear();
         this->m_edges.Clear();
+
+        this->m_vertexCount = 0;
+        this->m_EdgeCount   = 0;
     }
 
 } // namespace graph
