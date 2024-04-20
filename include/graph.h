@@ -295,7 +295,6 @@ namespace graph
              bool        directed>
     bool Graph<typeG, typeT, typeD, nDim, directed>::RemoveVertex(std::size_t vertexID)
     {
-
         if (not this->m_vertices.Contains(vertexID))
             return false;
 
@@ -304,9 +303,13 @@ namespace graph
         u = &this->m_vertices.Get(vertexID);
 
         // Remove all edges that have vertexID as a neighbor
-        for (auto& edge : u->GetAdjacencyList())
+        // Pair<edgeID, edge*>
+        auto it = u->GetAdjacencyList().begin();
+        while (it != u->GetAdjacencyList().end())
         {
-            this->m_edges.Remove(edge.GetFirst());
+            auto& pair = *it;
+            ++it;
+            this->RemoveEdge(pair.GetFirst());
         }
 
         // Remove the vertex from the graph
@@ -322,7 +325,6 @@ namespace graph
              bool        directed>
     bool Graph<typeG, typeT, typeD, nDim, directed>::RemoveEdge(std::size_t edgeID)
     {
-
         if (not this->m_edges.Contains(edgeID))
             return false;
 
@@ -330,7 +332,7 @@ namespace graph
         Vertex<typeG, typeT, typeD, nDim>* u    = nullptr;
         Vertex<typeG, typeT, typeD, nDim>* v    = nullptr;
 
-        edge = this->m_edges.Get(edgeID); // this->m_edges[edgeID];
+        edge = this->m_edges.Get(edgeID);
 
         u = edge->GetVertices().GetFirst();
         v = edge->GetVertices().GetSecond();
@@ -354,8 +356,8 @@ namespace graph
         }
 
         // Remove the edge from the graph
-        delete this->m_edges.Get(edge->GetID());
         this->m_edges.Remove(edgeID);
+        delete edge;
 
         return true;
     }
