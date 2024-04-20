@@ -121,7 +121,7 @@ TEST_CASE("Destroy the graph")
     CHECK(undirectedGraph.GetEdges().Size() == 0);
 }
 
-TEST_CASE("Insert random number of vertices and edges")
+TEST_CASE("Undirected graph: Insert random number of vertices and edges")
 {
     graph::Graph<int32_t, double_t> undirectedGraph;
 
@@ -180,4 +180,62 @@ TEST_CASE("Insert random number of vertices and edges")
 
     CHECK(undirectedGraph.GetNumVertices() == numVertices - numVerticesRemoved);
     CHECK(undirectedGraph.GetNumEdges() == numEdges - numEdgesRemoved);
+}
+
+TEST_CASE("Directed graph: Insert random number of vertices and edges")
+{
+    graph::Graph<int32_t, double_t, bool, 2, true> directedGraph;
+
+    const int32_t numVertices = 50;
+    const int32_t numEdges    = 50;
+
+    for (int32_t i = 0; i < numVertices; i++)
+        directedGraph.AddVertex();
+
+    REQUIRE(directedGraph.GetNumVertices() == numVertices);
+
+    // Use the current time as seed for the random number generator
+    auto now    = std::chrono::system_clock::now();
+    auto now_ms = std::chrono::time_point_cast<std::chrono::milliseconds>(now);
+    auto value  = now_ms.time_since_epoch();
+    auto seed   = value.count();
+
+    std::mt19937                    gen(seed);
+    std::uniform_int_distribution<> dis(0, numVertices - 1);
+
+    for (uint32_t i = 0; i < numEdges; i++)
+    {
+        // randomly select two vertices to add an edge
+        uint32_t j = dis(gen);
+        uint32_t k = dis(gen);
+
+        // Is possible to have loops, that is, j == k
+        directedGraph.AddEdge(j, k);
+    }
+
+    REQUIRE(directedGraph.GetEdges().Size() == numEdges);
+
+    uint32_t numVerticesRemoved   = 0;
+    uint32_t numEdgesRemoved      = 0;
+    uint32_t vertexToRemove       = 0;
+    uint32_t vertexToRemoveDegree = 0;
+
+    for (std::size_t i = 0; i < numVertices; i++)
+    {
+        // Randomly select a vertex to remove
+        vertexToRemove = dis(gen);
+
+        if (directedGraph.ContainsVertex(vertexToRemove))
+        {
+            vertexToRemoveDegree = directedGraph.GetVertex(vertexToRemove).GetDegree();
+
+            if (directedGraph.RemoveVertex(vertexToRemove))
+            {
+                numVerticesRemoved++;
+                numEdgesRemoved += vertexToRemoveDegree;
+            }
+        }
+    }
+
+    CHECK(directedGraph.GetNumVertices() == numVertices - numVerticesRemoved);
 }

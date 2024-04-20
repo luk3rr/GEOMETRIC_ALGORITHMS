@@ -312,6 +312,22 @@ namespace graph
             this->RemoveEdge(pair.GetFirst());
         }
 
+        if (directed)
+        {
+            // If the graph is directed, remove the edges that have vertexID as the
+            // second vertex
+            auto it = this->m_edges.begin();
+            while (it != this->m_edges.end())
+            {
+                auto& pair = *it;
+                ++it;
+                if (pair.GetSecond()->GetVertices().GetSecond()->GetID() == vertexID)
+                {
+                    this->RemoveEdge(pair.GetFirst());
+                }
+            }
+        }
+
         // Remove the vertex from the graph
         this->m_vertices.Remove(vertexID);
 
