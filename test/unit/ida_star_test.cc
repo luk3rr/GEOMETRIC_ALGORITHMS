@@ -1,14 +1,14 @@
 /*
- * Filename: a_star_test.cc
- * Created on: April 11, 2024
+ * Filename: ida_star_test.cc
+ * Created on: April 27, 2024
  * Author: Lucas Araújo <araujolucas@dcc.ufmg.br>
  */
 
 #include "doctest.h"
 
-#include "a_star.h"
+#include "ida_star.h"
 
-TEST_CASE("A* Search algorithm test")
+TEST_CASE("IDA* Search algorithm test")
 {
     // Create a graph with some vertices and edges
     graph::Graph<double_t, uint32_t> graph;
@@ -41,7 +41,7 @@ TEST_CASE("A* Search algorithm test")
     graph.AddEdge(6, 8, 6);
     graph.AddEdge(7, 8, 7);
 
-    graph::AStar(graph, 4, 0);
+    REQUIRE(graph::IDAStar(graph, 4, 0, 10));
 
-    CHECK_EQ(graph.GetVertex(0).GetCurrentCost(), 21);
+    CHECK_EQ(graph.GetVertex(0).GetCurrentCost(), 26);
 }

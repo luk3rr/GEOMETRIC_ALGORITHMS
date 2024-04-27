@@ -140,11 +140,14 @@ namespace graph
                           Vertex<typeG, typeT, typeD, nDim>*          v)
     {
         // Create a vector to store the path
-        Vector<uint32_t> path;
+        Vector<std::size_t> path;
+        Vector<typeG>       costs;
 
         Edge<typeG, typeT, typeD, nDim>* uv;
 
         path.PushBack(v->GetID());
+        costs.PushBack(0);
+
         // Get the path
         while ((uv = v->GetEdge2Predecessor()))
         {
@@ -153,6 +156,7 @@ namespace graph
                 : v = &graph.GetVertices()[uv->GetVertices().GetFirst()->GetID()];
 
             path.PushBack(v->GetID());
+            costs.PushBack(uv->GetCost());
         }
 
         // Print the path
@@ -162,7 +166,7 @@ namespace graph
             if (i == 0)
                 std::cout << path[i] << std::endl;
             else
-                std::cout << path[i] << " -> ";
+                std::cout << path[i] << " --:" << costs[i] << ":-> ";
         }
     }
 } // namespace graph
