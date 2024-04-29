@@ -72,11 +72,7 @@ namespace graph
                 // Edge uv (or vu, if is non-directed)
                 uv = pair.GetSecond();
 
-                // Get the pointer do neighbor vertex, since one end of the edge is
-                // vertex u, and the other end is vertex v
-                uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
-                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
+                v = GetAdjacentVertex(graph, u, uv);
 
                 // Check if the neighbor vertex 'v' is not in the Minimum Spanning Tree
                 // (MST) and if the cost of the edge 'uv' is less than the current cost

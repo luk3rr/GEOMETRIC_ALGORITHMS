@@ -69,11 +69,7 @@ namespace graph
                 // Edge uv (or vu, if is non-directed)
                 uv = pair.GetSecond();
 
-                // Get the pointer do neighbor vertex, since one end of the edge is
-                // vertex u, and the other end is vertex v
-                uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
-                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
+                v = GetAdjacentVertex(graph, u, uv);
 
                 if (Relax(u, v, uv))
                 {

@@ -131,6 +131,11 @@ namespace graph
         }
     } // namespace
 
+    /**
+     * @brief Print the path from a vertex v to its most distant ancestor
+     * @param graph The graph containing the vertices and edges
+     * @param v Pointer to the vertex to be printed
+     */
     template<typename typeG,
              typename typeT,
              typename typeD,
@@ -169,6 +174,31 @@ namespace graph
                 std::cout << path[i] << " --:" << costs[i] << ":-> ";
         }
     }
+
+    /**
+     * @brief Get the adjacent vertex of a given vertex u through the edge uv
+     * @param graph The graph containing the vertices and edges
+     * @param u Pointer to the vertex u
+     * @param uv Pointer to the edge uv
+     * @return Pointer to the adjacent vertex of u through the edge uv
+     **/
+    template<typename typeG,
+             typename typeT,
+             typename typeD,
+             std::size_t nDim,
+             bool        directed>
+    inline Vertex<typeG, typeT, typeD, nDim>*
+    GetAdjacentVertex(Graph<typeG, typeT, typeD, nDim, directed>& graph,
+                      Vertex<typeG, typeT, typeD, nDim>*          u,
+                      Edge<typeG, typeT, typeD, nDim>*            uv)
+    {
+        // Get the pointer do neighbor vertex, since one end of the edge is
+        // vertex u, and the other end is vertex v
+        return uv->GetVertices().GetFirst()->GetID() == u->GetID()
+                   ? &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
+                   : &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
+    }
+
 } // namespace graph
 
 #endif // GRAPH_UTILS_H_

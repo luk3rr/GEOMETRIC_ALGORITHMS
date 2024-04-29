@@ -65,11 +65,10 @@ namespace graph
             // Pair<first, second> = <ID, Edge>
             for (auto& pair : u->GetAdjacencyList())
             {
+                // Edge uv (or vu, if is non-directed)
                 uv = pair.GetSecond();
 
-                uv->GetVertices().GetFirst()->GetID() == u->GetID()
-                    ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
-                    : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
+                v = GetAdjacentVertex(graph, u, uv);
 
                 if (v->GetLabel() != label)
                 {
