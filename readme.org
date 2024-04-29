@@ -1,2 +1,23 @@
 * GEOMETRIC_ALGORITHMS
 This repository contains some algorithms implemented by @luk3rr to solve geometric problems
+
+* Implemented algorithms
+** Convex Hull
++ Graham Scan
++ Jarvis March
+** Uninformed Search
++ Breadth-First Search
++ Depth-First Search
++ Dijkstra
++ Prim
++ Uniform-Cost Search
+** Informed Search
++ A* Search
++ Iterative Deepening A* Search
++ Greedy Best-First Search
++ Iterative Deepening Depth-First Search
+** Heuristics
++ Manhattan distance
++ Euclidean distance
++ Minkowski distance
++ Hamming distance
