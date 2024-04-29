@@ -43,5 +43,5 @@ TEST_CASE("IDA* Search algorithm test")
 
     REQUIRE(graph::IDAStar(graph, 4, 0, 10));
 
-    CHECK_EQ(graph.GetVertex(0).GetCurrentCost(), 26);
+    CHECK_EQ(graph.GetVertex(0).GetCurrentCost(), 21);
 }

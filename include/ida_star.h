@@ -10,6 +10,7 @@
 #include "graph.h"
 #include "graph_utils.h"
 #include "heuristics.h"
+#include "priority_queue_bheap.h"
 #include "vertex.h"
 
 namespace graph
@@ -55,19 +56,21 @@ namespace graph
 
             u->SetLabel(label);
 
+            // Use priority queue to get the child with the smallest cost
+            bheap::PriorityQueue<Vertex<typeG, typeT, typeD, nDim>*,
+                                 decltype(compare::Vertex<typeG, typeT, typeD, nDim>)>
+                minPQueue;
+
+            // Add all neighbors of vertex u to the priority queue
             // Pair<first, second> = <ID, Edge>
             for (auto& pair : u->GetAdjacencyList())
             {
-                // Edge uv (or vu, if is non-directed)
                 uv = pair.GetSecond();
 
-                // Get the pointer do neighbor vertex, since one end of the edge is
-                // vertex u, and the other end is vertex v
                 uv->GetVertices().GetFirst()->GetID() == u->GetID()
                     ? v = &graph.GetVertex(uv->GetVertices().GetSecond()->GetID())
                     : v = &graph.GetVertex(uv->GetVertices().GetFirst()->GetID());
 
-                // If the vertex has not been visited yet
                 if (v->GetLabel() != label)
                 {
                     v->SetHeuristicCost(
@@ -77,10 +80,18 @@ namespace graph
 
                     if (Relax(u, v, uv))
                     {
-                        if (IDAStar(graph, v->GetID(), targetVertexID, --depth, label))
-                            return true;
+                        v->SetLabel(label);
+                        minPQueue.Push(v);
                     }
                 }
+            }
+
+            while (not minPQueue.IsEmpty())
+            {
+                v = minPQueue.Dequeue();
+
+                if (IDAStar(graph, v->GetID(), targetVertexID, --depth, label))
+                    return true;
             }
 
             return false;
