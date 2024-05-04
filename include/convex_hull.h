@@ -9,6 +9,7 @@
 
 #include <cstddef>
 #include <cstdint>
+#include <iostream>
 
 #include "bubble_sort.h"
 #include "insertion_sort.h"

@@ -24,3 +24,6 @@ build/**/Makefile
 build/libs/*
 build/**/*
 bin/**/*
+
+# ETC
+massif*

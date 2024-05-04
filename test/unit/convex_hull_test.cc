@@ -9,6 +9,7 @@
 #include "convex_hull.h"
 #include "point.h"
 #include "vector.h"
+#include <cstddef>
 
 void GeneratePoints(Vector<geom::Point<int, 2>>& points,
                     Vector<geom::Point<int, 2>>& checker,
@@ -83,7 +84,7 @@ void RunGrahamScan(Vector<geom::Point<int, 2>>& points,
     {
         std::cout << " GRAHAM WITH SORT TYPE " << sortType << std::endl;
         for (unsigned int i = 0;
-             i < unsigned(utils::Max(convex.Size(), checker.Size()));
+             i < unsigned(comparators::Max<std::size_t>(convex.Size(), checker.Size()));
              i++)
         {
             if (i < convex.Size())
@@ -181,7 +182,7 @@ TEST_CASE("Fecho convexo: Jarvis March")
         std::cout << " JARVIS "
                   << " CHECKER " << std::endl;
         for (unsigned int i = 0;
-             i < unsigned(utils::Max(convex.Size(), checker.Size()));
+             i < unsigned(comparators::Max<std::size_t>(convex.Size(), checker.Size()));
              i++)
         {
             if (i < convex.Size())
